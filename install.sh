@@ -6,9 +6,7 @@ thispath=$(dirname $abspath)
 SOFTLINK=1
 
 function install_zsh() {
-    if [ -e $HOME/.zi ]; then
-        echo "WARNING: $HOME/.zi existed, skip"
-    else
+    if [ ! -e $HOME/.zi ]; then
         mkdir -p "$HOME/.zi/bin"
         mkdir -p "$HOME/.zi/completions"
         git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
@@ -18,7 +16,7 @@ function install_zsh() {
     fi
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/zsh/zshrc $HOME/.zshrc
-        ln -sf $thispath/zsh/plugins/innotrek $HOME/.zsh_runtime/plugins/innotrek
+        ln -sf $thispath/zsh/plugins/innotrek $HOME/.zsh_runtime/plugins/
     else
         cp $thispath/zsh/zshrc $HOME/.zshrc
         cp -r $thispath/zsh/plugins/innotrek $HOME/.zsh_runtime/plugins/
@@ -43,9 +41,7 @@ function install_vim() {
 
 function install_tmux() {
     mkdir -p $HOME/.tmux/plugins
-    if [ -e $HOME/.tmux/plugins/tpm ]; then
-        echo "WARNING: $HOME/.tmux/plugins/tpm existed, skip"
-    else
+    if [ ! -e $HOME/.tmux/plugins/tpm ]; then
         git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
     fi
     if [ x$SOFTLINK == "x1" ]; then
@@ -57,9 +53,7 @@ function install_tmux() {
 }
 
 function install_emacs() {
-    if [ -e $HOME/.emacs.d ]; then
-        echo "WARNING: $HOME/.emacs.d existed, skip"
-    else
+    if [ ! -e $HOME/.emacs.d ]; then
         mkdir ~/.emacs.d
     fi
     if [ -e $HOME/.emacs.d/settings ]; then
