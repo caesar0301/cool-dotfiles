@@ -173,6 +173,9 @@ if $PYTHON_HOME != ""
   let g:python3_host_prog = substitute(system('echo ${PYTHON_HOME}'), '\n', '', '') .. '/bin/python3'
 endif
 
+" vim copy to clipboard
+set clipboard+=unnamedplus
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => VIM user interface

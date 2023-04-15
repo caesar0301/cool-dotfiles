@@ -190,7 +190,7 @@ alias ccssh='${=EDITOR} $HOME/.ssh/config'
 alias team="pssh -i -h $HOME/.pssh_hosts"
 
 # Proxy shortcut
-alias pc="/usr/local/bin/proxychains4 -q"
+alias pc="proxychains4 -q"
 
 # Git
 alias ga="git add"
@@ -221,6 +221,13 @@ _initGoenv
 _initRustEnv
 _initCuda
 _initHaskellEnv
+
 #if [[ $OSTYPE == darwin*  ]]; then
 #    _initMacEnv
 #fi
+
+#+++++++++++++++++++++++++++++++++++++++
+# Env vars
+#+++++++++++++++++++++++++++++++++++++++
+
+export PATH=$PATH:$HOME/.local/bin
