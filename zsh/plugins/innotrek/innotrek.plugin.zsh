@@ -211,6 +211,8 @@ alias cfr="java -jar ~/bin/cfr-0.152.jar"
 # Perf
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
 
+alias sd="sdcv -0 -c"
+
 #+++++++++++++++++++++++++++++++++++++++
 # DEVTOOLS
 #+++++++++++++++++++++++++++++++++++++++
