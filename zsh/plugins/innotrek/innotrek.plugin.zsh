@@ -2,18 +2,6 @@
 ## My custom zsh plugin for project InnoTrek
 #############################################################
 
-# start or access tmux dev session
-function bingo {
-    unset TMUX
-    HOSTNAME=$(hostname | sed -E "s/\./_/g" | head -c 8)
-    tmux -u start-server
-    tmux -u has-session -t $HOSTNAME
-    if [ $? != 0 ]; then
-        tmux -u new-session -d -s $HOSTNAME
-    fi
-    tmux -u attach -t $HOSTNAME
-}
-
 # Prune all docker junk data
 function docker_prune_all {
     yes y | docker container prune
@@ -44,21 +32,6 @@ function genimgver {
     TAG="${1:-notag}"
     MODE="${2:-release}"
     echo ${MODE}_$(date +"%Y%m%d%H%M%S")_${TAG}_$(git rev-parse HEAD | head -c 8)
-}
-
-# Open file window
-function openw {
-    KNAME=$(uname -s)
-    KREL=$(uname -r)
-    EXE='nautilus'
-    if [[ $KNAME == "Linux" ]]; then
-        if [[ $KREL =~ "microsoft-standard" ]]; then
-            EXE='explorer.exe'
-        fi
-    elif [[ $KNAME == "Darwin"  ]]; then
-        EXE='open'
-    fi
-    $EXE $@
 }
 
 # Proxy triggers
@@ -165,33 +138,6 @@ function _initHaskellEnv {
 #+++++++++++++++++++++++++++++++++++++++
 # ALIAS
 #+++++++++++++++++++++++++++++++++++++++
-
-# Use nvim as default
-alias vi=nvim
-alias tmux='tmux -u' #unicode-mode to fix nerdfont
-
-# Common
-alias duh="du -hs .[^.]*"
-alias em='emacs -nw'
-alias diff='diff -r'
-
-# configs
-alias ccvi='${=EDITOR} $HOME/.vimrc'
-alias ccnv='${=EDITOR} $HOME/.config/nvim/init.vim'
-alias ccnv2='${=EDITOR} $HOME/.config/nvim/init.lua'
-alias cczsh='${=EDITOR} $HOME/.zshrc'
-alias ccze='${=EDITOR} $HOME/.zshenv'
-alias cctmux='${=EDITOR} $HOME/.tmux.conf'
-alias ccclash='${=EDITOR} $HOME/.config/clash/config.yaml'
-alias ccem='${=EDITOR} $HOME/.emacs.d/init.el'
-alias ccssh='${=EDITOR} $HOME/.ssh/config'
-
-# batch
-alias team="pssh -i -h $HOME/.pssh_hosts"
-
-# Proxy shortcut
-alias pc="proxychains4 -q"
-
 # Git
 alias ga="git add"
 alias gb="git branch"
@@ -204,13 +150,18 @@ alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
 alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push"
 alias gqu="git-quick-update"
-
+# Use nvim as default
+alias vi=nvim
+alias tmux='tmux -u' #unicode-mode to fix nerdfont
+# batch
+alias team="pssh -i -h $HOME/.pssh_hosts"
+# Proxy shortcut
+alias pc="/usr/local/bin/proxychains4 -q"
 # java
 alias cfr="java -jar ~/bin/cfr-0.152.jar"
-
 # Perf
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-
+# StarDict console
 alias sd="sdcv -0 -c"
 
 #+++++++++++++++++++++++++++++++++++++++

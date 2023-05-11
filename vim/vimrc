@@ -1034,8 +1034,7 @@ lspconfig.clangd.setup {
   },
   cmd = {"clangd", "--background-index=false"},
   capabilities = capabilities,
-  on_attach = clangd_on_attach,
-  root_dir = lspconfig.util.root_pattern('build/compile_commands.json', '.git'),
+  on_attach = clangd_on_attach
 }
 
 -- yaml server
