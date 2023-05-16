@@ -245,6 +245,10 @@ alias duh="du -hs .[^.]*"
 #------- Useful Functors ---------
 # start or access tmux dev session
 function bingo {
+    if tmux info &> /dev/null; then
+        echo "Do nothing, tmux server already running"
+        return 0
+    fi
     unset TMUX
     HOSTNAME=$(hostname | sed -E "s/\./_/g" | head -c 8)
     tmux -u start-server
