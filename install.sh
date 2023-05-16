@@ -17,9 +17,10 @@ function install_zsh() {
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/zsh/zshrc $HOME/.zshrc
         ln -sf $thispath/zsh/plugins/innotrek $HOME/.zsh_runtime/plugins/
+        ln -sf $thispath/zsh/plugins/git-alias $HOME/.zsh_runtime/plugins/
     else
         cp $thispath/zsh/zshrc $HOME/.zshrc
-        cp -r $thispath/zsh/plugins/innotrek $HOME/.zsh_runtime/plugins/
+        cp -r $thispath/zsh/plugins/git-alias $HOME/.zsh_runtime/plugins/
     fi
     echo "INFO: zsh configured"
 }

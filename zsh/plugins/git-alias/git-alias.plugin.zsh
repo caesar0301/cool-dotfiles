@@ -16,7 +16,7 @@ alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push
 alias gqu="git-quick-update"
 
 # Remove deleted file from git cache
-function git-prune-cache {
+function git_prune_cache {
     FILES=$(git ls-files -d)
     if [[ ! -z $FILES ]]; then
         git rm $FILES
@@ -26,7 +26,7 @@ function git-prune-cache {
 }
 
 # Remove git submodule
-function git-prune-submodule {
+function git_prune_submodule {
     SUBMODULE=$1
     git submodule deinit -f -- $SUBMODULE
     rm -rf .git/modules/$SUBMODULE
