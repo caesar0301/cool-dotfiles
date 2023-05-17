@@ -108,6 +108,7 @@ if has('nvim')
     Plug 'PaterJason/cmp-conjure'
     " Java
     Plug 'mfussenegger/nvim-jdtls'
+    Plug 'mfussenegger/nvim-dap'
 endif
 
 call plug#end()
