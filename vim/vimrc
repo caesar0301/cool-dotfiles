@@ -80,32 +80,34 @@ Plug 'tomasiser/vim-code-dark'
 
 " VIM-specific plugins
 if !has('nvim')
-Plug 'artur-shaik/vim-javacomplete2'
+    Plug 'artur-shaik/vim-javacomplete2'
 endif
 
 " Nvim-specific plugins
 if has('nvim')
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'L3MON4D3/LuaSnip'
-Plug 'nvim-lua/lsp-status.nvim'
-Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'jalvesaq/Nvim-R'
-" Code navigation
-Plug 'onsails/lspkind.nvim'
-Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'kosayoda/nvim-lightbulb'
-Plug 'simrat39/symbols-outline.nvim'
-" Optimized pop-up of quickfix etc. (depends on https://github.com/sharkdp/bat)
-Plug 'RishabhRD/popfix'
-Plug 'RishabhRD/nvim-lsputils'
-" Clojure
-Plug 'Olical/conjure'
-Plug 'PaterJason/cmp-conjure'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+    Plug 'saadparwaiz1/cmp_luasnip'
+    Plug 'L3MON4D3/LuaSnip'
+    Plug 'nvim-lua/lsp-status.nvim'
+    Plug 'nvim-lua/completion-nvim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter-refactor'
+    Plug 'jalvesaq/Nvim-R'
+    " Code navigation
+    Plug 'onsails/lspkind.nvim'
+    Plug 'antoinemadec/FixCursorHold.nvim'
+    Plug 'kosayoda/nvim-lightbulb'
+    Plug 'simrat39/symbols-outline.nvim'
+    " Optimized pop-up of quickfix etc. (depends on https://github.com/sharkdp/bat)
+    Plug 'RishabhRD/popfix'
+    Plug 'RishabhRD/nvim-lsputils'
+    " Clojure
+    Plug 'Olical/conjure'
+    Plug 'PaterJason/cmp-conjure'
+    " Java
+    Plug 'mfussenegger/nvim-jdtls'
 endif
 
 call plug#end()
@@ -1009,7 +1011,6 @@ local servers = {
   'rust_analyzer',      -- Rust
   'pyright',            -- Python
   'r_language_server',  -- Rlang
-  'jdtls',              -- Java
   'clojure_lsp',        -- Clojure
   'metals',             -- Scala
   'gopls',              -- Golang
