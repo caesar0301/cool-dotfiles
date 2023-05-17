@@ -14,15 +14,15 @@ function install_zsh() {
     if [ ! -e $HOME/.zsh_runtime/plugins ]; then
         mkdir -p $HOME/.zsh_runtime/plugins
     fi
+    CMD="cp -r"
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $thispath/zsh/zshrc $HOME/.zshrc
-        ln -sf $thispath/zsh/plugins/innotrek $HOME/.zsh_runtime/plugins/
-        ln -sf $thispath/zsh/plugins/git-alias $HOME/.zsh_runtime/plugins/
-    else
-        cp $thispath/zsh/zshrc $HOME/.zshrc
-        cp -r $thispath/zsh/plugins/git-alias $HOME/.zsh_runtime/plugins/
+        CMD="ln -sf"
     fi
-    echo "INFO: zsh configured"
+    $CMD $thispath/zsh/zshrc $HOME/.zshrc
+    for i in `find $thispath/zsh/plugins -name "*.plugin.zsh"`; do
+        dname=$(dirname $i)
+        $CMD $dname $HOME/.zsh_runtime/plugins/
+    done
 }
 
 function install_vim() {
@@ -37,7 +37,7 @@ function install_vim() {
     else
         cp $thispath/vim/vimrc $HOME/.vimrc
     fi
-    echo "INFO: vim configured, run :PlugInstall to install plugins"
+    echo "INFO [VIM]: run :PlugInstall to install plugins"
 }
 
 function install_tmux() {
@@ -50,7 +50,7 @@ function install_tmux() {
     else
         cp $thispath/tmux/tmux.conf $HOME/.tmux.conf
     fi
-    echo "INFO: tmux configured, run <prefix>I to install plugins"
+    echo "INFO [TMUX]: run <prefix>I to install plugins"
 }
 
 function install_emacs() {
@@ -67,7 +67,6 @@ function install_emacs() {
         cp -r $thispath/emacs/.emacs.d/settings $HOME/.emacs.d/
         cp $thispath/emacs/.emacs.d/init.el $HOME/.emacs.d/
     fi
-    echo "INFO: emacs configured"
 }
 
 install_zsh

@@ -1,46 +1,10 @@
-#############################################################
-## My custom zsh plugin for project InnoTrek
-#############################################################
-
-# Prune all docker junk data
-function docker_prune_all {
-    yes y | docker container prune
-    yes y | docker image prune
-    yes y | docker volume prune
-}
-
-# Docker image tag generator
-function genimgver {
-    TAG="${1:-notag}"
-    MODE="${2:-release}"
-    echo ${MODE}_$(date +"%Y%m%d%H%M%S")_${TAG}_$(git rev-parse HEAD | head -c 8)
-}
-
-# Proxy triggers
-function enable_proxy {
-    export OLD_PROMPT="$PROMPT"
-    HHOST="${PROXY_HTTP_HOST:-127.0.0.1}"
-    HPORT="${PROXY_HTTP_PORT:-6152}"
-    SPORT="${PROXY_SOCKS_PORT:-6153}"
-    if [[ $(uname -r) =~ "microsoft-standard" ]]; then
-        PROXYH=$(/mnt/c/Windows/system32/ipconfig.exe /all |
-            sed -n -E "s|.*IPv4 Address.*([0-9]{3}(\.[0-9]*){3})\(Preferred\)|\1|p" |
-            grep 192.168.0 |
-            tr -d '\r\n\t[:blank:]')
-    fi
-    export http_proxy="http://${HHOST}:${HPORT}" \
-        https_proxy="http://${HHOST}:${HPORT}" \
-        all_proxy="socks5://${HHOST}:${SPORT}"
-    export PROMPT="[P] $PROMPT"
-}
-
-function disable_proxy {
-    export PROMPT=$OLD_PROMPT
-    unset http_proxy
-    unset https_proxy
-    unset all_proxy
-    unset OLD_PROMPT
-}
+#+++++++++++++++++++++++++++++++++++++++
+# DEVTOOLS
+#+++++++++++++++++++++++++++++++++++++++
+# java
+alias cfr="java -jar ~/bin/cfr-0.152.jar"
+# Perf
+alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
 
 function _initJenv {
     if [ -e "$HOME/.jenv" ]; then
@@ -117,24 +81,6 @@ function _initHaskellEnv {
     fi
 }
 
-#+++++++++++++++++++++++++++++++++++++++
-# ALIAS
-#+++++++++++++++++++++++++++++++++++++++
-# Use nvim as default
-alias vi=nvim
-# Proxy shortcut
-alias pc="/usr/local/bin/proxychains4 -q"
-# java
-alias cfr="java -jar ~/bin/cfr-0.152.jar"
-# Perf
-alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-# StarDict console
-alias sd="sdcv -0 -c"
-
-#+++++++++++++++++++++++++++++++++++++++
-# DEVTOOLS
-#+++++++++++++++++++++++++++++++++++++++
-
 _initJenv
 _initRBenv
 _initGoenv
@@ -145,9 +91,3 @@ _initHaskellEnv
 #if [[ $OSTYPE == darwin*  ]]; then
 #    _initMacEnv
 #fi
-
-#+++++++++++++++++++++++++++++++++++++++
-# Env vars
-#+++++++++++++++++++++++++++++++++++++++
-
-export PATH=$PATH:$HOME/.local/bin
