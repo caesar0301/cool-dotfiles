@@ -210,7 +210,7 @@ function omnicc {
         ;;
         ssh) cf=$HOME/.ssh/config
         ;;
-        tmux) cf=$HOME/.tmux.config
+        tmux) cf=$HOME/.tmux.conf
         ;;
         clash) cf=$HOME/.config/clash/config.yaml
         ;;
@@ -277,3 +277,5 @@ function openw {
 # USER-DEFINED Afterwards
 #+++++++++++++++++++++++++++++++++++++++
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
