@@ -92,7 +92,7 @@ if has('nvim')
     Plug 'L3MON4D3/LuaSnip'
     Plug 'nvim-lua/lsp-status.nvim'
     Plug 'nvim-lua/completion-nvim'
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'nvim-treesitter/nvim-treesitter-refactor'
     Plug 'jalvesaq/Nvim-R'
     " Code navigation
