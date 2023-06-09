@@ -10,6 +10,7 @@
 
 " Vim-plug
 call plug#begin('~/.vim/plugged')
+
 " Make sure you use single quotes
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'Vimjas/vim-python-pep8-indent'
@@ -37,6 +38,7 @@ Plug 'kassio/neoterm'
 Plug 'kchmck/vim-coffee-script'
 Plug 'kovisoft/slimv/'
 Plug 'leafgarland/typescript-vim'
+Plug 'lervag/vimtex'
 Plug 'mattn/vim-gist'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'michaeljsmith/vim-indent-object'
@@ -50,6 +52,7 @@ Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
 Plug 'rust-lang/rust.vim'
 Plug 'sophacles/vim-bundle-mako'
+Plug 'tarekbecker/vim-yaml-formatter'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tomtom/tlib_vim'
@@ -62,13 +65,6 @@ Plug 'tpope/vim-surround'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mru.vim'
-Plug 'tarekbecker/vim-yaml-formatter'
-Plug 'neovimhaskell/haskell-vim' "Syntax Highlighting and Indentation
-
-Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
-    \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
-Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
-    \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 
 " colorscheme
 Plug 'altercation/vim-colors-solarized'
@@ -78,12 +74,18 @@ Plug 'therubymug/vim-pyte'
 Plug 'vim-scripts/mayansmoke'
 Plug 'tomasiser/vim-code-dark'
 
-" VIM-specific plugins
+" Custom plugin
+Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
+    \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
+Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
+    \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
+
+" Vim specific plugins
 if !has('nvim')
     Plug 'artur-shaik/vim-javacomplete2'
 endif
 
-" Nvim-specific plugins
+" Nvim specific plugins
 if has('nvim')
     Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/nvim-cmp'
@@ -109,6 +111,8 @@ if has('nvim')
     " Java
     Plug 'mfussenegger/nvim-jdtls'
     Plug 'mfussenegger/nvim-dap'
+    " Syntax Highlighting and Indentation
+    Plug 'neovimhaskell/haskell-vim'
 endif
 
 call plug#end()
@@ -1288,6 +1292,44 @@ else
 end
 EOF
 endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => vimtex
+" Keymap:
+"  <localleader>ll: compiling doc continuously
+"  <localleader>lk: stop compiling
+"  <localleader>lc: clear auxiliary files
+"  <localleader>lv: forward search
+"  <localleader>le: QuickFix
+"  <localleader>lt: show content table
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" This is necessary for VimTeX to load properly. The "indent" is optional.
+" Note that most plugin managers will do this automatically.
+filetype plugin indent on
+
+" This enables Vim's and neovim's syntax-related features. Without this, some
+" VimTeX features will not work (see ":help vimtex-requirements" for more
+" info).
+syntax enable
+
+" Viewer options: One may configure the viewer either by specifying a built-in
+" viewer method:
+let g:vimtex_view_method = 'skim'
+" Or with a generic interface:
+"let g:vimtex_view_general_viewer = 'okular'
+"let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+
+" VimTeX uses latexmk as the default compiler backend. If you use it, which is
+" strongly recommended, you probably don't need to configure anything. If you
+" want another compiler backend, you can change it as follows. The list of
+" supported backends and further explanation is provided in the documentation,
+" see ":help vimtex-compiler".
+let g:vimtex_compiler_method = 'latexmk'
+
+" Most VimTeX mappings rely on localleader and this can be changed with the
+" following line. The default is usually fine and is the symbol "\".
+let maplocalleader = "\\"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

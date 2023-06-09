@@ -1,10 +1,9 @@
 #+++++++++++++++++++++++++++++++++++++++
 # DEVTOOLS
 #+++++++++++++++++++++++++++++++++++++++
-# java
 alias cfr="java -jar ~/bin/cfr-0.152.jar"
-# Perf
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
+alias skim="/Applications/Skim.app/Contents/MacOS/Skim"
 
 function _initJenv {
     if [ -e "$HOME/.jenv" ]; then
