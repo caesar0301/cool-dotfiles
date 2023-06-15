@@ -183,7 +183,7 @@ fi
 #+++++++++++++++++++++++++++++++++++++++
 
 # Overhead configrator for apps
-function omnicc {
+function occ {
     subcommand=$1;
     if [ ! -z $subcommand ]; then
         shift
@@ -196,7 +196,7 @@ function omnicc {
 		        case $opt in
 		            n)    cf=$HOME/.config/nvim/init.vim ;;
 		            l)    cf=$HOME/.config/nvim/init.lua ;;
-		            h|?)  echo "omnicc vi [-n] [-l]" && return;;
+		            h|?)  echo "occ vi [-n] [-l]" && return;;
 		        esac
 	        done
         ;;
@@ -204,7 +204,7 @@ function omnicc {
 	        while getopts eh opt; do
 		        case $opt in
 		            e)    cf=$HOME/.zshenv ;;
-		            h|?)  echo "omnicc zsh [-e]" && return;;
+		            h|?)  echo "occ zsh [-e]" && return;;
 		        esac
 	        done
         ;;
@@ -226,7 +226,7 @@ function omnicc {
             if [ ! -z $subcommand ]; then  # Don't show if no subcommand provided
                 echo "Invalid subcommand: $subcommand"
             fi
-            echo "Usage: omnicc <emacs|em|vim|vi|zsh|ssh|tmux|clash|pc|yum|apt|conan>"
+            echo "Usage: occ <emacs|em|vim|vi|zsh|ssh|tmux|clash|pc|yum|apt|conan>"
             return
         ;;
     esac
