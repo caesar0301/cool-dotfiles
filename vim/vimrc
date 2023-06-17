@@ -36,7 +36,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'kassio/neoterm'
 Plug 'kchmck/vim-coffee-script'
-Plug 'kovisoft/slimv/'
+Plug 'kovisoft/slimv'
 Plug 'leafgarland/typescript-vim'
 Plug 'lervag/vimtex'
 Plug 'mattn/vim-gist'
@@ -653,6 +653,16 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" Plugins => slimv
+""""""""""""""""""""""""""""""
+let g:slimv_leader=','
+let g:slimv_lisp = '/usr/local/bin/sbcl'
+let g:slimv_impl = 'sbcl'
+let g:slimv_ctags = 'ctags'
+"let g:slimv_swank_cmd = '! xterm -e sbcl --load ~/.vim/plugged/slimv/slime/start-swank.lisp &'
+
 
 """"""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin
