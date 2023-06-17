@@ -36,7 +36,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'kassio/neoterm'
 Plug 'kchmck/vim-coffee-script'
-Plug 'kovisoft/slimv'
 Plug 'leafgarland/typescript-vim'
 Plug 'lervag/vimtex'
 Plug 'mattn/vim-gist'
@@ -65,14 +64,14 @@ Plug 'tpope/vim-surround'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mru.vim'
-
-" colorscheme
 Plug 'altercation/vim-colors-solarized'
 Plug 'dracula/vim'
 Plug 'morhetz/gruvbox'
 Plug 'therubymug/vim-pyte'
 Plug 'vim-scripts/mayansmoke'
 Plug 'tomasiser/vim-code-dark'
+"Plug 'kovisoft/slimv'
+Plug 'vlime/vlime', {'rtp': 'vim/'}
 
 " Custom plugin
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
@@ -80,12 +79,12 @@ Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
 Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
     \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 
-" Vim specific plugins
+" Vim-only
 if !has('nvim')
     Plug 'artur-shaik/vim-javacomplete2'
 endif
 
-" Nvim specific plugins
+" Nvim-only
 if has('nvim')
     Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/nvim-cmp'
@@ -97,21 +96,16 @@ if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'nvim-treesitter/nvim-treesitter-refactor'
     Plug 'jalvesaq/Nvim-R'
-    " Code navigation
     Plug 'onsails/lspkind.nvim'
     Plug 'antoinemadec/FixCursorHold.nvim'
     Plug 'kosayoda/nvim-lightbulb'
     Plug 'simrat39/symbols-outline.nvim'
-    " Optimized pop-up of quickfix etc. (depends on https://github.com/sharkdp/bat)
     Plug 'RishabhRD/popfix'
     Plug 'RishabhRD/nvim-lsputils'
-    " Clojure
     Plug 'Olical/conjure'
     Plug 'PaterJason/cmp-conjure'
-    " Java
     Plug 'mfussenegger/nvim-jdtls'
     Plug 'mfussenegger/nvim-dap'
-    " Syntax Highlighting and Indentation
     Plug 'neovimhaskell/haskell-vim'
 endif
 
@@ -133,7 +127,6 @@ call plug#end()
 "    -> Spell checking
 "    -> Misc
 "    -> Helper functions
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -157,6 +150,7 @@ au FocusGained,BufEnter * checktime
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
+let maplocalleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -657,12 +651,15 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 """"""""""""""""""""""""""""""
 " Plugins => slimv
 """"""""""""""""""""""""""""""
-let g:slimv_leader=','
+let g:slimv_leader='\'
 let g:slimv_lisp = '/usr/local/bin/sbcl'
 let g:slimv_impl = 'sbcl'
 let g:slimv_ctags = 'ctags'
-"let g:slimv_swank_cmd = '! xterm -e sbcl --load ~/.vim/plugged/slimv/slime/start-swank.lisp &'
 
+""""""""""""""""""""""""""""""
+" Plugins => slimv
+""""""""""""""""""""""""""""""
+let g:vlime_leader='\'
 
 """"""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin
@@ -1329,7 +1326,6 @@ filetype plugin indent on
 " info).
 syntax enable
 
-let maplocalleader = ","
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_view_method = 'skim'
 " Or with a generic interface:
