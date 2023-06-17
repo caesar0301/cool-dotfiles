@@ -6,13 +6,7 @@
 ;; slime
 ;;-------
 (require 'slime)
-(setq inferior-lisp-program "clasp")
-
-;; Multiple lisps
-(setq slime-lisp-implementations
-      '((clasp ("clasp"))
-        (cmucl ("cmucl" "-quiet"))
-        (sbcl ("sbcl") :coding-system utf-8-unix)))
+(setq inferior-lisp-program "sbcl")
 
 ;; keymaps
 (add-hook 'slime-load-hook
