@@ -8,8 +8,8 @@ function handle_zsh() {
         mkdir -p "$HOME/.zi/completions"
         git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
     fi
-    if [ ! -e $HOME/.zsh_runtime/plugins ]; then
-        mkdir -p $HOME/.zsh_runtime/plugins
+    if [ ! -e $HOME/.config/zsh_runtime/plugins ]; then
+        mkdir -p $HOME/.config/zsh_runtime/plugins
     fi
     CMD="cp -r"
     if [ x$SOFTLINK == "x1" ]; then
@@ -18,7 +18,7 @@ function handle_zsh() {
     $CMD $thispath/zsh/zshrc $HOME/.zshrc
     for i in `find $thispath/zsh/plugins -name "*.plugin.zsh"`; do
         dname=$(dirname $i)
-        $CMD $dname $HOME/.zsh_runtime/plugins/
+        $CMD $dname $HOME/.config/zsh_runtime/plugins/
     done
 }
 

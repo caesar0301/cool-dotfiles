@@ -8,7 +8,7 @@
 # Plugins:
 #     We recommend extend custom zsh settings via plugins.
 #     You can put any plugin or zsh-suffixed scripts in
-#     ~/.zsh_runtime/plugins to be managed by this zshrc.
+#     ~/.config/zsh_runtime/plugins to be managed by this zshrc.
 #############################################################
 
 #+++++++++++++++++++++++++++++++++++++++
@@ -85,7 +85,7 @@ function _setupPyenv {
 
 # Init zi manager
 ZI_HOME="${HOME}/.zi"
-export PLUGIN_HOME="${HOME}/.zsh_runtime/plugins"
+export PLUGIN_HOME="${HOME}/.config/zsh_runtime/plugins"
 source "${ZI_HOME}/bin/zi.zsh"
 autoload -Uz _zi
 (( ${+_comps} )) && _comps[zi]=_zi
