@@ -657,7 +657,13 @@ let g:slimv_impl = 'sbcl'
 let g:slimv_ctags = 'ctags'
 
 """"""""""""""""""""""""""""""
-" Plugins => slimv
+" Plugins => vlime
+" <localleader>rr : start vlime server
+" <localleader>rv : view console output
+" <localleader>ss : evaluate expression under cursor
+" <localleader>i  : interaction mode
+"
+" See more :help vlime-mappings-list
 """"""""""""""""""""""""""""""
 let g:vlime_leader='\'
 
