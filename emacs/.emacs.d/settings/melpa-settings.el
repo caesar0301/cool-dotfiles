@@ -24,6 +24,9 @@
 (package-install 'solarized-theme)
 (package-install 'darcula-theme)
 
+(when enable-all-the-icons
+  (package-install 'all-the-icons))
+
 ;;; autocomple
 (when enable-auto-complete
   (package-install 'auto-complete)
@@ -101,5 +104,9 @@
 ;;; zotero
 (when enable-zotero
   (package-install 'zotelo))
+
+;;; neotree and theme
+(when enable-neotree
+  (package-install 'neotree))
 
 (provide 'melpa-settings)

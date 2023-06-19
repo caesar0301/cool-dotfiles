@@ -16,6 +16,7 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
+Plug 'altercation/vim-colors-solarized'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'amix/vim-zenroom2'
 Plug 'cdelledonne/vim-cmake'
@@ -23,6 +24,7 @@ Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'digitaltoad/vim-pug'
+Plug 'dracula/vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'garbas/vim-snipmate'
 Plug 'groenewege/vim-less'
@@ -42,6 +44,7 @@ Plug 'mattn/vim-gist'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'mileszs/ack.vim'
+Plug 'morhetz/gruvbox'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'nvie/vim-flake8'
 Plug 'pangloss/vim-javascript'
@@ -54,6 +57,8 @@ Plug 'sophacles/vim-bundle-mako'
 Plug 'tarekbecker/vim-yaml-formatter'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'therubymug/vim-pyte'
+Plug 'tomasiser/vim-code-dark'
 Plug 'tomtom/tlib_vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -63,14 +68,8 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
-Plug 'vim-scripts/mru.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'dracula/vim'
-Plug 'morhetz/gruvbox'
-Plug 'therubymug/vim-pyte'
 Plug 'vim-scripts/mayansmoke'
-Plug 'tomasiser/vim-code-dark'
-"Plug 'kovisoft/slimv'
+Plug 'vim-scripts/mru.vim'
 Plug 'vlime/vlime', {'rtp': 'vim/'}
 
 " Custom plugin
@@ -647,14 +646,6 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""
-" Plugins => slimv
-""""""""""""""""""""""""""""""
-let g:slimv_leader='\'
-let g:slimv_lisp = '/usr/local/bin/sbcl'
-let g:slimv_impl = 'sbcl'
-let g:slimv_ctags = 'ctags'
 
 """"""""""""""""""""""""""""""
 " Plugins => vlime

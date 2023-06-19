@@ -3,6 +3,7 @@
 ;;; By Xiaming Chen <chen@xiaming.me>
 
 ;; Global options
+(setq enable-all-the-icons t)
 (setq enable-auto-complete t)
 (setq enable-camelcase t)
 (setq enable-helm t)
@@ -13,6 +14,7 @@
 (setq enable-lisp t)
 (setq enable-markdown t)
 (setq enable-matlab nil)
+(setq enable-neotree t)
 (setq enable-pig nil)
 (setq enable-python t)
 (setq enable-rstat nil)
@@ -31,6 +33,7 @@
 (load custom-file)
 
 ;; plugin settings
+(when enable-all-the-icons (require 'all-the-icons-settings))
 (when enable-auto-complete (require 'auto-complete-settings))
 (when enable-camelcase (require 'camelcase-settings))
 (when enable-helm (require 'helm-settings))
@@ -40,6 +43,7 @@
 (when enable-lisp (require 'lisp-settings))
 (when enable-markdown (require 'markdown-settings))
 (when enable-matlab (require 'matlab-settings))
+(when enable-neotree (require 'neotree-settings))
 (when enable-pig (require 'pig-settings))
 (when enable-python (require 'python-settings))
 (when enable-rstat (require 'r-settings))
