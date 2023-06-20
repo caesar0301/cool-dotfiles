@@ -8,6 +8,8 @@
 (require 'slime)
 (setq inferior-lisp-program "sbcl")
 
+(slime-setup '(slime-fancy slime-quicklisp slime-asdf))
+
 ;; keymaps
 (add-hook 'slime-load-hook
           (lambda ()

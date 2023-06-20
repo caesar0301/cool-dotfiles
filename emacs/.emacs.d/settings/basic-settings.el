@@ -105,7 +105,7 @@
 (setq next-line-add-newlines nil)
 
 ;; set default font size
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 120)
 
 ;;---------
 ;; Theme
@@ -123,7 +123,7 @@
 ;; default window width and height
 (defun custom-set-frame-size ()
   (add-to-list 'default-frame-alist '(height . 40))
-  (add-to-list 'default-frame-alist '(width . 88)))
+  (add-to-list 'default-frame-alist '(width . 81)))
 (custom-set-frame-size)
 (add-hook 'before-make-frame-hook 'custom-set-frame-size)
 
