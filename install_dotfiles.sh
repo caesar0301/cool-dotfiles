@@ -26,15 +26,19 @@ function handle_vim() {
     # install vim-plug manager
     mkdir -p $HOME/.vim/autoload
     cp $thispath/vim/vim-plug/plug.vim $HOME/.vim/autoload/plug.vim
-    mkdir -p $HOME/.local/share/nvim/site/autoload
-    cp $thispath/vim/vim-plug/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
-    # install nvim configurations
-    rsync -avxPqi $thispath/vim/.config/ $HOME/.config
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/vim/.vimrc $HOME/.vimrc
     else
         cp $thispath/vim/.vimrc $HOME/.vimrc
     fi
+}
+
+function handle_neovim() {
+    # install vim-plug manager
+    mkdir -p $HOME/.local/share/nvim/site/autoload
+    cp $thispath/neovim/vim-plug/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
+    # install nvim configs by copy
+    rsync -avxPqi $thispath/neovim/.config/ $HOME/.config
 }
 
 function handle_tmux() {
@@ -120,7 +124,8 @@ function install_deps {
 function configure_dotfiles {
     handle_zsh
     handle_tmux
-    handle_vim
+    #handle_vim
+    handle_neovim
     handle_emacs
 }
 

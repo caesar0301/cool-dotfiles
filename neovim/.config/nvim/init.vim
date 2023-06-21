@@ -1,88 +1,11 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Maintainer:
-"       Amir Salihefendic — @amix3k
 "       Xiaming Chen - @caesar0301
-"
 " Prerequisites:
-"       vim-plug: https://github.com/junegunn/vim-plug
-"       neovim: (recommended) https://neovim.io/
+"       neovim: 0.8+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim-plug
-call plug#begin('~/.vim/plugged')
 
-" Make sure you use single quotes
-
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'airblade/vim-gitgutter'
-Plug 'altercation/vim-colors-solarized'
-Plug 'amix/open_file_under_cursor.vim'
-Plug 'amix/vim-zenroom2'
-Plug 'artur-shaik/vim-javacomplete2'
-Plug 'bhurlow/vim-parinfer'
-Plug 'cdelledonne/vim-cmake'
-Plug 'chr4/nginx.vim'
-Plug 'chrisbra/csv.vim'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'digitaltoad/vim-pug'
-Plug 'dracula/vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'garbas/vim-snipmate'
-Plug 'groenewege/vim-less'
-Plug 'honza/vim-snippets'
-Plug 'itchyny/lightline.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'jlanzarotta/bufexplorer'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'kassio/neoterm'
-Plug 'kchmck/vim-coffee-script'
-Plug 'leafgarland/typescript-vim'
-Plug 'lervag/vimtex'
-Plug 'mattn/vim-gist'
-Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'mileszs/ack.vim'
-Plug 'morhetz/gruvbox'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'nvie/vim-flake8'
-Plug 'pangloss/vim-javascript'
-Plug 'pechorin/any-jump.vim'
-Plug 'plasticboy/vim-markdown'
-Plug 'preservim/nerdtree'
-Plug 'preservim/tagbar'
-Plug 'rust-lang/rust.vim'
-Plug 'sophacles/vim-bundle-mako'
-Plug 'tarekbecker/vim-yaml-formatter'
-Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'therubymug/vim-pyte'
-Plug 'tomasiser/vim-code-dark'
-Plug 'tomtom/tlib_vim'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
-Plug 'vim-autoformat/vim-autoformat'
-Plug 'vim-ruby/vim-ruby'
-Plug 'vim-scripts/mayansmoke'
-Plug 'vim-scripts/mru.vim'
-Plug 'vlime/vlime', {'rtp': 'vim/'}
-
-" Custom plugin
-Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
-    \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
-Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
-    \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
-
-call plug#end()
-
+source ~/.config/nvim/init_plugins.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics:
@@ -100,7 +23,6 @@ call plug#end()
 "    -> Misc
 "    -> Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics => General
@@ -581,11 +503,7 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 " Languages => Shell section
 """"""""""""""""""""""""""""""
 if exists('$TMUX')
-    if has('nvim')
-        set termguicolors
-    else
-        set term=screen-256color
-    endif
+    set termguicolors
 endif
 
 
@@ -792,17 +710,6 @@ let g:goyo_margin_top = 2
 let g:goyo_margin_bottom = 2
 nnoremap <silent> <leader>z :Goyo<cr>
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => vim-javacomplete2
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if !has('nvim')
-" Import nothing on default
-let g:JavaComplete_ImportDefault = -1
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
-endif
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vim-autoformat
 "
@@ -971,6 +878,21 @@ map <leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 " map <Leader>+W to search in ag everywhere
 map <leader>W :Ag<CR>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => lsp-status
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! LspStatus() abort
+" FIXME: messed line format on clangd with multiple buffers
+"  if luaeval('#vim.lsp.buf_get_clients() > 0')
+"    return luaeval("require('lsp-status').status()")
+"  endif
+  return ''
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins => nvim-lightbulb
+""""""""""""""""""" """"""""""""""""""""""""""""""""""""""""""""
+lua require('nvim-lightbulb').setup({autocmd = {enabled = true}})
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => symbols-outline
