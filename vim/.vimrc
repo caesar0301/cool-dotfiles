@@ -855,6 +855,7 @@ endif
 "   CMake: pip install cmake_format
 "   LaTeX: brew install latexindent
 "   OCaml: opam install ocamlformat
+"   LISP/Scheme: npm install -g scmindent
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py :Autoformat
 nnoremap <silent> <leader>af :Autoformat<cr>
@@ -868,12 +869,15 @@ let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"cmake-format -"'
 let g:formatdef_clangformat= '"clang-format -"'
 let g:formatdef_pyfmt='"black -"'
+let g:formatdef_latexindent = '"latexindent -"'
+let g:formatdef_scmindent = '"scmindent -"'
 " Formatter user
 let g:formatters_java=['gjf']
 let g:formatters_cmake=['cmakefmt']
 let g:formatters_cpp=['clangformat']
 let g:formatters_python=['pyfmt']
-let g:formatdef_latexindent = '"latexindent -"'
+let g:formatters_lisp=['scmindent']
+let g:formatters_scheme=['scmindent']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
