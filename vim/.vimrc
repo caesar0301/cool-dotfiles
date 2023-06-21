@@ -72,7 +72,8 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
-Plug 'vlime/vlime', {'rtp': 'vim/'}
+"Plug 'vlime/vlime', {'rtp': 'vim/'}
+Plug 'kovisoft/slimv'
 
 " Custom plugin
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
@@ -670,6 +671,14 @@ let g:rainbow#blacklist = [233, 234]
 let g:vlime_leader='\'
 let g:vlime_enable_autodoc = v:true
 
+""""""""""""""""""""""""""""""
+" Plugins => slimv
+""""""""""""""""""""""""""""""
+let g:slimv_leader='\'
+let g:slimv_lisp = '/usr/local/bin/sbcl'
+let g:slimv_impl = 'sbcl'
+let g:slimv_ctags = 'ctags'
+let g:slimv_swank_cmd = '! xterm -e sbcl --load ~/.vim/plugged/slimv/slime/start-swank.lisp &'
 
 """"""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin

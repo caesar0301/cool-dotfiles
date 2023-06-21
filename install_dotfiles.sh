@@ -15,7 +15,7 @@ function handle_zsh() {
     if [ x$SOFTLINK == "x1" ]; then
         CMD="ln -sf"
     fi
-    $CMD $thispath/zsh/zshrc $HOME/.zshrc
+    $CMD $thispath/zsh/.zshrc $HOME/.zshrc
     for i in `find $thispath/zsh/plugins -name "*.plugin.zsh"`; do
         dname=$(dirname $i)
         $CMD $dname $HOME/.config/zsh_runtime/plugins/
@@ -31,9 +31,9 @@ function handle_vim() {
     # install nvim configurations
     rsync -avxPqi $thispath/vim/.config/ $HOME/.config
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $thispath/vim/vimrc $HOME/.vimrc
+        ln -sf $thispath/vim/.vimrc $HOME/.vimrc
     else
-        cp $thispath/vim/vimrc $HOME/.vimrc
+        cp $thispath/vim/.vimrc $HOME/.vimrc
     fi
 }
 
