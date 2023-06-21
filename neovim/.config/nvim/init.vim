@@ -292,9 +292,30 @@ imap <C-e> <ESC>A
 """"""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
+set noshowmode
 
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+" Plugin lightline.vim
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ ['mode', 'paste'],
+      \             ['fugitive', 'readonly', 'gitbranch', 'filename', 'modified'] ],
+      \   'right': [ ['lineinfo'], ['percent'], ['lspstatus'] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'fugitive': '%{exists("*FugitiveHead")?FugitiveHead():""}',
+      \   'lspstatus': '%{exists("*LspStatus")?LspStatus():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+      \   'fugitive': '(exists("*FugitiveHead") && ""!=FugitiveHead())'
+      \ },
+      \ 'separator': { 'left': ' ', 'right': ' ' },
+      \ 'subseparator': { 'left': ' ', 'right': ' ' }
+      \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -677,32 +698,6 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => lightline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ ['mode', 'paste'],
-      \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-      \   'right': [ ['lineinfo'], ['percent'], ['lspstatus'] ]
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*FugitiveHead")?FugitiveHead():""}',
-      \   'lspstatus': '%{exists("*LspStatus")?LspStatus():""}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*FugitiveHead") && ""!=FugitiveHead())'
-      \ },
-      \ 'separator': { 'left': ' ', 'right': ' ' },
-      \ 'subseparator': { 'left': ' ', 'right': ' ' }
-      \ }
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => Vimroom
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:goyo_width=100
@@ -878,16 +873,6 @@ map <leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 " map <Leader>+W to search in ag everywhere
 map <leader>W :Ag<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => lsp-status
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! LspStatus() abort
-" FIXME: messed line format on clangd with multiple buffers
-"  if luaeval('#vim.lsp.buf_get_clients() > 0')
-"    return luaeval("require('lsp-status').status()")
-"  endif
-  return ''
-endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => nvim-lightbulb
