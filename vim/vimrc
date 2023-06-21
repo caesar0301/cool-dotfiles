@@ -19,6 +19,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'amix/vim-zenroom2'
+Plug 'bhurlow/vim-parinfer'
 Plug 'cdelledonne/vim-cmake'
 Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
@@ -36,6 +37,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'kassio/neoterm'
 Plug 'kchmck/vim-coffee-script'
 Plug 'leafgarland/typescript-vim'
@@ -648,6 +650,15 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
+" Plugins => bufExplorer plugin
+""""""""""""""""""""""""""""""
+augroup rainbow_lisp
+  autocmd!
+  autocmd FileType lisp,clojure,scheme RainbowParentheses
+augroup END
+let g:rainbow#blacklist = [233, 234]
+
+""""""""""""""""""""""""""""""
 " Plugins => vlime
 " <localleader>rr : start vlime server
 " <localleader>rv : view console output
@@ -657,6 +668,8 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 " See more :help vlime-mappings-list
 """"""""""""""""""""""""""""""
 let g:vlime_leader='\'
+let g:vlime_enable_autodoc = v:true
+
 
 """"""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin
