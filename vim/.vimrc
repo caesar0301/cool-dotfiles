@@ -72,8 +72,8 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
-"Plug 'vlime/vlime', {'rtp': 'vim/'}
-Plug 'kovisoft/slimv'
+Plug 'vlime/vlime', {'rtp': 'vim/'}
+"Plug 'kovisoft/slimv'
 
 " Custom plugin
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
