@@ -15,12 +15,8 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 -- Use an on_attach function after the language server attaches to the current buffer
 local common_on_attach = function(client, bufnr)
     print("LSP started.");
-    require'completion'.on_attach(client)
     -- Overwrite :Format command in lsp buffers
     -- vim.api.nvim_create_user_command("Format", function(opts) vim.lsp.buf.formatting() end, {})
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    -- keymap
     local bufopts = {
         noremap = true,
         silent = true,
@@ -43,7 +39,6 @@ local common_on_attach = function(client, bufnr)
     end, bufopts)
     vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
     vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
-    -- lsp-status
     lsp_status.on_attach(client)
 end
 
