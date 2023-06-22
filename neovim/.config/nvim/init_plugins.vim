@@ -92,7 +92,6 @@ Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
 Plug 'vlime/vlime', {'rtp': 'vim/'}
 Plug 'windwp/nvim-autopairs'
-"Plug 'kovisoft/slimv'
 
 " Custom plugin
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
