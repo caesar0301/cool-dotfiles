@@ -24,8 +24,8 @@ function handle_zsh() {
 
 function handle_vim() {
     # install vim-plug manager
-    mkdir -p $HOME/.vim/autoload
-    cp $thispath/vim/vim-plug/plug.vim $HOME/.vim/autoload/plug.vim
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/vim/.vimrc $HOME/.vimrc
     else
@@ -35,8 +35,8 @@ function handle_vim() {
 
 function handle_neovim() {
     # install vim-plug manager
-    mkdir -p $HOME/.local/share/nvim/site/autoload
-    cp $thispath/neovim/vim-plug/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     # install nvim configs by copy
     ln -sf $thispath/neovim/.config/nvim $HOME/.config/
 }

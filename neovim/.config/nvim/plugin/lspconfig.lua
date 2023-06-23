@@ -48,13 +48,13 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
 -- General servers
-local servers = {'rust_analyzer', -- Rust
-'pyright', -- Python
-'r_language_server', -- Rlang
-'clojure_lsp', -- Clojure
-'metals', -- Scala
-'gopls', -- Golang
-'cmake' -- CMake
+local servers = { 'rust_analyzer', -- Rust
+    'pyright',                    -- Python
+    'r_language_server',          -- Rlang
+    'clojure_lsp',                -- Clojure
+    'metals',                     -- Scala
+    'gopls',                      -- Golang
+    'cmake'                       -- CMake
 }
 
 for _, lsp in ipairs(servers) do
@@ -74,7 +74,7 @@ lspconfig.clangd.setup {
     init_options = {
         clangdFileStatus = true
     },
-    cmd = {"clangd", "--background-index=true"},
+    cmd = { "clangd", "--background-index=true" },
     capabilities = capabilities,
     on_attach = clangd_on_attach
 }
@@ -138,7 +138,7 @@ cmp.setup {
             else
                 fallback()
             end
-        end, {'i', 's'}),
+        end, { 'i', 's' }),
         ['<C-p>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
@@ -147,15 +147,15 @@ cmp.setup {
             else
                 fallback()
             end
-        end, {'i', 's'})
+        end, { 'i', 's' })
     }),
-    sources = {{
+    sources = { {
         name = 'nvim_lsp'
     }, {
         name = 'luasnip'
     }, {
         name = 'conjure'
-    }},
+    } },
     formatting = {
         format = require('lspkind').cmp_format({
             mode = 'symbol',

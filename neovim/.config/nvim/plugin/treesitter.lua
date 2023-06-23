@@ -1,11 +1,11 @@
-require'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter.configs'.setup {
     ensure_installed = {},
     sync_install = false,
     auto_install = false,
     ignore_install = {},
     highlight = {
         enable = true,
-        disable = {"bash"},
+        disable = { "bash" },
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.

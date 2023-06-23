@@ -39,6 +39,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
+Plug 'ojroques/nvim-lspfuzzy'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'kassio/neoterm'
@@ -96,6 +97,7 @@ Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
     \ { 'as': 'peepopen.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 
 call plug#end()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics:

@@ -1,5 +1,5 @@
 local jdtls = require('jdtls')
-local root_markers = {'gradlew', '.git', 'gradlew'}
+local root_markers = { 'gradlew', '.git', 'gradlew' }
 local home = os.getenv('HOME')
 local jdk17_home = home .. "/.local/share/jdk17"
 local jdtls_install_folder = home .. "/.local/share/jdt-language-server"
@@ -10,9 +10,9 @@ local config = {
         jdk17_home .. '/bin/java',
         '-Declipse.application=org.eclipse.jdt.ls.core.id1',
         '-Dosgi.bundles.defaultStartLevel=4',
-        '-Declipse.product=org.eclipse.jdt.ls.core.product', 
-        '-Dlog.protocol=true', 
-        '-Dlog.level=ALL', 
+        '-Declipse.product=org.eclipse.jdt.ls.core.product',
+        '-Dlog.protocol=true',
+        '-Dlog.level=ALL',
         '-Xmx4g',
         '--add-modules=ALL-SYSTEM',
         '--add-opens',
