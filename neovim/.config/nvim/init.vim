@@ -5,100 +5,109 @@
 "       vim-plug: https://github.com/junegunn/vim-plug
 "       neovim: 0.8+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim-plug
+" Vim-plug, make sure you use single quotes
 call plug#begin()
 
-" Make sure you use single quotes
-Plug 'L3MON4D3/LuaSnip'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'Olical/conjure'
-Plug 'PaterJason/cmp-conjure'
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'airblade/vim-gitgutter'
+"" Theme
+Plug 'dracula/vim'
 Plug 'altercation/vim-colors-solarized'
-Plug 'amix/open_file_under_cursor.vim'
-Plug 'amix/vim-zenroom2'
+Plug 'morhetz/gruvbox'
+Plug 'therubymug/vim-pyte'
+Plug 'vim-scripts/mayansmoke'
+Plug 'tomasiser/vim-code-dark'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'jlanzarotta/bufexplorer'
+
+"" LSP and improvement
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/lsp-status.nvim'
+Plug 'ojroques/nvim-lspfuzzy'
+Plug 'onsails/lspkind.nvim'
+Plug 'rmagatti/goto-preview'
+Plug 'smjonas/inc-rename.nvim'
+Plug 'kosayoda/nvim-lightbulb'
 Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+
+"" Completion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'PaterJason/cmp-conjure'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'garbas/vim-snipmate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'honza/vim-snippets' " Optional for vim-snipmate
+Plug 'windwp/nvim-autopairs'
+
+"" Navigation
+Plug 'preservim/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'preservim/tagbar'
+Plug 'simrat39/symbols-outline.nvim' " Complement tagbar
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+Plug 'junegunn/fzf.vim'
+Plug 'amix/vim-zenroom2'
+Plug 'junegunn/goyo.vim'
+Plug 'pechorin/any-jump.vim'
+Plug 'terryma/vim-expand-region' " +/- to expand/shrink
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'preservim/vim-indent-guides'
+Plug 'vim-scripts/mru.vim'
+
+"" Editing
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+
+"" Languages
+Plug 'vim-autoformat/vim-autoformat'
+Plug 'Olical/conjure'
 Plug 'bhurlow/vim-parinfer'
+Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'cdelledonne/vim-cmake'
 Plug 'chr4/nginx.vim'
 Plug 'chrisbra/csv.vim'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'digitaltoad/vim-pug'
-Plug 'dracula/vim'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'garbas/vim-snipmate'
 Plug 'groenewege/vim-less'
-Plug 'honza/vim-snippets'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'itchyny/lightline.vim'
 Plug 'jalvesaq/Nvim-R'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'jlanzarotta/bufexplorer'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'kassio/neoterm'
 Plug 'kchmck/vim-coffee-script'
-Plug 'kosayoda/nvim-lightbulb'
 Plug 'leafgarland/typescript-vim'
 Plug 'lervag/vimtex'
-Plug 'mattn/vim-gist'
-Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'mfussenegger/nvim-dap'
 Plug 'mfussenegger/nvim-jdtls'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'mileszs/ack.vim'
-Plug 'morhetz/gruvbox'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'neovim/nvim-lspconfig'
-Plug 'neovim/nvim-lspconfig'
+Plug 'pangloss/vim-javascript'
+Plug 'plasticboy/vim-markdown'
+Plug 'rust-lang/rust.vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'nvie/vim-flake8'
-Plug 'nvim-lua/lsp-status.nvim'
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'ojroques/nvim-lspfuzzy'
-Plug 'onsails/lspkind.nvim'
-Plug 'pangloss/vim-javascript'
-Plug 'pechorin/any-jump.vim'
-Plug 'plasticboy/vim-markdown'
-Plug 'preservim/nerdtree'
-Plug 'preservim/tagbar'
-Plug 'rust-lang/rust.vim'
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'simrat39/symbols-outline.nvim'
-Plug 'smjonas/inc-rename.nvim'
-Plug 'sophacles/vim-bundle-mako'
-Plug 'tarekbecker/vim-yaml-formatter'
-Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'therubymug/vim-pyte'
-Plug 'tomasiser/vim-code-dark'
-Plug 'tomtom/tlib_vim'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
-Plug 'vim-autoformat/vim-autoformat'
+Plug 'mileszs/ack.vim'
 Plug 'vim-ruby/vim-ruby'
-Plug 'vim-scripts/mayansmoke'
-Plug 'vim-scripts/mru.vim'
+Plug 'tarekbecker/vim-yaml-formatter'
+Plug 'sophacles/vim-bundle-mako'
 Plug 'vlime/vlime', {'rtp': 'vim/'}
-Plug 'windwp/nvim-autopairs'
 
-" Custom plugin
+"" Misc
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'mattn/vim-gist'
+Plug 'amix/open_file_under_cursor.vim'
+Plug 'kassio/neoterm'
+Plug 'mfussenegger/nvim-dap' " Debug Adapter Protocol client
+
+"" My own custom
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
     \ { 'as': 'set_tabline.vim', 'do': 'mkdir -p plugin; cp -f *.vim plugin/' }
 Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
@@ -388,7 +397,7 @@ imap <C-e> <ESC>A
 
 
 """"""""""""""""""""""""""""""
-" Basics => Status line
+" Basics => lightline
 """"""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
@@ -659,12 +668,22 @@ autocmd Filetype xml,html setlocal ts=2 sw=2 expandtab
 
 """"""""""""""""""""""""""""""
 " Plugins => bufExplorer plugin
+" \<Leader\>be normal open
+" \<Leader\>bt toggle open / close
+" \<Leader\>bs force horizontal split open
+" \<Leader\>bv force vertical split open
 """"""""""""""""""""""""""""""
 augroup rainbow_lisp
   autocmd!
   autocmd FileType lisp,clojure,scheme RainbowParentheses
 augroup END
 let g:rainbow#blacklist = [233, 234]
+let g:bufExplorerDefaultHelp=0
+let g:bufExplorerShowRelativePath=1
+let g:bufExplorerFindActive=1
+let g:bufExplorerSortBy='name'
+map <leader>o :BufExplorer<cr>
+
 
 """"""""""""""""""""""""""""""
 " Plugins => vlime
@@ -686,15 +705,6 @@ let g:slimv_lisp = '/usr/local/bin/sbcl'
 let g:slimv_impl = 'sbcl'
 let g:slimv_ctags = 'ctags'
 let g:slimv_swank_cmd = '! xterm -e sbcl --load ~/.vim/plugged/slimv/slime/start-swank.lisp &'
-
-""""""""""""""""""""""""""""""
-" Plugins => bufExplorer plugin
-""""""""""""""""""""""""""""""
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerFindActive=1
-let g:bufExplorerSortBy='name'
-map <leader>o :BufExplorer<cr>
 
 
 """"""""""""""""""""""""""""""
@@ -774,22 +784,6 @@ map <leader>nn :call NerdTreeToggleOrFind()<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => vim-multiple-cursors
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:multi_cursor_use_default_mapping=0
-
-" Default mapping
-let g:multi_cursor_start_word_key      = '<C-s>'
-let g:multi_cursor_select_all_word_key = '<A-s>'
-let g:multi_cursor_start_key           = 'g<C-s>'
-let g:multi_cursor_select_all_key      = 'g<A-s>'
-let g:multi_cursor_next_key            = '<C-s>'
-let g:multi_cursor_prev_key            = '<C-p>'
-let g:multi_cursor_skip_key            = '<C-x>'
-let g:multi_cursor_quit_key            = '<Esc>'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => surround.vim config
 " Annotate strings with gettext
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -798,7 +792,7 @@ au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => Vimroom
+" Plugins => zenroom & goyo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:goyo_width=100
 let g:goyo_margin_top = 2
@@ -874,7 +868,8 @@ xnoremap <leader>v :'<'>GBrowse!<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => tagbar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>bb :TagbarToggle<CR>
+nnoremap <leader>tb :TagbarToggle<CR>
+
 let g:tagbar_position = 'right'
 " Sort by positions in file
 let g:tagbar_sort = 0
@@ -978,6 +973,8 @@ map <leader>W :Ag<CR>
 " Plugins => symbols-outline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>so :SymbolsOutline<CR>
+map <F9> :SymbolsOutline<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => vimtex
