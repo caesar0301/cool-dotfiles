@@ -113,3 +113,9 @@ lspconfig.hls.setup {
         }
     }
 }
+
+
+-- Keep fidget behind lsp-status setup to ensure its working as expected
+-- Check fidget status: :lua print(require"fidget".is_installed())
+-- Manually setup fidget: :lua require"fidget".setup{}
+require"fidget".setup{}

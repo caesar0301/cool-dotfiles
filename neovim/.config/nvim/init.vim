@@ -31,6 +31,7 @@ Plug 'kosayoda/nvim-lightbulb'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
 
 "" Completion
 Plug 'hrsh7th/nvim-cmp'
