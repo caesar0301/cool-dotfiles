@@ -36,8 +36,8 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
 Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'itchyny/lightline.vim'
 Plug 'jalvesaq/Nvim-R'
@@ -77,6 +77,7 @@ Plug 'preservim/tagbar'
 Plug 'rust-lang/rust.vim'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'simrat39/symbols-outline.nvim'
+Plug 'smjonas/inc-rename.nvim'
 Plug 'sophacles/vim-bundle-mako'
 Plug 'tarekbecker/vim-yaml-formatter'
 Plug 'terryma/vim-expand-region'
@@ -96,7 +97,6 @@ Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
 Plug 'vlime/vlime', {'rtp': 'vim/'}
 Plug 'windwp/nvim-autopairs'
-Plug 'smjonas/inc-rename.nvim'
 
 " Custom plugin
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
@@ -106,7 +106,6 @@ Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
 
 call plug#end()
 
-lua require("inc_rename").setup()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics:
@@ -974,11 +973,6 @@ map <leader>F :call fzf#vim#ag(expand('<cword>'))<kEnter>
 " map <Leader>+W to search in ag everywhere
 map <leader>W :Ag<CR>
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => nvim-lightbulb
-""""""""""""""""""" """"""""""""""""""""""""""""""""""""""""""""
-lua require('nvim-lightbulb').setup({autocmd = {enabled = true}})
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins => symbols-outline
