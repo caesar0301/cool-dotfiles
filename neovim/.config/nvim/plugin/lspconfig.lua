@@ -2,6 +2,7 @@ local lspconfig = require('lspconfig')
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
 local nvim_cmp = require('cmp_nvim_lsp')
+local goto_preview = require('goto-preview')
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local common_caps = vim.lsp.protocol.make_client_capabilities()
@@ -20,13 +21,22 @@ local common_on_attach = function(client, bufnr)
 
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    vim.keymap.set('n', 'gpd', goto_preview.goto_preview_definition, bufopts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+    vim.keymap.set('n', 'gpi', goto_preview.goto_preview_implementation, bufopts)
+    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
+    vim.keymap.set('n', 'gpt', goto_preview.goto_preview_type_definition, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+    vim.keymap.set('n', 'gpr', goto_preview.goto_preview_references, bufopts)
+    vim.keymap.set('n', 'gP', goto_preview.close_all_win, bufopts)
+
+    -- Replace default lsp rename by IncRename
     -- vim.keymap.set('n', 'rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set("n", "<leader>rn", ":IncRename ") -- Replace default lsp rename by IncRename
+    vim.keymap.set("n", "<leader>rn", ":IncRename ")
+
     vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts)
-    vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
     vim.keymap.set('n', '<leader>=', vim.lsp.buf.formatting, bufopts)
     vim.keymap.set('n', '<leader>gw', vim.lsp.buf.document_symbol, bufopts)
