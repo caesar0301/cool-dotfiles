@@ -38,9 +38,7 @@ function handle_neovim() {
     mkdir -p $HOME/.local/share/nvim/site/autoload
     cp $thispath/neovim/vim-plug/plug.vim $HOME/.local/share/nvim/site/autoload/plug.vim
     # install nvim configs by copy
-    rsync -avxPqi $thispath/neovim/.config/ $HOME/.config
-    ln -sf $thispath/neovim/.config/nvim/init.vim $HOME/.config/nvim/init.vim
-    ln -sf $thispath/neovim/.config/nvim/init_plugins.vim $HOME/.config/nvim/init_plugins.vim
+    ln -sf $thispath/neovim/.config/nvim $HOME/.config/
 }
 
 function handle_tmux() {

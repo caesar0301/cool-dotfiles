@@ -16,10 +16,10 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 local common_on_attach = function(client, bufnr)
     print("LSP started.");
     -- Overwrite :Format command in lsp buffers
-    -- vim.api.nvim_create_user_command("Format", function(opts) vim.lsp.buf.formatting() end, {})
+    vim.api.nvim_create_user_command("Format", function(opts) vim.lsp.buf.formatting() end, {})
     local bufopts = {
         noremap = true,
-        silent = true,
+        silent = false,
         buffer = bufnr
     }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
@@ -56,6 +56,7 @@ local servers = {'rust_analyzer', -- Rust
 'gopls', -- Golang
 'cmake' -- CMake
 }
+
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         on_attach = common_on_attach,
@@ -73,7 +74,7 @@ lspconfig.clangd.setup {
     init_options = {
         clangdFileStatus = true
     },
-    cmd = {"clangd", "--background-index=false"},
+    cmd = {"clangd", "--background-index=true"},
     capabilities = capabilities,
     on_attach = clangd_on_attach
 }
