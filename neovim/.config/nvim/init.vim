@@ -31,15 +31,20 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'garbas/vim-snipmate'
 Plug 'groenewege/vim-less'
 Plug 'honza/vim-snippets'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
 Plug 'itchyny/lightline.vim'
 Plug 'jalvesaq/Nvim-R'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
-Plug 'ojroques/nvim-lspfuzzy'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'kassio/neoterm'
@@ -56,11 +61,13 @@ Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'neovim/nvim-lspconfig'
+Plug 'neovim/nvim-lspconfig'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'nvie/vim-flake8'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'ojroques/nvim-lspfuzzy'
 Plug 'onsails/lspkind.nvim'
 Plug 'pangloss/vim-javascript'
 Plug 'pechorin/any-jump.vim'
@@ -89,6 +96,7 @@ Plug 'vim-scripts/mayansmoke'
 Plug 'vim-scripts/mru.vim'
 Plug 'vlime/vlime', {'rtp': 'vim/'}
 Plug 'windwp/nvim-autopairs'
+Plug 'smjonas/inc-rename.nvim'
 
 " Custom plugin
 Plug 'https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b',
@@ -98,6 +106,7 @@ Plug 'https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b',
 
 call plug#end()
 
+lua require("inc_rename").setup()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics:
