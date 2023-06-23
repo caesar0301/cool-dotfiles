@@ -49,6 +49,7 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets' " Optional for vim-snipmate
 Plug 'windwp/nvim-autopairs'
+Plug 'zbirenbaum/copilot.lua'
 
 "" Navigation
 Plug 'preservim/nerdtree'
