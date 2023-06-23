@@ -22,30 +22,30 @@ local common_on_attach = function(client, bufnr)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     vim.keymap.set('n', 'gpd', goto_preview.goto_preview_definition, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
     vim.keymap.set('n', 'gpi', goto_preview.goto_preview_implementation, bufopts)
     vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
     vim.keymap.set('n', 'gpt', goto_preview.goto_preview_type_definition, bufopts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', 'gpr', goto_preview.goto_preview_references, bufopts)
     vim.keymap.set('n', 'gP', goto_preview.close_all_win, bufopts)
-
-    -- Replace default lsp rename by IncRename
-    -- vim.keymap.set('n', 'rn', vim.lsp.buf.rename, bufopts)
-    vim.keymap.set("n", "<leader>rn", ":IncRename ")
-
-    vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
     vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts)
+
+    -- vim.keymap.set('n', 'rn', vim.lsp.buf.rename, bufopts)
+    vim.keymap.set("n", "<leader>rn", ":IncRename ", bufopts)
+
+    -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
+    vim.keymap.set('n', 'ca', ":CodeActionMenu<CR>", bufopts)
+
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
     vim.keymap.set('n', '<leader>=', vim.lsp.buf.formatting, bufopts)
+    vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
+    vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
     vim.keymap.set('n', '<leader>gw', vim.lsp.buf.document_symbol, bufopts)
     vim.keymap.set('n', '<leader>gW', vim.lsp.buf.workspace_symbol, bufopts)
     vim.keymap.set('n', '<leader>gl', function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts)
-    vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
-    vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
 
     -- Other plugins
     lsp_status.on_attach(client)
