@@ -6,7 +6,7 @@
 "       neovim: 0.8+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Manager plugin by Packer
-lua require('packer_plugins')
+lua require('plugins')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -45,8 +45,8 @@ au FocusGained,BufEnter * checktime
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let maplocalleader = ","
+"let mapleader = ","
+"let maplocalleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -655,25 +655,10 @@ set grepprg=/bin/grep\ -nH
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins => Nerd Tree
+" Plugins => nvim-tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:NERDTreeWinPos = "left"
-let NERDTreeShowHidden=0
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-let g:NERDTreeWinSize=35
-
-function NerdTreeToggleOrFind()
-    if &filetype == 'nerdtree'
-        :NERDTreeTabsToggle
-    else
-        :NERDTreeFind
-    endif
-endfunction
-
-" vim-nerdtree-tabs enforces consistent nerdtree
-map <F8> :NERDTreeTabsToggle<CR>
-map <leader>nb :NERDTreeFromBookmark<Space>
-map <leader>nn :call NerdTreeToggleOrFind()<cr>
+map <F8> :NvimTreeToggle<CR>
+map <leader>nn :NvimTreeFindFile<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

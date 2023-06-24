@@ -57,9 +57,14 @@ return require("packer").startup(
         ---------------------------
         -- Navigation
         ---------------------------
-        use "preservim/nerdtree"
-        use "jistr/vim-nerdtree-tabs"
-        use "Xuyuanp/nerdtree-git-plugin"
+        use {
+            "nvim-tree/nvim-tree.lua",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"},
+                {"antosha417/nvim-lsp-file-operations", opt = true},
+                {"echasnovski/mini.base16", opt = true}
+            }
+        }
         use "preservim/tagbar"
         use "simrat39/symbols-outline.nvim" -- Complement tagbar
         use "ctrlpvim/ctrlp.vim"
@@ -130,11 +135,6 @@ return require("packer").startup(
         use "amix/open_file_under_cursor.vim"
         use "kassio/neoterm"
         use "mfussenegger/nvim-dap" --  Debug Adapter Protocol client
-        use {
-            "https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b",
-            as = "set_tabline.vim",
-            run = "mkdir -p plugin; cp -f *.vim plugin/"
-        }
         use {
             "https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b",
             as = "peepopen.vim",
