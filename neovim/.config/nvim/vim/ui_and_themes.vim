@@ -87,7 +87,7 @@ endif
 set background=dark
 
 try
-    colorscheme desert
+    colorscheme codedark " desert
 catch
 endtry
 

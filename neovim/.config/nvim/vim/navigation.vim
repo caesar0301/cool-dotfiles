@@ -22,10 +22,6 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" File browsing, nvim-tree
-map <F8> :NvimTreeToggle<cr>
-map <leader>nn :NvimTreeFindFile<cr>
-
 """"""""""""""""""""""""""""""""""
 " Buffers
 """"""""""""""""""""""""""""""""""
@@ -60,15 +56,15 @@ map <leader>bo :%bd\|e#\|bd#<cr>\|'""'
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
 
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
 " Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
 catch
 endtry
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Plugin => bufExplorer
 "   <leader>be normal open
@@ -109,6 +105,10 @@ map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 """"""""""""""""""""""""""""""""""
 " File browser and structure
 """"""""""""""""""""""""""""""""""
+
+" Plugin => nvim-tree, file browsing
+map <F8> :NvimTreeToggle<cr>
+map <leader>nn :NvimTreeFindFile<cr>
 
 " Plugin => symbols-outline
 nnoremap <leader>so :SymbolsOutline<cr>

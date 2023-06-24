@@ -74,11 +74,6 @@ set wrap "Wrap lines
 let g:gitgutter_enabled=0
 nnoremap <silent> <leader>gu :GitGutterToggle<cr>
 
-" Plugins fugitive
-" Copy the link to the line of a Git repository to the clipboard
-nnoremap <leader>v :.GBrowse!<cr>
-xnoremap <leader>v :'<'>GBrowse!<cr>
-
 """"""""""""""""""""""""""""""""""
 " Misc
 """"""""""""""""""""""""""""""""""
