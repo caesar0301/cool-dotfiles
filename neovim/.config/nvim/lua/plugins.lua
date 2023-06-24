@@ -93,17 +93,15 @@ return require("packer").startup(
                 require("symbols-outline").setup()
             end
         }
-        use "ctrlpvim/ctrlp.vim"
         use {
             "junegunn/fzf.vim",
-            requires = {
-                {
-                    "junegunn/fzf",
-                    run = function()
-                        vim.fn["fzf#install"](0)
-                    end
-                }
-            }
+            requires = {"junegunn/fzf", run = ":call fzf#install()"},
+            rtp = "~/.fzf"
+        }
+        use {
+            "nvim-telescope/telescope.nvim",
+            tag = "0.1.1",
+            requires = {{"nvim-lua/plenary.nvim"}}
         }
         use "amix/vim-zenroom2"
         use "junegunn/goyo.vim"
@@ -151,7 +149,6 @@ return require("packer").startup(
         use "rust-lang/rust.vim"
         use "neovimhaskell/haskell-vim"
         use "nvie/vim-flake8"
-        use "mileszs/ack.vim"
         use "vim-ruby/vim-ruby"
         use "tarekbecker/vim-yaml-formatter"
         use "sophacles/vim-bundle-mako"
