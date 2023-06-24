@@ -3,6 +3,7 @@ local lsp_status = require("lsp-status")
 lsp_status.register_progress()
 local nvim_cmp = require("cmp_nvim_lsp")
 local goto_preview = require("goto-preview")
+goto_preview.setup {}
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local common_caps = vim.lsp.protocol.make_client_capabilities()

@@ -25,10 +25,25 @@ return require("packer").startup(
         use "nvim-lua/lsp-status.nvim"
         use "ojroques/nvim-lspfuzzy"
         use "onsails/lspkind.nvim"
-        use "rmagatti/goto-preview"
+        use {
+            "rmagatti/goto-preview",
+            config = function()
+                require("goto-preview").setup()
+            end
+        }
         use "weilbith/nvim-code-action-menu"
-        use "smjonas/inc-rename.nvim"
-        use "kosayoda/nvim-lightbulb"
+        use {
+            "smjonas/inc-rename.nvim",
+            config = function()
+                require("inc_rename").setup()
+            end
+        }
+        use {
+            "kosayoda/nvim-lightbulb",
+            config = function()
+                require("nvim-lightbulb").setup({autocmd = {enabled = true}})
+            end
+        }
         use "antoinemadec/FixCursorHold.nvim"
         use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
         use "nvim-treesitter/nvim-treesitter-refactor"
@@ -52,7 +67,12 @@ return require("packer").startup(
         use "L3MON4D3/LuaSnip"
         use "PaterJason/cmp-conjure"
         use "windwp/nvim-autopairs"
-        use "zbirenbaum/copilot.lua"
+        use {
+            "zbirenbaum/copilot.lua",
+            config = function()
+                require("copilot").setup()
+            end
+        }
 
         ---------------------------
         -- Navigation
@@ -66,7 +86,13 @@ return require("packer").startup(
             }
         }
         use "preservim/tagbar"
-        use "simrat39/symbols-outline.nvim" -- Complement tagbar
+        use {
+            -- Complement tagbar
+            "simrat39/symbols-outline.nvim",
+            config = function()
+                require("symbols-outline").setup()
+            end
+        }
         use "ctrlpvim/ctrlp.vim"
         use {
             "junegunn/fzf.vim",
@@ -87,7 +113,12 @@ return require("packer").startup(
         use "michaeljsmith/vim-indent-object"
         use "preservim/vim-indent-guides"
         use "vim-scripts/mru.vim"
-        use "m-demare/hlargs.nvim"
+        use {
+            "m-demare/hlargs.nvim",
+            config = function()
+                require("hlargs").setup()
+            end
+        }
 
         ---------------------------
         -- Editing
