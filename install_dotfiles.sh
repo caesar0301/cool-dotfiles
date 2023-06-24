@@ -35,8 +35,16 @@ function handle_vim() {
 
 function handle_neovim() {
     # install plugin manager
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-        ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+    packer_home=$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
+    if [ ! -e ${packer_home} ]; then
+        echo "Install plugin manager Packer..."
+        git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+            ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+    fi
+    # install nerd patched font Hack, required by nvim-web-devicons
+    echo "Install Hack nerd font and update font cache..."
+    curl -sL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $HOME/.local/share/fonts/
+    fc-cache -f
     # install nvim configs by copy
     ln -sf $thispath/neovim/.config/nvim $HOME/.config/
 }
