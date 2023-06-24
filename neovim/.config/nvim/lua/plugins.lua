@@ -18,6 +18,12 @@ return require("packer").startup(
         use "itchyny/lightline.vim"
         use "nvim-lua/lsp-status.nvim"
         use "jlanzarotta/bufexplorer"
+        use {
+            "romgrk/barbar.nvim",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"}
+            }
+        }
 
         ---------------------------
         -- LSP and improvement

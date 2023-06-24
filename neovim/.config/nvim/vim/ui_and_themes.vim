@@ -141,6 +141,7 @@ endfunction
 
 " Plugin => lightline
 let g:lightline  = {'colorscheme': 'wombat'}
+let g:lightline.enable = {'statusline': 1, 'tabline': 0} " tabline conflicts with barbar
 let g:lightline.component = {
     \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
     \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',

@@ -26,36 +26,6 @@ map <C-l> <C-W>l
 " Buffers
 """"""""""""""""""""""""""""""""""
 
-" Don't close window, when deleting a buffer
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
-endfunction
-
-" Close the current buffer
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
-
-" Close all the buffers
-map <leader>ba :bufdo bd<cr>
-
-" Close other buffers but this one
-map <leader>bo :%bd\|e#\|bd#<cr>\|'""'
-
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
-
 " Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
@@ -81,6 +51,36 @@ let g:bufExplorerShowRelativePath=1
 let g:bufExplorerFindActive=1
 let g:bufExplorerSortBy='name'
 map <leader>bn :BufExplorer<cr>
+
+" Plugin => barbar
+" Move to previous/next
+nnoremap <silent> <A-,> <cmd>BufferPrevious<cr>
+nnoremap <silent> <A-.> <cmd>BufferNext<cr>
+
+" Re-order to previous/next
+nnoremap <silent> <A-<> <cmd>BufferMovePrevious<cr>
+nnoremap <silent> <A->> <cmd>BufferMoveNext<cr>
+
+" Goto buffer in position...
+nnoremap <silent> <A-1> <cmd>BufferGoto 1<cr>
+nnoremap <silent> <A-2> <cmd>BufferGoto 2<cr>
+nnoremap <silent> <A-3> <cmd>BufferGoto 3<cr>
+nnoremap <silent> <A-4> <cmd>BufferGoto 4<cr>
+nnoremap <silent> <A-5> <cmd>BufferGoto 5<cr>
+nnoremap <silent> <A-6> <cmd>BufferGoto 6<cr>
+nnoremap <silent> <A-7> <cmd>BufferGoto 7<cr>
+nnoremap <silent> <A-8> <cmd>BufferGoto 8<cr>
+nnoremap <silent> <A-9> <cmd>BufferGoto 9<cr>
+nnoremap <silent> <A-0> <cmd>BufferLast<cr>
+
+" Pin/unpin buffer
+nnoremap <silent> <A-p> <cmd>BufferPin<cr>
+" Close buffer
+nnoremap <silent> <A-x> <cmd>BufferClose<cr>
+" Close all but current
+nnoremap <silent> <A-X> <cmd>BufferCloseAllButCurrent<cr>
+" Restore buffer
+nnoremap <silent> <A-s-x> <cmd>BufferRestore<cr>
 
 """"""""""""""""""""""""""""""""""
 " Tabs
@@ -205,7 +205,7 @@ imap <C-a> <ESC>I
 map <C-e> <ESC>$
 imap <C-e> <ESC>A
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+" Map <leader> to / (search) and Ctrl-<leader> to ? (backwards search)
 map <space> /
 map <C-space> ?
 
