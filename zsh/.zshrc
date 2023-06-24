@@ -192,11 +192,12 @@ function occ {
         emacs|em) cf=$HOME/.emacs.d/init.el
         ;;
         vi|vim) cf=$HOME/.vimrc
+        ;;
+        nvim) cf=$HOME/.config/nvim/init.vim
 	        while getopts nlh opt; do
 		        case $opt in
-		            n)    cf=$HOME/.config/nvim/init.vim ;;
 		            l)    cf=$HOME/.config/nvim/init.lua ;;
-		            h|?)  echo "occ vi [-n] [-l]" && return;;
+		            h|?)  echo "occ vi [-l]" && return;;
 		        esac
 	        done
         ;;
