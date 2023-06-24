@@ -1,0 +1,144 @@
+vim.cmd [[packadd packer.nvim]]
+
+return require("packer").startup(
+    function(use)
+        -- Packer can manage itself
+        use "wbthomason/packer.nvim"
+
+        ---------------------------
+        -- Themes
+        ---------------------------
+        use "dracula/vim"
+        use "altercation/vim-colors-solarized"
+        use "morhetz/gruvbox"
+        use "therubymug/vim-pyte"
+        use "vim-scripts/mayansmoke"
+        use "tomasiser/vim-code-dark"
+        use "junegunn/rainbow_parentheses.vim"
+        use "itchyny/lightline.vim"
+        use "jlanzarotta/bufexplorer"
+
+        ---------------------------
+        -- LSP and improvement
+        ---------------------------
+        use "neovim/nvim-lspconfig"
+        use "nvim-lua/lsp-status.nvim"
+        use "ojroques/nvim-lspfuzzy"
+        use "onsails/lspkind.nvim"
+        use "rmagatti/goto-preview"
+        use "weilbith/nvim-code-action-menu"
+        use "smjonas/inc-rename.nvim"
+        use "kosayoda/nvim-lightbulb"
+        use "antoinemadec/FixCursorHold.nvim"
+        use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+        use "nvim-treesitter/nvim-treesitter-refactor"
+
+        ---------------------------
+        -- Completion
+        ---------------------------
+        use {
+            "hrsh7th/nvim-cmp",
+            requires = {
+                {"neovim/nvim-lspconfig"},
+                {"hrsh7th/cmp-nvim-lsp", branch = "main"},
+                {"hrsh7th/cmp-buffer"},
+                {"hrsh7th/cmp-path"},
+                {"hrsh7th/cmp-cmdline"},
+                {"L3MON4D3/LuaSnip"},
+                {"saadparwaiz1/cmp_luasnip"},
+                {"lukas-reineke/cmp-under-comparator", opt = true}
+            }
+        }
+        use "L3MON4D3/LuaSnip"
+        use "PaterJason/cmp-conjure"
+        use "windwp/nvim-autopairs"
+        use "zbirenbaum/copilot.lua"
+
+        ---------------------------
+        -- Navigation
+        ---------------------------
+        use "preservim/nerdtree"
+        use "jistr/vim-nerdtree-tabs"
+        use "Xuyuanp/nerdtree-git-plugin"
+        use "preservim/tagbar"
+        use "simrat39/symbols-outline.nvim" -- Complement tagbar
+        use "ctrlpvim/ctrlp.vim"
+        use {
+            "junegunn/fzf.vim",
+            requires = {
+                {
+                    "junegunn/fzf",
+                    run = function()
+                        vim.fn["fzf#install"](0)
+                    end
+                }
+            }
+        }
+        use "amix/vim-zenroom2"
+        use "junegunn/goyo.vim"
+        use "pechorin/any-jump.vim"
+        use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
+        use {"mg979/vim-visual-multi", branch = "master"}
+        use "michaeljsmith/vim-indent-object"
+        use "preservim/vim-indent-guides"
+        use "vim-scripts/mru.vim"
+        use "m-demare/hlargs.nvim"
+
+        ---------------------------
+        -- Editing
+        ---------------------------
+        use "maxbrunsfeld/vim-yankstack"
+        use "tpope/vim-commentary"
+        use "tpope/vim-repeat"
+        use "tpope/vim-surround"
+
+        ---------------------------
+        -- Languages
+        ---------------------------
+        use "vim-autoformat/vim-autoformat"
+        use "Olical/conjure"
+        use "bhurlow/vim-parinfer"
+        use "Vimjas/vim-python-pep8-indent"
+        use "cdelledonne/vim-cmake"
+        use "chr4/nginx.vim"
+        use "chrisbra/csv.vim"
+        use "digitaltoad/vim-pug"
+        use "editorconfig/editorconfig-vim"
+        use "groenewege/vim-less"
+        use "jalvesaq/Nvim-R"
+        use "kchmck/vim-coffee-script"
+        use "leafgarland/typescript-vim"
+        use "lervag/vimtex"
+        use "mfussenegger/nvim-jdtls"
+        use "pangloss/vim-javascript"
+        use "plasticboy/vim-markdown"
+        use "rust-lang/rust.vim"
+        use "neovimhaskell/haskell-vim"
+        use "nvie/vim-flake8"
+        use "mileszs/ack.vim"
+        use "vim-ruby/vim-ruby"
+        use "tarekbecker/vim-yaml-formatter"
+        use "sophacles/vim-bundle-mako"
+        use {"vlime/vlime", rtp = "vim/"}
+
+        ---------------------------
+        -- Misc
+        ---------------------------
+        use "airblade/vim-gitgutter"
+        use "tpope/vim-fugitive"
+        use "mattn/vim-gist"
+        use "amix/open_file_under_cursor.vim"
+        use "kassio/neoterm"
+        use "mfussenegger/nvim-dap" --  Debug Adapter Protocol client
+        use {
+            "https://gist.github.com/caesar0301/f510e0e1a21b93081ea06c9a223df05b",
+            as = "set_tabline.vim",
+            run = "mkdir -p plugin; cp -f *.vim plugin/"
+        }
+        use {
+            "https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b",
+            as = "peepopen.vim",
+            run = "mkdir -p plugin; cp -f *.vim plugin/"
+        }
+    end
+)

@@ -34,9 +34,9 @@ function handle_vim() {
 }
 
 function handle_neovim() {
-    # install vim-plug manager
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    # install plugin manager
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+        ~/.local/share/nvim/site/pack/packer/start/packer.nvim
     # install nvim configs by copy
     ln -sf $thispath/neovim/.config/nvim $HOME/.config/
 }
