@@ -11,7 +11,7 @@
 -- Load all plugins
 require("plugins")
 
--- Load all settings
+-- Load all vim settings
 local paths = vim.split(vim.fn.glob("~/.config/nvim/vim/*.vim"), "\n")
 for i, file in pairs(paths) do
     vim.cmd("source " .. file)

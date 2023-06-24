@@ -16,13 +16,13 @@ return require("packer").startup(
         use "tomasiser/vim-code-dark"
         use "junegunn/rainbow_parentheses.vim"
         use "itchyny/lightline.vim"
+        use "nvim-lua/lsp-status.nvim"
         use "jlanzarotta/bufexplorer"
 
         ---------------------------
         -- LSP and improvement
         ---------------------------
         use "neovim/nvim-lspconfig"
-        use "nvim-lua/lsp-status.nvim"
         use "ojroques/nvim-lspfuzzy"
         use "onsails/lspkind.nvim"
         use {
@@ -47,6 +47,10 @@ return require("packer").startup(
         use "antoinemadec/FixCursorHold.nvim"
         use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
         use "nvim-treesitter/nvim-treesitter-refactor"
+        use {
+            "SmiteshP/nvim-navic",
+            requires = "neovim/nvim-lspconfig"
+        }
 
         ---------------------------
         -- Completion
