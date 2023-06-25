@@ -39,12 +39,6 @@ return require("packer").startup(
         }
         use "weilbith/nvim-code-action-menu"
         use {
-            "smjonas/inc-rename.nvim",
-            config = function()
-                require("inc_rename").setup()
-            end
-        }
-        use {
             "kosayoda/nvim-lightbulb",
             config = function()
                 require("nvim-lightbulb").setup({autocmd = {enabled = true}})
