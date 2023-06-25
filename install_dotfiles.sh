@@ -24,7 +24,7 @@ function handle_zsh() {
 
 function handle_vim() {
     # install vim-plug manager
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    curl --progress-bar -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $thispath/vim/.vimrc $HOME/.vimrc
@@ -43,7 +43,8 @@ function handle_neovim() {
     fi
     # install nerd patched font Hack, required by nvim-web-devicons
     echo "Install Hack nerd font and update font cache..."
-    curl -sL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $HOME/.local/share/fonts/
+    curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | \
+        tar xJ -C $HOME/.local/share/fonts/
     fc-cache -f
     # install nvim configs by copy
     ln -sf $thispath/neovim/.config/nvim $HOME/.config/
