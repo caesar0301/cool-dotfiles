@@ -12,74 +12,6 @@
 #############################################################
 
 #+++++++++++++++++++++++++++++++++++++++
-# Basics and commons
-#+++++++++++++++++++++++++++++++++++++++
-
-# Editor
-export EDITOR=nvim
-
-# zsh history
-export HISTFILE=$HOME/.zhistory
-export HISTSIZE=9999
-export SAVEHIST=9999
-
-# Diagnose perf
-PROFILE_PERF=0
-if [[ ${PROFILE_PERF} == 1 ]]; then
-    zmodload zsh/zprof
-fi
-
-# zsh bundled
-autoload -U parseopts
-autoload -U zargs
-autoload -U zcalc
-autoload -U zed
-autoload -U zmv
-autoload -U compinit && compinit
-
-#+++++++++++++++++++++++++++++++++++++++
-# Zsh configuration
-#+++++++++++++++++++++++++++++++++++++++
-
-# Reload zshrc globally
-function zshld {
-    myextdir=$(basename $(echo "${PLUGIN_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
-    if [ -e $HOME/.zi ]; then
-        ls -d $HOME/.zi/snippets/* | grep "$myextdir" | xargs rm -rf
-    fi
-    source $HOME/.zshrc
-}
-
-# Update zsh plugins
-function zshup {
-    old_path=$(pwd)
-    zi_home=$HOME/.zi/bin
-    echo -n "Updating ${zi_home}..."
-    cd ${zi_home} && git pull -q && echo "done" && cd ${old_path}
-    if [ -e ${PLUGIN_HOME} ]; then
-        for plugin in $(ls -d $PLUGIN_HOME/*); do
-            if [ -e ${plugin}/.git ]; then
-                echo -n "Updating plugin ${plugin}..."
-                cd $plugin && git pull -q && echo "done" && cd ${old_path}
-            fi
-        done
-    fi
-
-}
-
-# Consume 15% startup time
-function _setupPyenv {
-    if [ -e "$HOME/.pyenv" ]; then
-        export PYENV_ROOT="$HOME/.pyenv"
-        export PATH="$PYENV_ROOT/bin:$PATH"
-        if command -v pyenv 1>/dev/null 2>&1; then
-            # Load pyenv automatically
-            eval "$(pyenv init --path)"
-        fi
-    fi
-}
-
-#+++++++++++++++++++++++++++++++++++++++
 # ZI manager
 #+++++++++++++++++++++++++++++++++++++++
 
@@ -121,6 +53,17 @@ zi snippet OMZP::mvn
 zi snippet OMZP::urltools
 
 # Python
+function _setupPyenv {
+    # Consume 15% startup time
+    if [ -e "$HOME/.pyenv" ]; then
+        export PYENV_ROOT="$HOME/.pyenv"
+        export PATH="$PYENV_ROOT/bin:$PATH"
+        if command -v pyenv 1>/dev/null 2>&1; then
+            # Load pyenv automatically
+            eval "$(pyenv init --path)"
+        fi
+    fi
+}
 _setupPyenv
 zi snippet OMZP::pyenv
 zi snippet OMZP::virtualenv
@@ -153,34 +96,59 @@ if [[ ${PROFILE_PERF} == 1 ]]; then
 fi
 
 #+++++++++++++++++++++++++++++++++++++++
-# PLUGINS
+# Basics and commons
 #+++++++++++++++++++++++++++++++++++++++
 
-# Load my extensions under $PLUGIN_HOME
-function _load_custom_extensions {
-    if [ -e ${PLUGIN_HOME} ]; then
-        # Load plugins
-        for plugin in $(ls -d $PLUGIN_HOME/*); do
-            zi load $plugin
-        done
-        # Load plain zsh scripts
-        for i in `find ${PLUGIN_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
-            zi snippet $i;
-        done
-    fi
-}
+# Editor
+export EDITOR=nvim
 
+# zsh history
+export HISTFILE=$HOME/.zhistory
+export HISTSIZE=9999
+export SAVEHIST=9999
 
-# Custom extensions
-_load_custom_extensions
+# Disable Ctrl+D to close session
+setopt IGNORE_EOF
 
-if [ -e "$HOME/.fzf.zsh" ]; then
-    source $HOME/.fzf.zsh
+# Diagnose perf
+PROFILE_PERF=0
+if [[ ${PROFILE_PERF} == 1 ]]; then
+    zmodload zsh/zprof
 fi
 
-#+++++++++++++++++++++++++++++++++++++++
-# Bundled useful shortcuts
-#+++++++++++++++++++++++++++++++++++++++
+# zsh bundled
+autoload -U parseopts
+autoload -U zargs
+autoload -U zcalc
+autoload -U zed
+autoload -U zmv
+autoload -U compinit && compinit
+
+# Reload zshrc globally
+function zshld {
+    myextdir=$(basename $(echo "${PLUGIN_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
+    if [ -e $HOME/.zi ]; then
+        ls -d $HOME/.zi/snippets/* | grep "$myextdir" | xargs rm -rf
+    fi
+    source $HOME/.zshrc
+}
+
+# Update zsh plugins
+function zshup {
+    old_path=$(pwd)
+    zi_home=$HOME/.zi/bin
+    echo -n "Updating ${zi_home}..."
+    cd ${zi_home} && git pull -q && echo "done" && cd ${old_path}
+    if [ -e ${PLUGIN_HOME} ]; then
+        for plugin in $(ls -d $PLUGIN_HOME/*); do
+            if [ -e ${plugin}/.git ]; then
+                echo -n "Updating plugin ${plugin}..."
+                cd $plugin && git pull -q && echo "done" && cd ${old_path}
+            fi
+        done
+    fi
+
+}
 
 # Overhead configrator for apps
 function occ {
@@ -196,12 +164,12 @@ function occ {
         nvim) cf=$HOME/.config/nvim/init.lua
         ;;
         zsh) cf=$HOME/.zshrc
-	        while getopts eh opt; do
-		        case $opt in
-		            e)    cf=$HOME/.zshenv ;;
-		            h|?)  echo "occ zsh [-e]" && return;;
-		        esac
-	        done
+            while getopts eh opt; do
+                case $opt in
+                    e)    cf=$HOME/.zshenv ;;
+                    h|?)  echo "occ zsh [-e]" && return;;
+                esac
+            done
         ;;
         ssh) cf=$HOME/.ssh/config
         ;;
@@ -228,16 +196,6 @@ function occ {
     ${=EDITOR} $cf
 }
 
-#------- Useful Alias ---------
-# Perf
-alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-# Editor
-alias em='emacs -nw'
-alias diffr='diff -r'
-# Stat.
-alias duh="du -hs .[^.]*"
-
-#------- Useful Functors ---------
 # start or access tmux dev session
 function bingo {
     if tmux info &> /dev/null; then
@@ -253,6 +211,7 @@ function bingo {
     fi
     tmux -u attach -t $HOSTNAME
 }
+
 # Open file window
 function openw {
     KNAME=$(uname -s)
@@ -268,9 +227,39 @@ function openw {
     $EXE $@
 }
 
+
+# Load my extensions under $PLUGIN_HOME
+function _load_custom_extensions {
+    if [ -e ${PLUGIN_HOME} ]; then
+        # Load plugins
+        for plugin in $(ls -d $PLUGIN_HOME/*); do
+            zi load $plugin
+        done
+        # Load plain zsh scripts
+        for i in `find ${PLUGIN_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
+            zi snippet $i;
+        done
+    fi
+}
+_load_custom_extensions
+
+#+++++++++++++++++++++++++++++++++++++++
+# Useful alias
+#+++++++++++++++++++++++++++++++++++++++
+
+# Perf
+alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
+
+# Editor
+alias em='emacs -nw'
+alias diffr='diff -r'
+
+# Stat.
+alias duh="du -hs .[^.]*"
+
 #+++++++++++++++++++++++++++++++++++++++
 # USER-DEFINED Afterwards
 #+++++++++++++++++++++++++++++++++++++++
 
-
+# fzf init
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
