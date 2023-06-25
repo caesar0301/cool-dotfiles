@@ -17,8 +17,8 @@
 
 # Init zi manager
 ZI_HOME="${HOME}/.zi"
-export PLUGIN_HOME="${HOME}/.config/zsh_runtime/plugins"
 source "${ZI_HOME}/bin/zi.zsh"
+
 autoload -Uz _zi
 (( ${+_comps} )) && _comps[zi]=_zi
 
@@ -124,6 +124,8 @@ autoload -U zed
 autoload -U zmv
 autoload -U compinit && compinit
 
+export PLUGIN_HOME="${HOME}/.config/zsh_runtime/plugins"
+
 # Reload zshrc globally
 function zshld {
     myextdir=$(basename $(echo "${PLUGIN_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
@@ -136,9 +138,8 @@ function zshld {
 # Update zsh plugins
 function zshup {
     old_path=$(pwd)
-    zi_home=$HOME/.zi/bin
-    echo -n "Updating ${zi_home}..."
-    cd ${zi_home} && git pull -q && echo "done" && cd ${old_path}
+    echo -n "Updating ${ZI_HOME}/bin..."
+    cd ${ZI_HOME}/bin && git pull -q && echo "done" && cd ${old_path}
     if [ -e ${PLUGIN_HOME} ]; then
         for plugin in $(ls -d $PLUGIN_HOME/*); do
             if [ -e ${plugin}/.git ]; then
