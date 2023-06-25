@@ -62,16 +62,47 @@ function install_hack_nerd_font() {
     fi
 }
 
-function install_deps() {
-    install_pyenv
-    install_fzf
-    install_jdt_language_server
-    install_hack_nerd_font # Required by nvim-web-devicons
+function install_shfmt {
+    curl -sS https://webi.sh/shfmt | sh
+}
 
-    # autoformat
-    sudo npm install -g remark-cli js-beautify lua-fmt
+function install_deps() {
+    # Install and config pyenv
+    install_pyenv
+
+    # Install fzf
+    install_fzf
+
+    # Java lang server
+    install_jdt_language_server
+
+    # Required by nvim-web-devicons
+    install_hack_nerd_font
+
+    # Required by :Autoformat
+    #   Python: black
+    #   JS/JSON/HTTP/CSS: js-beautify
+    #   Ruby: ruby-beautify
+    #   Golang: gofmt
+    #   Rust: rustfmt
+    #   Perl: Perl::Tidy
+    #   Haskell: stylish-haskell
+    #   Markdown: remark-cli
+    #   Shell: shfmt
+    #   Lua: lua-fmt
+    #   SQL: sqlformat
+    #   CMake: cmake_format
+    #   LaTeX: latexindent
+    #   OCaml: ocamlformat
+    #   LISP/Scheme: scmindent
+    pip install -U black sqlformat cmake_format
+    sudo npm install -g remark-cli js-beautify lua-fmt scmindent
     sudo gem install ruby-beautify
     install_google_java_format
+    install_shfmt
+
+    # Install perl first
+    # cpan -i Perl::Tidy
 }
 
 function handle_zsh() {

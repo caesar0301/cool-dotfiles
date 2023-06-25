@@ -5,24 +5,6 @@
 """"""""""""""""""""""""""""""
 " Code Format
 " Plugins => vim-autoformat
-" Some dependencies:
-"   Python: sudo pip install black
-"   JS & JSON: npm install -g js-beautify
-"   HTTP: npm install -g js-beautify
-"   CSS: npm install -g js-beautify
-"   Ruby: gem install ruby-beautify
-"   Golang: gofmt
-"   Rust: rustfmt
-"   Perl: cpanm Perl::Tidy
-"   Haskell: stylish-haskell
-"   Markdown: npm install -g remark-cli
-"   Shell: shfmt
-"   Lua: npm install -g lua-fmt
-"   SQL: pip install sqlformat
-"   CMake: pip install cmake_format
-"   LaTeX: brew install latexindent
-"   OCaml: opam install ocamlformat
-"   LISP/Scheme: npm install -g scmindent
 """"""""""""""""""""""""""""""
 nnoremap <silent> <leader>af :Autoformat<cr>
 let g:autoformat_verbosemode=0
