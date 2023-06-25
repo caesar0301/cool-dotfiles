@@ -16,7 +16,7 @@ function handle_zsh() {
         CMD="ln -sf"
     fi
     $CMD $thispath/zsh/.zshrc $HOME/.zshrc
-    for i in `find $thispath/zsh/plugins -name "*.plugin.zsh"`; do
+    for i in $(find $thispath/zsh/plugins -name "*.plugin.zsh"); do
         dname=$(dirname $i)
         $CMD $dname $HOME/.config/zsh_runtime/plugins/
     done
@@ -43,8 +43,10 @@ function handle_neovim() {
     fi
     # install nerd patched font Hack, required by nvim-web-devicons
     echo "Install Hack nerd font and update font cache..."
-    curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | \
-        tar xJ -C $HOME/.local/share/fonts/
+    if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
+        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz |
+            tar xJ -C $HOME/.local/share/fonts/
+    fi
     fc-cache -f
     # install nvim configs by copy
     ln -sf $thispath/neovim/.config/nvim $HOME/.config/
@@ -143,9 +145,9 @@ SOFTLINK=1
 WITHDEPS=0
 while getopts se opt; do
     case $opt in
-        f)    SOFTLINK=0 ;;
-        e)    WITHDEPS=1 ;;
-        h|?)  echo "install.sh [-f] [-e]" && return;;
+    f) SOFTLINK=0 ;;
+    e) WITHDEPS=1 ;;
+    h | ?) echo "install.sh [-f] [-e]" && return ;;
     esac
 done
 

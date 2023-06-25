@@ -77,12 +77,6 @@ return require("packer").startup(
         use "L3MON4D3/LuaSnip"
         use "PaterJason/cmp-conjure"
         use "windwp/nvim-autopairs"
-        use {
-            "zbirenbaum/copilot.lua",
-            config = function()
-                require("copilot").setup()
-            end
-        }
 
         ---------------------------
         -- Navigation

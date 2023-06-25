@@ -40,7 +40,7 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 "   Haskell: stylish-haskell
 "   Markdown: npm install -g remark-cli
 "   Shell: shfmt
-"   Lua: luafmt
+"   Lua: npm install lua-fmt
 "   SQL: pip install sqlformat
 "   CMake: pip install cmake_format
 "   LaTeX: brew install latexindent
@@ -59,6 +59,7 @@ let g:formatdef_clangformat= '"clang-format -"'
 let g:formatdef_pyfmt='"black -"'
 let g:formatdef_latexindent = '"latexindent -"'
 let g:formatdef_scmindent = '"scmindent -"'
+let g:formatdef_luafmt = '"luafmt --stdin"'
 " Formatter user
 let g:formatters_java=['gjf']
 let g:formatters_cmake=['cmakefmt']
@@ -66,9 +67,10 @@ let g:formatters_cpp=['clangformat']
 let g:formatters_python=['pyfmt']
 let g:formatters_lisp=['scmindent']
 let g:formatters_scheme=['scmindent']
+let g:formatters_lua=['luafmt']
 
 " Autoformat on save
-au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py :Autoformat
+au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py *.lua :Autoformat
 
 """"""""""""""""""""""""""""""""""
 " Edit misc
