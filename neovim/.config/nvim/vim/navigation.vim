@@ -108,7 +108,7 @@ map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 " Plugin => nvim-tree, file browsing
 map <F8> :NvimTreeToggle<cr>
-map <leader>nn :NvimTreeFindFile<cr>
+map <leader>nn :NvimTreeFindFileToggle!<cr>
 
 " Plugin => symbols-outline
 nnoremap <leader>so :SymbolsOutline<cr>

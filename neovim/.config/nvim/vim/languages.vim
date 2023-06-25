@@ -50,7 +50,13 @@ let g:formatters_scheme=['scmindent']
 let g:formatters_lua=['luafmt']
 
 " Autoformat on save
-au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py *.lua :Autoformat
+augroup autoformat
+    :autocmd!
+    au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
+    au BufWrite *.go,*.py,*.lua,*.rs :Autoformat
+    au BufWrite *.md,*.cmake,*.sh,*.tex,*.lisp :Autoformat
+augroup END
+doautoall autoformat BufWrite
 
 """"""""""""""""""""""""""""""
 " Languages => Python section
