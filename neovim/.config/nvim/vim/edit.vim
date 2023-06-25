@@ -24,55 +24,6 @@ autocmd FileType markdown setlocal spell
 autocmd BufRead,BufNewFile *.md setlocal spell
 
 """"""""""""""""""""""""""""""""""
-" Code Format
-""""""""""""""""""""""""""""""""""
-
-" Plugins => vim-autoformat
-" Some dependencies:
-"   Python: sudo pip install black
-"   JS & JSON: npm install -g js-beautify
-"   HTTP: npm install -g js-beautify
-"   CSS: npm install -g js-beautify
-"   Ruby: gem install ruby-beautify
-"   Golang: gofmt
-"   Rust: rustfmt
-"   Perl: cpanm Perl::Tidy
-"   Haskell: stylish-haskell
-"   Markdown: npm install -g remark-cli
-"   Shell: shfmt
-"   Lua: npm install lua-fmt
-"   SQL: pip install sqlformat
-"   CMake: pip install cmake_format
-"   LaTeX: brew install latexindent
-"   OCaml: opam install ocamlformat
-"   LISP/Scheme: npm install -g scmindent
-nnoremap <silent> <leader>af :Autoformat<cr>
-let g:autoformat_verbosemode=1
-let g:autoformat_autoindent=0
-let g:autoformat_retab=1
-let g:autoformat_remove_trailing_spaces=1
-" Formatter definer
-let g:formatdef_gjf='"java -jar ~/.local/bin/google-java-format-1.15.0-all-deps.jar -"'
-let g:formatdef_gofmt_1='"gofmt"'
-let g:formatdef_cmakefmt='"cmake-format -"'
-let g:formatdef_clangformat= '"clang-format -"'
-let g:formatdef_pyfmt='"black -"'
-let g:formatdef_latexindent = '"latexindent -"'
-let g:formatdef_scmindent = '"scmindent -"'
-let g:formatdef_luafmt = '"luafmt --stdin"'
-" Formatter user
-let g:formatters_java=['gjf']
-let g:formatters_cmake=['cmakefmt']
-let g:formatters_cpp=['clangformat']
-let g:formatters_python=['pyfmt']
-let g:formatters_lisp=['scmindent']
-let g:formatters_scheme=['scmindent']
-let g:formatters_lua=['luafmt']
-
-" Autoformat on save
-au BufWrite *.h *.hpp *.C *.cc *.cpp *.CPP *.c++ *.go *.py *.lua :Autoformat
-
-""""""""""""""""""""""""""""""""""
 " Edit misc
 """"""""""""""""""""""""""""""""""
 
