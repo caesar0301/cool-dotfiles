@@ -54,9 +54,10 @@ augroup autoformat
     :autocmd!
     au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
     au BufWrite *.go,*.py,*.lua,*.rs :Autoformat
-    au BufWrite *.md,*.cmake,*.sh,*.tex,*.lisp :Autoformat
+    au BufWrite *.md,*.cmake,*.sh,*.tex :Autoformat
+    au BufWrite *.lisp,*.scm,*.ss :Autoformat
 augroup END
-doautoall autoformat BufWrite
+doautoall autoformat BufWrite *
 
 """"""""""""""""""""""""""""""
 " Languages => Python section
