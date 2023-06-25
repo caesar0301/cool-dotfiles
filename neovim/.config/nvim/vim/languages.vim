@@ -31,7 +31,7 @@ let g:autoformat_retab=1
 let g:autoformat_remove_trailing_spaces=1
 
 " Formatter definer
-let g:formatdef_gjf='"java -jar ~/.local/bin/google-java-format-1.15.0-all-deps.jar -"'
+let g:formatdef_gjf='"java -jar ~/.local/share/google-java-format/google-java-format-all-deps.jar -"'
 let g:formatdef_gofmt_1='"gofmt"'
 let g:formatdef_cmakefmt='"cmake-format -"'
 let g:formatdef_clangformat= '"clang-format -"'

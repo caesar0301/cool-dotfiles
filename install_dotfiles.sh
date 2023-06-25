@@ -1,6 +1,78 @@
 #!/bin/bash
+###################################################
+# Install script for
+#   https://github.com/caesar0301/cool-dotfiles
+# Usage:
+#   # Install dotfiles by soft links
+#   ./install_dotfiles.sh
+#
+#   # Install dotfiles by copying
+#      ./install_dotfiles.sh -f
+#
+#   # With essential dependencies
+#   ./install_dotfiles.sh -f -e
+# Maintainer:
+#   xiaming.cxm
+###################################################
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 thispath=$(dirname $abspath)
+
+function install_pyenv() {
+    if [ ! -e $HOME/.pyenv ]; then
+        echo "Installing pyenv to $HOME/.pyenv..."
+        git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+    fi
+}
+
+function install_fzf() {
+    if [ ! -e $HOME/.fzf ]; then
+        echo "Installing fzf to $HOME/.fzf..."
+        git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+        $HOME/.fzf/install
+    fi
+}
+
+# Required by nvim-jdtls
+function install_jdt_language_server() {
+    jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
+    dpath=$HOME/.local/share/jdt-language-server
+    if [ ! -e $dpath/bin/jdtls ]; then
+        echo "Installing jdt-language-server to $dpath..."
+        mkdir -p $dpath >/dev/null
+        curl -L --progress-bar $jdtlink | tar zxf -C $dpath
+    fi
+}
+
+function install_google_java_format() {
+    rfile="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
+    dpath=$HOME/.local/share/google-java-format
+    if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
+        echo "Installing google-java-format to $dpath..."
+        curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
+    fi
+}
+
+function install_hack_nerd_font() {
+    # install nerd patched font Hack, required by nvim-web-devicons
+    if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
+        echo "Install Hack nerd font and update font cache..."
+        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz |
+            tar xJ -C $HOME/.local/share/fonts/
+        fc-cache -f
+    fi
+}
+
+function install_deps() {
+    install_pyenv
+    install_fzf
+    install_jdt_language_server
+    install_hack_nerd_font # Required by nvim-web-devicons
+
+    # autoformat
+    sudo npm install -g remark-cli js-beautify lua-fmt
+    sudo gem install ruby-beautify
+    install_google_java_format
+}
 
 function handle_zsh() {
     if [ ! -e $HOME/.zi ]; then
@@ -41,15 +113,11 @@ function handle_neovim() {
         git clone --depth 1 https://github.com/wbthomason/packer.nvim \
             ~/.local/share/nvim/site/pack/packer/start/packer.nvim
     fi
-    # install nerd patched font Hack, required by nvim-web-devicons
-    echo "Install Hack nerd font and update font cache..."
-    if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
-        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz |
-            tar xJ -C $HOME/.local/share/fonts/
+    if [ x$SOFTLINK == "x1" ]; then
+        ln -sf $thispath/neovim/.config/nvim $HOME/.config/
+    else
+        cp -r $thispath/neovim/.config/nvim $HOME/.config/
     fi
-    fc-cache -f
-    # install nvim configs by copy
-    ln -sf $thispath/neovim/.config/nvim $HOME/.config/
 }
 
 function handle_tmux() {
@@ -80,66 +148,6 @@ function handle_emacs() {
     fi
 }
 
-function install_pyenv() {
-    if [ -e $HOME/.pyenv ]; then
-        echo "$HOME/.pyenv existed, skip"
-    else
-        git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
-    fi
-}
-
-function install_fzf() {
-    UNAMEO=$(uname -s)
-    if [ x$UNAMEO == "xLinux" ] || [ x$UNAMEO == "xCYGWIN" ] || [ x$UNAMEO == "xMINGW" ]; then
-        if [ -e $HOME/.fzf ]; then
-            echo "$HOME/.fzf existed, skip"
-        else
-            git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-            $HOME/.fzf/install
-        fi
-    elif [ x$UNAMEO == "xDarwin" ]; then
-        brew install fzf
-        $(brew --prefix)/opt/fzf/install
-    fi
-}
-
-# Required by nvim-jdtls
-function install_jdt_language_server {
-    jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
-    dfile=/tmp/jdt-language-server.tar.gz
-    dpath=$HOME/.local/share/jdt-language-server
-    if [ -e "$dfile" ]; then
-        echo "Existing file $dfile, skip downloading"
-    else
-        wget $jdtlink -O /tmp/jdt-language-server.tar.gz
-    fi
-    if [ -e $dpath ]; then
-        echo "Non-empty target path [$dpath], assuming jdtls already installed"
-        return 0
-    else
-        mkdir -p $dpath
-    fi
-    echo "jdtls extracted to $dpath"
-    tar zxf $dfile -C $dpath
-}
-
-function install_deps {
-    # autoformat
-    sudo npm install -g remark-cli js-beautify
-    gem install ruby-beautify
-    install_pyenv
-    install_fzf
-    install_jdt_language_server
-}
-
-function configure_dotfiles {
-    handle_zsh
-    handle_tmux
-    #handle_vim
-    handle_neovim
-    handle_emacs
-}
-
 # Change to 0 to install a copy instead of soft link
 SOFTLINK=1
 WITHDEPS=0
@@ -154,5 +162,4 @@ done
 if [ "x$WITHDEPS" == "x1" ]; then
     install_deps
 fi
-
-configure_dotfiles
+handle_zsh && handle_tmux && handle_neovim && handle_emacs
