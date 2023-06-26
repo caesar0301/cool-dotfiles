@@ -106,19 +106,29 @@ function install_deps() {
 }
 
 function handle_zsh() {
+    # Install ZI
     if [ ! -e $HOME/.zi ]; then
         mkdir -p "$HOME/.zi/bin"
         mkdir -p "$HOME/.zi/completions"
         git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
     fi
+
+    if [ ! -e $HOME/.zshrc ]; then
+        # Do not overwrite user local configs
+        cp $thispath/zsh/.zshrc $HOME/.zshrc
+    fi
+
+    if [ x$SOFTLINK == "x1" ]; then
+        CMD="ln -sf"
+    else
+        CMD="cp -r"
+    fi
+    $CMD $thispath/zsh/init.zsh $HOME/.config/zsh_runtime/init.zsh
+
+    # Install our plugins
     if [ ! -e $HOME/.config/zsh_runtime/plugins ]; then
         mkdir -p $HOME/.config/zsh_runtime/plugins
     fi
-    CMD="cp -r"
-    if [ x$SOFTLINK == "x1" ]; then
-        CMD="ln -sf"
-    fi
-    $CMD $thispath/zsh/.zshrc $HOME/.zshrc
     for i in $(find $thispath/zsh/plugins -name "*.plugin.zsh"); do
         dname=$(dirname $i)
         $CMD $dname $HOME/.config/zsh_runtime/plugins/
