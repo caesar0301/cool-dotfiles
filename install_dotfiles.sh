@@ -118,20 +118,22 @@ function handle_zsh() {
         cp $thispath/zsh/.zshrc $HOME/.zshrc
     fi
 
+    FROM_DIR=$thispath/zsh/.config/zsh_runtime
+    TARGET_DIR=$HOME/.config/zsh_runtime
     if [ x$SOFTLINK == "x1" ]; then
         CMD="ln -sf"
     else
         CMD="cp -r"
     fi
-    $CMD $thispath/zsh/init.zsh $HOME/.config/zsh_runtime/init.zsh
+    $CMD $FROM_DIR/init.zsh $TARGET_DIR/init.zsh
 
     # Install our plugins
-    if [ ! -e $HOME/.config/zsh_runtime/plugins ]; then
-        mkdir -p $HOME/.config/zsh_runtime/plugins
+    if [ ! -e $TARGET_DIR/plugins ]; then
+        mkdir -p $TARGET_DIR/plugins
     fi
-    for i in $(find $thispath/zsh/plugins -name "*.plugin.zsh"); do
+    for i in $(find $FROM_DIR/plugins -name "*.plugin.zsh"); do
         dname=$(dirname $i)
-        $CMD $dname $HOME/.config/zsh_runtime/plugins/
+        $CMD $dname $TARGET_DIR/plugins/
     done
 }
 
