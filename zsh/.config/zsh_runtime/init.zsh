@@ -139,8 +139,6 @@ function zshld {
 # Update zsh plugins
 function zshup {
     old_path=$(pwd)
-    echo -n "Updating ${ZI_HOME}/bin..."
-    cd ${ZI_HOME}/bin && git pull -q && echo "done" && cd ${old_path}
     if [ -e ${PLUGIN_HOME} ]; then
         for plugin in $(ls -d $PLUGIN_HOME/*); do
             if [ -e ${plugin}/.git ]; then
@@ -149,7 +147,8 @@ function zshup {
             fi
         done
     fi
-
+    echo -n "Updating ${ZI_HOME}/bin..."
+    cd ${ZI_HOME}/bin && git pull -q && echo "done" && cd ${old_path}
 }
 
 # Overhead configrator for apps
@@ -165,7 +164,7 @@ function occ {
         ;;
         nvim) cf=$HOME/.config/nvim/init.lua
         ;;
-        zsh) cf=$HOME/.zshrc
+        zsh) cf=$HOME/.config/zsh_runtime/init.zsh
             while getopts eh opt; do
                 case $opt in
                     e)    cf=$HOME/.zshenv ;;
