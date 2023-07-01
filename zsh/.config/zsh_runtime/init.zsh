@@ -205,12 +205,13 @@ function bingo {
     fi
     unset TMUX
     HOSTNAME=$(hostname | sed -E "s/\./_/g" | head -c 8)
+    SESSION_NAME="bingo"
     tmux -u start-server
-    tmux -u has-session -t $HOSTNAME
+    tmux -u has-session -t ${SESSION_NAME}
     if [ $? != 0 ]; then
-        tmux -u new-session -d -s $HOSTNAME
+        tmux -u new-session -d -s ${SESSION_NAME}
     fi
-    tmux -u attach -t $HOSTNAME
+    tmux -u attach -t ${SESSION_NAME}
 }
 
 # Open file window
