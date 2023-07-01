@@ -93,8 +93,13 @@ lspconfig.clangd.setup {
     cmd = {"clangd", "--background-index=true"},
     capabilities = common_caps,
     on_attach = function(client, bufnr)
-        vim.keymap.set("n", "<leader>sh", ":ClangdSwitchSourceHeader<CR>", bufopts)
         common_on_attach(client, bufnr)
+        local bufopts = {
+            noremap = true,
+            silent = true,
+            buffer = bufnr
+        }
+        vim.keymap.set("n", "<leader>sh", ":ClangdSwitchSourceHeader<CR>", bufopts)
     end
 }
 
