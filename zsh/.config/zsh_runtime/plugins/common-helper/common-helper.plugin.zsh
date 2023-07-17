@@ -13,5 +13,5 @@ function replace {
     sourcestr="$1"
     targetstr="$2"
     pathstr="$3"
-    grep -r $sourcestr $pathstr | awk -F: '{print $1}' | uniq | xargs -I@ sed -i -E "s|$sourcestr|$targetstr|g" @
+    grep -r $sourcestr $pathstr | awk -F: '{print $1}' | uniq | xargs -I@ sed -i.old -E "s|$sourcestr|$targetstr|g" @
 }
