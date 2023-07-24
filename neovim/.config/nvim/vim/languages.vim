@@ -34,7 +34,7 @@ let g:formatters_lua=['luafmt']
 " Autoformat on save
 augroup autoformat
     :autocmd!
-    au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
+    " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
     au BufWrite *.go,*.py,*.lua,*.rs :Autoformat
     au BufWrite *.md,*.cmake,*.sh,*.tex :Autoformat
     au BufWrite *.lisp,*.scm,*.ss :Autoformat
