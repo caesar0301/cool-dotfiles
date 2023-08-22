@@ -4,8 +4,10 @@
 --       Xiaming Chen - @caesar0301
 --
 -- Prerequisites:
---       vim-plug: https://github.com/junegunn/vim-plug
---       neovim: (recommended) https://neovim.io/
+--       packer: https://github.com/wbthomason/packer.nvim
+--       neovim: https://neovim.io/
+--
+-- Usage: :PackerInstall
 -------------------------------------------------------------
 
 -- Load all plugins

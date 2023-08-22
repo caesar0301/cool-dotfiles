@@ -160,9 +160,7 @@ function occ {
     case "$subcommand" in
         emacs|em) cf=$HOME/.emacs.d/init.el
         ;;
-        vi|vim) cf=$HOME/.vimrc
-        ;;
-        nvim) cf=$HOME/.config/nvim/init.lua
+        vi|vim|nvim) cf=$HOME/.config/nvim/init.lua
         ;;
         zsh) cf=$HOME/.config/zsh_runtime/init.zsh
             while getopts eh opt; do
