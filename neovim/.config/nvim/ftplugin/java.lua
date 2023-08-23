@@ -1,13 +1,13 @@
 local jdtls = require('jdtls')
 local root_markers = { 'gradlew', '.git', 'gradlew' }
 local home = os.getenv('HOME')
-local jdk17_home = home .. "/.local/share/jdk17"
+local jdk_home = os.getenv('JAVA_HOME')
 local jdtls_install_folder = home .. "/.local/share/jdt-language-server"
 local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 local config = {
     -- Java17+
     cmd = {
-        jdk17_home .. '/bin/java',
+        jdk_home .. '/bin/java',
         '-Declipse.application=org.eclipse.jdt.ls.core.id1',
         '-Dosgi.bundles.defaultStartLevel=4',
         '-Declipse.product=org.eclipse.jdt.ls.core.product',

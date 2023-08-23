@@ -1,21 +1,25 @@
 #!/bin/bash
 ###################################################
 # Install script for
-#   https://github.com/caesar0301/cool-dotfiles
+# https://github.com/caesar0301/cool-dotfiles
 # Usage:
-#   # Install dotfiles by soft links
-#   ./install_dotfiles.sh
+# # Install dotfiles by soft links
+# ./install_dotfiles.sh
 #
-#   # Install dotfiles by copying
-#      ./install_dotfiles.sh -f
+# # Install dotfiles by copying
+#    ./install_dotfiles.sh -f
 #
-#   # With essential dependencies
-#   ./install_dotfiles.sh -f -e
+# # With essential dependencies
+# ./install_dotfiles.sh -f -e
 # Maintainer:
-#   xiaming.cxm
+# xiaming.cxm
 ###################################################
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 thispath=$(dirname $abspath)
+
+function usage() {
+    echo "Usage: install_dotfiles.sh [-f] [-e]"
+}
 
 function install_pyenv() {
     if [ ! -e $HOME/.pyenv ]; then
@@ -43,15 +47,6 @@ function install_jdt_language_server() {
     fi
 }
 
-function install_google_java_format() {
-    rfile="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
-    dpath=$HOME/.local/share/google-java-format
-    if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
-        echo "Installing google-java-format to $dpath..."
-        curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
-    fi
-}
-
 function install_hack_nerd_font() {
     # install nerd patched font Hack, required by nvim-web-devicons
     if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
@@ -65,45 +60,43 @@ function install_hack_nerd_font() {
     fi
 }
 
+function install_google_java_format() {
+    rfile="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
+    dpath=$HOME/.local/share/google-java-format
+    if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
+        echo "Installing google-java-format to $dpath..."
+        curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
+    fi
+}
+
 function install_shfmt {
     curl -sS https://webi.sh/shfmt | sh
 }
 
-function install_deps() {
-    # Install and config pyenv
-    install_pyenv
-
-    # Install fzf
-    install_fzf
-
-    # Java lang server
-    install_jdt_language_server
-
-    # Required by nvim-web-devicons
-    install_hack_nerd_font
-
-    # Required by :Autoformat
-    #   Python: black
-    #   JS/JSON/HTTP/CSS: js-beautify
-    #   Ruby: ruby-beautify
-    #   Golang: gofmt
-    #   Rust: rustfmt
-    #   Perl: Perl::Tidy
-    #   Haskell: stylish-haskell
-    #   Markdown: remark-cli
-    #   Shell: shfmt
-    #   Lua: lua-fmt
-    #   SQL: sqlformat
-    #   CMake: cmake_format
-    #   LaTeX: latexindent
-    #   OCaml: ocamlformat
-    #   LISP/Scheme: scmindent
+function install_autoformat_deps() {
+    echo "Installing vim-autoformat dependencies..."
+    ############################################
+    # Python: black
+    # JS/JSON/HTTP/CSS: js-beautify
+    # Ruby: ruby-beautify
+    # Golang: gofmt
+    # Rust: rustfmt
+    # Perl: Perl::Tidy
+    # Haskell: stylish-haskell
+    # Markdown: remark-cli
+    # Shell: shfmt
+    # Lua: lua-fmt
+    # SQL: sqlformat
+    # CMake: cmake_format
+    # LaTeX: latexindent
+    # OCaml: ocamlformat
+    # LISP/Scheme: scmindent
+    ############################################
     pip install -U black sqlformat cmake_format
-    sudo npm install -g remark-cli js-beautify lua-fmt scmindent
-    sudo gem install ruby-beautify
+    sudo npm install --quiet -g remark-cli js-beautify lua-fmt scmindent
+    sudo gem install --quiet ruby-beautify
     install_google_java_format
     install_shfmt
-
     # Install perl first
     # cpan -i Perl::Tidy
 }
@@ -140,6 +133,10 @@ function handle_zsh() {
     done
 }
 
+function install_zsh_deps() {
+    install_pyenv
+}
+
 function handle_vim() {
     # install vim-plug manager
     curl --progress-bar -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -149,6 +146,12 @@ function handle_vim() {
     else
         cp $thispath/vim/.vimrc $HOME/.vimrc
     fi
+}
+
+function install_vim_deps() {
+    install_fzf
+    install_jdt_language_server
+    install_autoformat_deps
 }
 
 function handle_neovim() {
@@ -164,6 +167,13 @@ function handle_neovim() {
     else
         cp -r $thispath/neovim/.config/nvim $HOME/.config/
     fi
+}
+
+function install_neovim_deps() {
+    install_fzf
+    install_jdt_language_server
+    install_hack_nerd_font #Required by nvim-web-devicons
+    install_autoformat_deps
 }
 
 function handle_tmux() {
@@ -201,11 +211,13 @@ while getopts se opt; do
     case $opt in
     f) SOFTLINK=0 ;;
     e) WITHDEPS=1 ;;
-    h | ?) echo "install.sh [-f] [-e]" && return ;;
+    h | ?) usage && exit 0 ;;
     esac
 done
 
 if [ "x$WITHDEPS" == "x1" ]; then
-    install_deps
+    install_zsh_deps
+    #install_vim_deps
+    install_neovim_deps
 fi
 handle_zsh && handle_tmux && handle_neovim && handle_emacs
