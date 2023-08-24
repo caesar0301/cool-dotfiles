@@ -31,6 +31,9 @@ let g:formatdef_latexindent = '"latexindent -"'
 let g:formatdef_scmindent = '"scmindent -"'
 let g:formatters_lisp=['scmindent']
 
+let g:formatdef_shfmt = '"shfmt -bn -i 2 -"'
+let g:formatters_sh=['shfmt']
+
 " Autoformat on save
 augroup autoformat
     :autocmd!
