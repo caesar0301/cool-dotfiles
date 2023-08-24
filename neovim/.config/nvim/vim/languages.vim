@@ -12,24 +12,24 @@ let g:autoformat_autoindent=0
 let g:autoformat_retab=1
 let g:autoformat_remove_trailing_spaces=1
 
-" Formatter definer
 let g:formatdef_gjf='"java -jar ~/.local/share/google-java-format/google-java-format-all-deps.jar -"'
-let g:formatdef_gofmt_1='"gofmt"'
-let g:formatdef_cmakefmt='"cmake-format -"'
-let g:formatdef_clangformat= '"clang-format -"'
-let g:formatdef_pyfmt='"black -"'
-let g:formatdef_latexindent = '"latexindent -"'
-let g:formatdef_scmindent = '"scmindent -"'
-let g:formatdef_luafmt = '"luafmt --stdin"'
-
-" Formatter user
 let g:formatters_java=['gjf']
+
+let g:formatdef_cmakefmt='"cmake-format -"'
 let g:formatters_cmake=['cmakefmt']
+
+let g:formatdef_clangformat= '"clang-format -"'
 let g:formatters_cpp=['clangformat']
+
+let g:formatdef_gofmt_1='"gofmt"'
+
+let g:formatdef_pyfmt='"black -"'
 let g:formatters_python=['pyfmt']
+
+let g:formatdef_latexindent = '"latexindent -"'
+
+let g:formatdef_scmindent = '"scmindent -"'
 let g:formatters_lisp=['scmindent']
-let g:formatters_scheme=['scmindent']
-let g:formatters_lua=['luafmt']
 
 " Autoformat on save
 augroup autoformat
