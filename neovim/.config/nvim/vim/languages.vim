@@ -12,7 +12,7 @@ let g:autoformat_autoindent=0
 let g:autoformat_retab=1
 let g:autoformat_remove_trailing_spaces=1
 
-let g:formatdef_gjf='"java -jar ~/.local/share/google-java-format/google-java-format-all-deps.jar -"'
+let g:formatdef_gjf='"google-java-format-wrapper -"'
 let g:formatters_java=['gjf']
 
 let g:formatdef_cmakefmt='"cmake-format -"'

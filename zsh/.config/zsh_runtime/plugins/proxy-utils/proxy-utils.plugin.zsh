@@ -1,5 +1,10 @@
 #+++++++++++++++++++++++++++++++++++++++
 # Proxy utilities
+#
+# Dependent Envs:
+# PROXY_HTTP_HOST
+# PROXY_HTTP_PORT
+# PROXY_SOCKS_PORT
 #+++++++++++++++++++++++++++++++++++++++
 # Proxy shortcut
 alias pc="proxychains4 -q"

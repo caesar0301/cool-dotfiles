@@ -1,5 +1,10 @@
 #+++++++++++++++++++++++++++++++++++++++
 # DEVTOOLS
+#
+# Dependent envs:
+# JAVA_HOME
+# JAVA_HOME_4GJF
+# GJF_JAR_FILE
 #+++++++++++++++++++++++++++++++++++++++
 alias cfr="java -jar ~/bin/cfr-0.152.jar"
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
@@ -87,6 +92,31 @@ _initRustEnv
 _initCuda
 _initHaskellEnv
 
-#if [[ $OSTYPE == darwin*  ]]; then
-#    _initMacEnv
-#fi
+#if [[ $OSTYPE == darwin*  ]]; then _initMacEnv; fi
+
+function google-java-format-wrapper {
+    javahome=${JAVA_HOME_4GJF}
+    if [ "x$javahome" == "x"]; then
+        javahome=${JAVA_HOME}
+    fi
+    javacmd="java"
+    if [ "x$javahome" != "x" ]; then
+        javacmd=$javahome/bin/java
+    fi
+    gjfjar=${GJF_JAR_FILE:-"$HOME/.local/share/google-java-format/google-java-format-all-deps.jar"}
+    if [ ! -e $gjfjar ]; then
+        echo "google-java-format jar not found: $gjfjar. Please specify with env GJF_JAR_FILE"
+        return
+    fi
+    $javacmd -jar $gjfjar $@
+}
+
+function maven-quickstart {
+    groupid=${1:-com.github.caesar0301}
+    artifactid=${2:-quickstart}
+    mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
+        -DarchetypeArtifactId=maven-archetype-quickstart \
+        -DarchetypeVersion=1.4 \
+        -DgroupId=$groupid \
+        -DartifactId=$artifactid
+}
