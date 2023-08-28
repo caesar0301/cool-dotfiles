@@ -112,6 +112,8 @@ function handle_zsh() {
     if [ ! -e $HOME/.zshrc ]; then
         # Do not overwrite user local configs
         cp $thispath/zsh/.zshrc $HOME/.zshrc
+    else
+        echo "$HOME/.zsrhc existed. Skip without rewriting"
     fi
 
     FROM_DIR=$thispath/zsh/.config/zsh_runtime
@@ -221,3 +223,5 @@ if [ "x$WITHDEPS" == "x1" ]; then
     install_neovim_deps
 fi
 handle_zsh && handle_tmux && handle_neovim && handle_emacs
+
+echo "Installed successfully!"
