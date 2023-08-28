@@ -112,11 +112,7 @@ function google-java-format-wrapper {
 }
 
 function maven-quickstart {
-    groupid=${1:-com.github.caesar0301}
-    artifactid=${2:-quickstart}
     mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
         -DarchetypeArtifactId=maven-archetype-quickstart \
-        -DarchetypeVersion=1.4 \
-        -DgroupId=$groupid \
-        -DartifactId=$artifactid
+        -DarchetypeVersion=1.4 $@
 }
