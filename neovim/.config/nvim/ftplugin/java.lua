@@ -65,11 +65,11 @@ local config = {
             buffer = bufnr
         }
         vim.keymap.set("n", "cdo", jdtls.organize_imports, opts)
-        vim.keymap.set("n", "cdf", jdtls.test_class, opts)
-        vim.keymap.set("n", "cdn", jdtls.test_nearest_method, opts)
         vim.keymap.set("n", "crv", jdtls.extract_variable, opts)
         vim.keymap.set("v", "crm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]], opts)
         vim.keymap.set("n", "crc", jdtls.extract_constant, opts)
+        vim.keymap.set("n", "cdf", jdtls.test_class, opts)
+        vim.keymap.set("n", "cdn", jdtls.test_nearest_method, opts)
     end
 }
 -- This starts a new client & server,
