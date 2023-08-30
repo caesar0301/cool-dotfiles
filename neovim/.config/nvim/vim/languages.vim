@@ -7,7 +7,7 @@
 " Plugins => vim-autoformat
 """"""""""""""""""""""""""""""
 nnoremap <silent> <leader>af :Autoformat<cr>
-let g:autoformat_verbosemode=0
+let g:autoformat_verbosemode=1
 let g:autoformat_autoindent=0
 let g:autoformat_retab=1
 let g:autoformat_remove_trailing_spaces=1
