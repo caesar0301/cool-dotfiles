@@ -48,14 +48,17 @@ function install_jdt_language_server() {
 }
 
 function install_hack_nerd_font() {
+    FONTDIR=$HOME/.local/share/fonts
+    if [ "$(uname)" == "Darwin" ]; then
+        FONTDIR=$HOME/Library/Fonts
+    fi
     # install nerd patched font Hack, required by nvim-web-devicons
     if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
         echo "Install Hack nerd font and update font cache..."
-        if [ ! -e $HOME/.local/share/fonts ]; then
-            mkdir -p $HOME/.local/share/fonts
+        if [ ! -e $FONTDIR ]; then
+            mkdir -p $FONTDIR
         fi
-        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz \
-            | tar xJ -C $HOME/.local/share/fonts/
+        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
         fc-cache -f
     fi
 }
