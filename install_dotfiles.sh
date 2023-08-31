@@ -54,8 +54,8 @@ function install_hack_nerd_font() {
         if [ ! -e $HOME/.local/share/fonts ]; then
             mkdir -p $HOME/.local/share/fonts
         fi
-        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz |
-            tar xJ -C $HOME/.local/share/fonts/
+        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz \
+            | tar xJ -C $HOME/.local/share/fonts/
         fc-cache -f
     fi
 }
