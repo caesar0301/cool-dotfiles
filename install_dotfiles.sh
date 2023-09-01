@@ -17,20 +17,36 @@
 abspath=$(cd ${0%/*} && echo $PWD/${0##*/})
 thispath=$(dirname $abspath)
 
+function warn() {
+    warn_prefix="\033[33m"
+    mssg_suffix="\033[00m"
+    echo -e "$warn_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
+}
+function info() {
+    info_prefix="\033[32m"
+    mssg_suffix="\033[00m"
+    echo -e "$info_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
+}
+function error() {
+    erro_prefix="\033[31m"
+    mssg_suffix="\033[00m"
+    echo -e "$erro_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
+}
+
 function usage() {
-    echo "Usage: install_dotfiles.sh [-f] [-e]"
+    info "Usage: install_dotfiles.sh [-f] [-e]"
 }
 
 function install_pyenv() {
     if [ ! -e $HOME/.pyenv ]; then
-        echo "Installing pyenv to $HOME/.pyenv..."
+        info "Installing pyenv to $HOME/.pyenv..."
         git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
     fi
 }
 
 function install_fzf() {
     if [ ! -e $HOME/.fzf ]; then
-        echo "Installing fzf to $HOME/.fzf..."
+        info "Installing fzf to $HOME/.fzf..."
         git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
         $HOME/.fzf/install
     fi
@@ -41,7 +57,7 @@ function install_jdt_language_server() {
     jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
     dpath=$HOME/.local/share/jdt-language-server
     if [ ! -e $dpath/bin/jdtls ]; then
-        echo "Installing jdt-language-server to $dpath..."
+        info "Installing jdt-language-server to $dpath..."
         mkdir -p $dpath >/dev/null
         curl -L --progress-bar $jdtlink | tar zxf -C $dpath
     fi
@@ -54,7 +70,7 @@ function install_hack_nerd_font() {
     fi
     # install nerd patched font Hack, required by nvim-web-devicons
     if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
-        echo "Install Hack nerd font and update font cache..."
+        info "Install Hack nerd font and update font cache..."
         if [ ! -e $FONTDIR ]; then
             mkdir -p $FONTDIR
         fi
@@ -67,17 +83,18 @@ function install_google_java_format() {
     rfile="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
     dpath=$HOME/.local/share/google-java-format
     if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
-        echo "Installing google-java-format to $dpath..."
+        info "Installing google-java-format to $dpath..."
         curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
     fi
 }
 
 function install_shfmt {
+    info "Installing shfmt..."
     curl -sS https://webi.sh/shfmt | sh
 }
 
 function install_autoformat_deps() {
-    echo "Installing vim-autoformat dependencies..."
+    info "Installing vim-autoformat dependencies..."
     ############################################
     # Python: black
     # JS/JSON/HTTP/CSS: js-beautify
@@ -95,11 +112,18 @@ function install_autoformat_deps() {
     # OCaml: ocamlformat
     # LISP/Scheme: scmindent
     ############################################
+    info "Installing deps from pip..."
     pip install -U black sqlformat cmake_format
+
+    info "Installing deps from npm..."
     sudo npm install --quiet -g remark-cli js-beautify lua-fmt scmindent
+
+    info "Installing deps from gem..."
     sudo gem install --quiet ruby-beautify
+
     install_google_java_format
     install_shfmt
+
     # Install perl first
     # cpan -i Perl::Tidy
 }
@@ -116,7 +140,7 @@ function handle_zsh() {
         # Do not overwrite user local configs
         cp $thispath/zsh/.zshrc $HOME/.zshrc
     else
-        echo "$HOME/.zsrhc existed. Skip without rewriting"
+        warn "$HOME/.zsrhc existed. Skip without rewriting"
     fi
 
     FROM_DIR=$thispath/zsh/.config/zsh_runtime
@@ -163,7 +187,7 @@ function handle_neovim() {
     # install plugin manager
     packer_home=$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
     if [ ! -e ${packer_home} ]; then
-        echo "Install plugin manager Packer..."
+        info "Install plugin manager Packer..."
         git clone --depth 1 https://github.com/wbthomason/packer.nvim \
             ~/.local/share/nvim/site/pack/packer/start/packer.nvim
     fi
@@ -209,6 +233,19 @@ function handle_emacs() {
     fi
 }
 
+function check_sudo_access {
+    prompt=$(sudo -nv 2>&1)
+    if [ $? -eq 0 ]; then
+        info "has_sudo__pass_set"
+    elif echo $prompt | grep -q '^sudo:'; then
+        warn "has_sudo__needs_pass"
+        sudo -v
+    else
+        error "no_sudo"
+        exit 1
+    fi
+}
+
 # Change to 0 to install a copy instead of soft link
 SOFTLINK=1
 WITHDEPS=0
@@ -221,10 +258,11 @@ while getopts se opt; do
 done
 
 if [ "x$WITHDEPS" == "x1" ]; then
+    check_sudo_access
     install_zsh_deps
     #install_vim_deps
     install_neovim_deps
 fi
 handle_zsh && handle_tmux && handle_neovim && handle_emacs
 
-echo "Installed successfully!"
+info "Installed successfully!"
