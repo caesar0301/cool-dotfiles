@@ -73,8 +73,8 @@ zi snippet OMZP::virtualenv
 zi cdclear -q
 setopt promptsubst
 #zi snippet OMZT::robbyrussell
-#zi snippet OMZT::jtriley
-zi snippet OMZT::kafeitu
+zi snippet OMZT::jtriley
+#zi snippet OMZT::kafeitu
 zi snippet OMZP::themes
 
 # Completion
