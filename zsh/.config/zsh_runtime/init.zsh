@@ -72,10 +72,11 @@ zi snippet OMZP::virtualenv
 # Theme
 zi cdclear -q
 setopt promptsubst
+zi snippet OMZP::themes
 #zi snippet OMZT::robbyrussell
 zi snippet OMZT::jtriley
 #zi snippet OMZT::kafeitu
-zi snippet OMZP::themes
+#zi snippet OMZT::crcandy
 
 # Completion
 zi ice pick"zsh-history-substring-search.zsh"
