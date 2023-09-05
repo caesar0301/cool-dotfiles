@@ -246,6 +246,10 @@ function check_sudo_access {
     fi
 }
 
+function install_local_bins {
+    cp $thispath/local_bin/* $HOME/.local/bin
+}
+
 # Change to 0 to install a copy instead of soft link
 SOFTLINK=1
 WITHDEPS=0
@@ -262,6 +266,7 @@ if [ "x$WITHDEPS" == "x1" ]; then
     install_zsh_deps
     #install_vim_deps
     install_neovim_deps
+    install_local_bins
 fi
 handle_zsh && handle_tmux && handle_neovim && handle_emacs
 
