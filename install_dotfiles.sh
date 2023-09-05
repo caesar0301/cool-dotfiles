@@ -116,7 +116,7 @@ function install_autoformat_deps() {
     pip install -U black sqlformat cmake_format
 
     info "Installing deps from npm..."
-    sudo npm install --quiet -g remark-cli js-beautify lua-fmt scmindent
+    sudo npm install --quiet -g remark-cli js-beautify lua-fmt scmindent yaml-language-server
 
     info "Installing deps from gem..."
     sudo gem install --quiet ruby-beautify
