@@ -266,8 +266,8 @@ if [ "x$WITHDEPS" == "x1" ]; then
     install_zsh_deps
     #install_vim_deps
     install_neovim_deps
-    install_local_bins
 fi
 handle_zsh && handle_tmux && handle_neovim && handle_emacs
+install_local_bins
 
 info "Installed successfully!"
