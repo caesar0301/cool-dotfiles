@@ -59,7 +59,7 @@ function install_jdt_language_server() {
     if [ ! -e $dpath/bin/jdtls ]; then
         info "Installing jdt-language-server to $dpath..."
         mkdir -p $dpath >/dev/null
-        curl -L --progress-bar $jdtlink | tar zxf -C $dpath
+        curl -L -s $jdtlink | tar zxf - -C $dpath
     fi
 }
 
@@ -74,7 +74,7 @@ function install_hack_nerd_font() {
         if [ ! -e $FONTDIR ]; then
             mkdir -p $FONTDIR
         fi
-        curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
+        curl -L -s https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ - -C $FONTDIR
         fc-cache -f
     fi
 }
