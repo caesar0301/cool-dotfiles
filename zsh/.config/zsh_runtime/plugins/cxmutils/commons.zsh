@@ -1,4 +1,11 @@
+#+++++++++++++++++++++++++++++++++++++++
+# PATH
+#+++++++++++++++++++++++++++++++++++++++
 export PATH=$PATH:$HOME/.local/bin
+if flatpak --version > /dev/null; then
+    # Add flatpak shortcuts
+    export PATH=$PATH:/var/lib/flatpak/exports/bin
+fi
 
 #+++++++++++++++++++++++++++++++++++++++
 # Useful alias
@@ -22,6 +29,10 @@ alias sd="sdcv -0 -c"
 
 # Rsync preseving symlinks, timestamps, permissions
 alias rsync2="rsync -rlptgoD --progress"
+
+if [ -e /var/lib/flatpak/exports/bin/com.visualstudio.code ]; then
+    alias code="flatpak run com.visualstudio.code"
+fi
 
 #+++++++++++++++++++++++++++++++++++++++
 # Useful functions
