@@ -25,6 +25,7 @@ alias diffr='diff -r'
 alias duh="du -hs .[^.]*"
 
 # StarDict console
+# Install dicts into ~/.local/share/stardict/dic or /usr/share/stardict/dic
 alias dict="sdcv -0 -c"
 
 # Rsync preseving symlinks, timestamps, permissions
