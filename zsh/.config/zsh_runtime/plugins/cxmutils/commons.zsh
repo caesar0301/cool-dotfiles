@@ -17,24 +17,41 @@ fi
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
 
 # Editor
+alias vi=nvim
 alias em='emacs -nw'
 alias diffr='diff -r'
 
 # Stat.
 alias duh="du -hs .[^.]*"
 
-# Use nvim as default
-alias vi=nvim
-
 # StarDict console
-alias sd="sdcv -0 -c"
+alias dict="sdcv -0 -c"
 
 # Rsync preseving symlinks, timestamps, permissions
 alias rsync2="rsync -rlptgoD --progress"
 
-if [ -e /var/lib/flatpak/exports/bin/com.visualstudio.code ]; then
+# Alias from flatpak exports
+function _generate_flatpak_alias {
+    flatpak_exports=/var/lib/flatpak/exports/bin
+    for i in `ls ${flatpak_exports}`; do
+        alias run-$i="flatpak run $i"
+    done
+    # Specifically
     alias code="flatpak run com.visualstudio.code"
-fi
+}
+_generate_flatpak_alias 
+
+# Alias for AppImages in ~/.local/share/appimage
+function _generate_appimages_alias {
+    appimage_dir=$HOME/.local/share/appimages
+    if [ -e ${appimage_dir} ]; then
+        for i in `find ${appimage_dir} -name "*.AppImage"`; do
+            filename=$(basename -- "$i")
+            alias run-${filename%.*}="${i}"
+        done
+    fi
+}
+_generate_appimages_alias
 
 #+++++++++++++++++++++++++++++++++++++++
 # Useful functions
