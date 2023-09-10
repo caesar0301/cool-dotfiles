@@ -2,7 +2,9 @@
 # PATH
 #+++++++++++++++++++++++++++++++++++++++
 export PATH=$PATH:$HOME/.local/bin
-if flatpak --version > /dev/null; then
+
+# shortcuts to applications installed by flatpak
+if command -v flatpak &> /dev/null; then
     # Add flatpak shortcuts
     export PATH=$PATH:/var/lib/flatpak/exports/bin
 fi
