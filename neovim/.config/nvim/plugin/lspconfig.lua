@@ -72,7 +72,6 @@ local servers = {
     "r_language_server",
     "clojure_lsp",
     "metals",
-    "gopls",
     "cmake"
 }
 for _, lsp in ipairs(servers) do
@@ -130,3 +129,44 @@ lspconfig.hls.setup {
         }
     }
 }
+
+-- Golang
+local lastRootPath = nil
+local gomodpath = vim.trim(vim.fn.system("go env GOPATH")) .. "/pkg/mod"
+
+lspconfig.gopls.setup {
+    on_attach = function(client, bufnr)
+        common_on_attach.attach(client, bufnr)
+    end,
+    cmd = {"gopls", "serve"},
+    filetypes = {"go", "gomod"},
+    root_dir = function(fname)
+        local fullpath = vim.fn.expand(fname, ":p")
+        if string.find(fullpath, gomodpath) and lastRootPath ~= nil then
+            return lastRootPath
+        end
+        local root = lspconfig.util.root_pattern("go.mod", ".git")(fname)
+        if root ~= nil then
+            lastRootPath = root
+        end
+        return root
+    end,
+    settings = {
+        gopls = {
+            analyses = {
+                unusedparams = true
+            },
+            staticcheck = true
+        }
+    }
+}
+
+vim.api.nvim_create_autocmd(
+    "BufWritePre",
+    {
+        pattern = "*.go",
+        callback = function()
+            vim.lsp.buf.code_action({context = {only = {"source.organizeImports"}}, apply = true})
+        end
+    }
+)
