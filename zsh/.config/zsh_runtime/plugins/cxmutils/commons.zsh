@@ -34,13 +34,15 @@ alias rsync2="rsync -rlptgoD --progress"
 # Alias from flatpak exports
 function _generate_flatpak_alias {
     flatpak_exports=/var/lib/flatpak/exports/bin
-    for i in `ls ${flatpak_exports}`; do
-        alias run-$i="flatpak run $i"
-    done
+    if [ -e ${flatpak_exports} ]; then
+        for i in `ls ${flatpak_exports}`; do
+            alias run-$i="flatpak run $i"
+        done
+    fi
     # Specifically
     alias code="flatpak run com.visualstudio.code"
 }
-_generate_flatpak_alias 
+_generate_flatpak_alias
 
 # Alias for AppImages in ~/.local/share/appimage
 function _generate_appimages_alias {
