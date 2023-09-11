@@ -74,11 +74,10 @@ local servers = {
     "metals",
     "cmake"
 }
+
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
-        on_attach = function(client, bufnr)
-            common_on_attach.attach(client, bufnr)
-        end,
+        on_attach = common_on_attach,
         capabilities = common_caps
     }
 end
@@ -92,22 +91,20 @@ lspconfig.clangd.setup {
     cmd = {"clangd", "--background-index=true"},
     capabilities = common_caps,
     on_attach = function(client, bufnr)
-        common_on_attach(client, bufnr)
         local bufopts = {
             noremap = true,
             silent = true,
             buffer = bufnr
         }
         vim.keymap.set("n", "<leader>sh", ":ClangdSwitchSourceHeader<CR>", bufopts)
+        common_on_attach(client, bufnr)
     end
 }
 
 -- YAMl
 lspconfig.yamlls.setup {
     capabilities = common_caps,
-    on_attach = function(client, bufnr)
-        common_on_attach.attach(client, bufnr)
-    end,
+    on_attach = common_on_attach,
     settings = {
         yaml = {
             schemas = {
@@ -119,9 +116,7 @@ lspconfig.yamlls.setup {
 
 -- Haskell
 lspconfig.hls.setup {
-    on_attach = function(client, bufnr)
-        common_on_attach.attach(client, bufnr)
-    end,
+    on_attach = common_on_attach,
     capabilities = common_caps,
     settings = {
         haskell = {
@@ -135,9 +130,7 @@ local lastRootPath = nil
 local gomodpath = vim.trim(vim.fn.system("go env GOPATH")) .. "/pkg/mod"
 
 lspconfig.gopls.setup {
-    on_attach = function(client, bufnr)
-        common_on_attach.attach(client, bufnr)
-    end,
+    on_attach = common_on_attach,
     cmd = {"gopls", "serve"},
     filetypes = {"go", "gomod"},
     root_dir = function(fname)
