@@ -3,12 +3,6 @@
 #+++++++++++++++++++++++++++++++++++++++
 export PATH=$PATH:$HOME/.local/bin
 
-# shortcuts to applications installed by flatpak
-if command -v flatpak &> /dev/null; then
-    # Add flatpak shortcuts
-    export PATH=$PATH:/var/lib/flatpak/exports/bin
-fi
-
 #+++++++++++++++++++++++++++++++++++++++
 # Useful alias
 #+++++++++++++++++++++++++++++++++++++++
@@ -32,20 +26,30 @@ alias dict="sdcv -0 -c"
 alias rsync2="rsync -rlptgoD --progress"
 
 # Alias from flatpak exports
-function _generate_flatpak_alias {
+function _flatpak_aliases {
+    FLATPAK_HOME=/var/lib/flatpak
+    FLATPAK_BIN=${FLATPAK_HOME}/exports/bin
+
+    # shortcuts to apps installed by flatpak
+    if command -v flatpak &> /dev/null; then
+        export PATH=$PATH:${FLATPAK_BIN}
+        if [ -e ${FLATPAK_BIN}/com.visualstudio.code ]; then
+            # Specifically
+            alias code="flatpak run com.visualstudio.code"
+        fi
+    fi
+
     flatpak_exports=/var/lib/flatpak/exports/bin
     if [ -e ${flatpak_exports} ]; then
         for i in `ls ${flatpak_exports}`; do
             alias run-$i="flatpak run $i"
         done
     fi
-    # Specifically
-    alias code="flatpak run com.visualstudio.code"
 }
-_generate_flatpak_alias
+_flatpak_aliases
 
 # Alias for AppImages in ~/.local/share/appimage
-function _generate_appimages_alias {
+function _appimages_aliases {
     appimage_dir=$HOME/.local/share/appimages
     if [ -e ${appimage_dir} ]; then
         for i in `find ${appimage_dir} -name "*.AppImage"`; do
@@ -54,7 +58,7 @@ function _generate_appimages_alias {
         done
     fi
 }
-_generate_appimages_alias
+_appimages_aliases
 
 #+++++++++++++++++++++++++++++++++++++++
 # Useful functions

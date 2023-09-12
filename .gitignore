@@ -1,2 +1,2 @@
 .DS_Store
-neovim/.config/nvim/plugin/packer_compiled.lua
+nvim/plugin/packer_compiled.lua

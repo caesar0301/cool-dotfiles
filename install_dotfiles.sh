@@ -144,7 +144,7 @@ function handle_zsh() {
         warn "$HOME/.zsrhc existed. Skip without rewriting"
     fi
 
-    FROM_DIR=$thispath/zsh/.config/zsh_runtime
+    FROM_DIR=$thispath/zsh/zsh_runtime
     TARGET_DIR=$HOME/.config/zsh_runtime
     if [ x$SOFTLINK == "x1" ]; then
         CMD="ln -sf"
@@ -153,7 +153,7 @@ function handle_zsh() {
     fi
     $CMD $FROM_DIR/init.zsh $TARGET_DIR/init.zsh
 
-    # Install our plugins
+    # Install bundled plugins
     if [ ! -e $TARGET_DIR/plugins ]; then
         mkdir -p $TARGET_DIR/plugins
     fi
@@ -193,9 +193,9 @@ function handle_neovim() {
             ~/.local/share/nvim/site/pack/packer/start/packer.nvim
     fi
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $thispath/neovim/.config/nvim $HOME/.config/
+        ln -sf $thispath/nvim $HOME/.config/
     else
-        cp -r $thispath/neovim/.config/nvim $HOME/.config/
+        cp -r $thispath/nvim $HOME/.config/
     fi
 }
 
@@ -252,11 +252,12 @@ function install_local_bins {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+SOFTLINK=0
 WITHDEPS=0
 while getopts se opt; do
     case $opt in
     f) SOFTLINK=0 ;;
+    s) SOFTLINK=1 ;;
     e) WITHDEPS=1 ;;
     h | ?) usage && exit 0 ;;
     esac
