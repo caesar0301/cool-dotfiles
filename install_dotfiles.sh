@@ -211,14 +211,15 @@ function install_neovim_deps() {
 }
 
 function handle_tmux() {
-    mkdir -p $HOME/.tmux/plugins
-    if [ ! -e $HOME/.tmux/plugins/tpm ]; then
-        git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+    if [ ! -e $HOME/.config/tmux ]; then
+        mkdir -p $HOME/.config/tmux
     fi
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $thispath/tmux/tmux.conf $HOME/.tmux.conf
+        ln -sf $thispath/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
+        ln -sf $thispath/tmux/tmux.conf.local $HOME/.config/tmux/tmux.conf.local
     else
-        cp $thispath/tmux/tmux.conf $HOME/.tmux.conf
+        cp $thispath/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
+        cp $thispath/tmux/tmux.conf.local $HOME/.config/tmux/tmux.conf.local
     fi
 }
 
