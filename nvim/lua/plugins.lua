@@ -90,10 +90,7 @@ return require("packer").startup(
         use "preservim/tagbar"
         use {
             -- Complement tagbar
-            "simrat39/symbols-outline.nvim",
-            config = function()
-                require("symbols-outline").setup()
-            end
+            "simrat39/symbols-outline.nvim"
         }
         use {
             "junegunn/fzf.vim",
