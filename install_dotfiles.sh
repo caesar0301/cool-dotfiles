@@ -146,6 +146,10 @@ function handle_zsh() {
 
     FROM_DIR=$thispath/zsh/zsh_runtime
     TARGET_DIR=$HOME/.config/zsh_runtime
+    if [ ! -e $TARGET_DIR ]; then
+        mkdir -p $TARGET_DIR
+    fi
+
     if [ x$SOFTLINK == "x1" ]; then
         CMD="ln -sf"
     else
