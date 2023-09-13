@@ -139,7 +139,7 @@ function handle_zsh() {
 
     if [ ! -e $HOME/.zshrc ]; then
         # Do not overwrite user local configs
-        cp $thispath/zsh/.zshrc $HOME/.zshrc
+        cp $thispath/zsh/zshrc $HOME/.zshrc
     else
         warn "$HOME/.zsrhc existed. Skip without rewriting"
     fi
@@ -176,9 +176,9 @@ function handle_vim() {
     curl --progress-bar -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $thispath/vim/.vimrc $HOME/.vimrc
+        ln -sf $thispath/vim/vimrc $HOME/.vimrc
     else
-        cp $thispath/vim/.vimrc $HOME/.vimrc
+        cp $thispath/vim/vimrc $HOME/.vimrc
     fi
 }
 
