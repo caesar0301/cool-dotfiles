@@ -34,7 +34,10 @@ function error() {
 }
 
 function usage() {
-    info "Usage: install_dotfiles.sh [-f] [-e]"
+    info "Usage: install_dotfiles.sh [-f] [-s] [-e]"
+    info "  -f copy and install"
+    info "  -s soft linke install"
+    info "  -e install dependencies"
 }
 
 function install_pyenv() {
