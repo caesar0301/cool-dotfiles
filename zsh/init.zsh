@@ -12,12 +12,22 @@
 #     You can put any plugin or zsh-suffixed scripts in
 #     ~/.config/zsh/plugins to make them work.
 #############################################################
+ZI_HOME="${HOME}/.zi"
+ZSH_CONFIG_DIR="${HOME}/.config/zsh"
+ZSH_PLUGIN_DIR="${HOME}/.config/zsh/plugins"
+
+# extra envs
+export ZI_HOME=${ZI_HOME}
+export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
+export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
+
+# add local bin
+export PATH=$PATH:$HOME/.local/bin
 
 #+++++++++++++++++++++++++++++++++++++++
 # ZI manager
 #+++++++++++++++++++++++++++++++++++++++
 
-ZI_HOME="${HOME}/.zi"
 source "${ZI_HOME}/bin/zi.zsh"
 
 autoload -Uz _zi
@@ -126,17 +136,15 @@ autoload -U zed
 autoload -U zmv
 autoload -U compinit && compinit
 
-export PLUGIN_HOME="${HOME}/.config/zsh/plugins"
-
-# Load my extensions under $PLUGIN_HOME
+# Load my extensions under $ZSH_PLUGIN_DIR
 function _load_custom_extensions {
-    if [ -e ${PLUGIN_HOME} ]; then
+    if [ -e ${ZSH_PLUGIN_DIR} ]; then
         # Load plugins
-        for plugin in $(ls -d $PLUGIN_HOME/*); do
+        for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
             zi load $plugin
         done
         # Load plain zsh scripts
-        for i in `find ${PLUGIN_HOME} -maxdepth 1 -type f -name "*.zsh"`; do
+        for i in `find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"`; do
             zi snippet $i;
         done
     fi
@@ -145,7 +153,7 @@ _load_custom_extensions
 
 # Reload zshrc globally
 function zshld {
-    myextdir=$(basename $(echo "${PLUGIN_HOME}" | sed -E -n "s|(.*[^/])/?|\1|p"))
+    myextdir=$(basename $(echo "${ZSH_PLUGIN_DIR}" | sed -E -n "s|(.*[^/])/?|\1|p"))
     if [ -e $HOME/.zi ]; then
         ls -d $HOME/.zi/snippets/* | grep "$myextdir" | xargs rm -rf
     fi
@@ -155,8 +163,8 @@ function zshld {
 # Update zsh plugins
 function zshup {
     old_path=$(pwd)
-    if [ -e ${PLUGIN_HOME} ]; then
-        for plugin in $(ls -d $PLUGIN_HOME/*); do
+    if [ -e ${ZSH_PLUGIN_DIR} ]; then
+        for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
             if [ -e ${plugin}/.git ]; then
                 echo -n "Updating plugin ${plugin}..."
                 cd $plugin && git pull -q && echo "done" && cd ${old_path}

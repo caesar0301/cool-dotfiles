@@ -6,9 +6,7 @@
 # JAVA_HOME_4GJF
 # GJF_JAR_FILE
 #+++++++++++++++++++++++++++++++++++++++
-alias cfr="java -jar ~/bin/cfr-0.152.jar"
-alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-alias skim="/Applications/Skim.app/Contents/MacOS/Skim"
+
 
 function _initJenv {
     if [ -e "$HOME/.jenv" ]; then
