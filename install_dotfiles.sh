@@ -177,7 +177,7 @@ function handle_zsh {
         # Do not overwrite user local configs
         cp $THISDIR/zsh/zshrc $HOME/.zshrc
     else
-        warn "$HOME/.zsrhc existed. Skip without rewriting"
+        warn "$HOME/.zsrhc existed, skip without rewriting"
     fi
 
     if [ x$SOFTLINK == "x1" ]; then
@@ -244,6 +244,32 @@ function handle_emacs {
     fi
 }
 
+function handle_ctags {
+    if [ ! -e $HOME/.ctags ]; then
+        # Do not overwrite user local configs
+        cp $THISDIR/ctags/ctags $HOME/.ctags
+    else
+        warn "$HOME/.ctags existed, skip without rewriting"
+    fi
+}
+
+function handle_all {
+    handle_zsh
+    handle_tmux
+    handle_neovim
+    handle_emacs
+    handle_ctags
+}
+
+# auto completion of SBCL with rlwrap
+function handle_rlwrap {
+    if [ ! -e $HOME/.sbcl_completions ]; then
+        cp $THISDIR/rlwrap/sbcl_completions $HOME/.sbcl_completions
+    else
+        warn "$HOME/.sbcl_completions existed, skip without rewriting"
+    fi
+}
+
 ############################################################################
 
 function cleanse_all {
@@ -288,7 +314,9 @@ if [ "x$WITHDEPS" == "x1" ]; then
     #install_vim_deps
     install_neovim_deps
 fi
-handle_zsh && handle_tmux && handle_neovim && handle_emacs
+
 install_local_bins
+
+handle_all
 
 info "Installed successfully!"

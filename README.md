@@ -4,7 +4,7 @@ Personal collection of dotfiles
 
 ## Usage
 
-The script `install_dotfiles.sh` automatically installs dependencies and configures `zsh`, `nvim`, `tmux` and `emacs`.
+The script `install_dotfiles.sh` automatically installs dependencies and configures `zsh`, `nvim`, `tmux` and `emacs` etc.
 
 ```bash
 # Install dotfiles by soft links (default)
@@ -14,5 +14,8 @@ The script `install_dotfiles.sh` automatically installs dependencies and configu
 ./install_dotfiles.sh -f
 
 # With essential dependencies
-./install_dotfiles.sh -f -e
+./install_dotfiles.sh -e
+
+# Cleanse installer changes
+./install_dotfiles.sh -c
 ```
