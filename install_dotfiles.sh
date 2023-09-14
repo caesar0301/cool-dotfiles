@@ -36,7 +36,6 @@ function mkdir2 {
     if [ ! -e $1 ]; then mkdir -p $1; fi
 }
 
-
 function check_sudo_access {
     prompt=$(sudo -nv 2>&1)
     if [ $? -eq 0 ]; then
@@ -150,7 +149,6 @@ function install_zsh_deps {
     install_pyenv
 }
 
-
 function install_vim_deps {
     install_fzf
     install_jdt_language_server
@@ -208,7 +206,6 @@ function handle_vim {
     fi
 }
 
-
 function handle_neovim {
     # install plugin manager
     packer_home=$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
@@ -223,8 +220,6 @@ function handle_neovim {
         cp -r $THISDIR/nvim $XDG_CONFIG_HOME/
     fi
 }
-
-
 
 function handle_tmux {
     mkdir2 $XDG_CONFIG_HOME/tmux
@@ -250,7 +245,6 @@ function handle_emacs {
 }
 
 ############################################################################
-
 
 function cleanse_all {
     for i in $(ls $THISDIR/local_bin/); do
