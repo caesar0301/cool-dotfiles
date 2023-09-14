@@ -1,5 +1,5 @@
 #############################################################
-# Filename: ~/.config/zsh_runtime/init.zsh
+# Filename: ~/.config/zsh/init.zsh
 #     About: init script of zsh
 #     Maintained by xiaming.cxm, updated 2023-05-11
 #
@@ -10,7 +10,7 @@
 # Plugins:
 #     We recommend extend custom zsh settings via plugins.
 #     You can put any plugin or zsh-suffixed scripts in
-#     ~/.config/zsh_runtime/plugins to make them work.
+#     ~/.config/zsh/plugins to make them work.
 #############################################################
 
 #+++++++++++++++++++++++++++++++++++++++
@@ -126,7 +126,7 @@ autoload -U zed
 autoload -U zmv
 autoload -U compinit && compinit
 
-export PLUGIN_HOME="${HOME}/.config/zsh_runtime/plugins"
+export PLUGIN_HOME="${HOME}/.config/zsh/plugins"
 
 # Load my extensions under $PLUGIN_HOME
 function _load_custom_extensions {

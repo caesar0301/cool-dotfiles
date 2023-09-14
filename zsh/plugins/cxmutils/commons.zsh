@@ -82,7 +82,7 @@ function occ {
         ;;
         vi|vim|nvim) cf=$HOME/.config/nvim/init.lua
         ;;
-        zsh) cf=$HOME/.config/zsh_runtime/init.zsh
+        zsh) cf=$HOME/.config/zsh/init.zsh
             while getopts eh opt; do
                 case $opt in
                     e)    cf=$HOME/.zshenv ;;
@@ -92,7 +92,7 @@ function occ {
         ;;
         ssh) cf=$HOME/.ssh/config
         ;;
-        tmux) cf=$HOME/.tmux.conf
+        tmux) cf=$HOME/.config/tmux/tmux.conf.local
         ;;
         clash) cf=$HOME/.config/clash/config.yaml
         ;;
