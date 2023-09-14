@@ -247,9 +247,27 @@ function handle_emacs {
 function handle_ctags {
     if [ ! -e $HOME/.ctags ]; then
         # Do not overwrite user local configs
-        cp $THISDIR/ctags/ctags $HOME/.ctags
+        if [ x$SOFTLINK == "x1" ]; then
+            ln -sf $THISDIR/ctags/ctags $HOME/.ctags
+        else
+            cp $THISDIR/ctags/ctags $HOME/.ctags
+        fi
     else
         warn "$HOME/.ctags existed, skip without rewriting"
+    fi
+}
+
+# auto completion of SBCL with rlwrap
+function handle_rlwrap {
+    if [ ! -e $HOME/.sbcl_completions ]; then
+        # Do not overwrite user local configs
+        if [ x$SOFTLINK == "x1" ]; then
+            ln -sf $THISDIR/rlwrap/sbcl_completions $HOME/.sbcl_completions
+        else
+            cp $THISDIR/rlwrap/sbcl_completions $HOME/.sbcl_completions
+        fi
+    else
+        warn "$HOME/.sbcl_completions existed, skip without rewriting"
     fi
 }
 
@@ -259,15 +277,7 @@ function handle_all {
     handle_neovim
     handle_emacs
     handle_ctags
-}
-
-# auto completion of SBCL with rlwrap
-function handle_rlwrap {
-    if [ ! -e $HOME/.sbcl_completions ]; then
-        cp $THISDIR/rlwrap/sbcl_completions $HOME/.sbcl_completions
-    else
-        warn "$HOME/.sbcl_completions existed, skip without rewriting"
-    fi
+    handle_rlwrap
 }
 
 ############################################################################
@@ -292,6 +302,8 @@ function cleanse_all {
             rm -rf $XDG_CONFIG_HOME/zsh/plugins/$(basename $dname)
         done
     fi
+    rm -rf $HOME/.ctags
+    rm -rf $HOME/.sbcl_completions
     info "All cleansed!"
 }
 
