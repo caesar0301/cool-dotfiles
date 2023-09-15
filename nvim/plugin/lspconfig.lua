@@ -8,6 +8,9 @@ lsp_status.register_progress()
 local goto_preview = require("goto-preview")
 goto_preview.setup {}
 
+-- turn off logging by default; options: debug, error...
+vim.lsp.set_log_level("off")
+
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local common_caps = vim.lsp.protocol.make_client_capabilities()
 common_caps = nvim_cmp.default_capabilities(common_caps)
