@@ -109,31 +109,18 @@ function install_shfmt {
     curl -sS https://webi.sh/shfmt | sh
 }
 
-#
-# Python: black
-# JS/JSON/HTTP/CSS: js-beautify
-# Ruby: ruby-beautify
-# Golang: gofmt
-# Rust: rustfmt
-# Perl: Perl::Tidy
-# Haskell: stylish-haskell
-# Markdown: remark-cli
-# Shell: shfmt
-# Lua: lua-fmt
-# SQL: sqlformat
-# CMake: cmake_format
-# LaTeX: latexindent
-# OCaml: ocamlformat
-# LISP/Scheme: scmindent
-#
+# Autoformat wrapper, for more refer to
+# https://github.com/vim-autoformat/vim-autoformat/blob/master/README.md
 function install_autoformat_deps {
     info "Installing vim-autoformat dependencies..."
 
     info "Installing deps from pip..."
-    pip install -U black sqlformat cmake_format
+    pip install -U pynvim black sqlformat cmake_format
 
     info "Installing deps from npm..."
-    sudo npm install --quiet -g remark-cli js-beautify lua-fmt scmindent yaml-language-server
+    sudo npm install --quiet -g remark-cli \
+        js-beautify html-beautify \
+        lua-fmt scmindent yaml-language-server
 
     info "Installing deps from gem..."
     sudo gem install --quiet ruby-beautify

@@ -34,6 +34,9 @@ let g:formatters_lisp=['scmindent']
 let g:formatdef_shfmt = '"shfmt -bn -i ".(&expandtab ? shiftwidth() : "0")'
 let g:formatters_sh=['shfmt']
 
+let g:formatdef_remark_markdown = '"remark --no-color"'
+let g:formatters_markdown = ['remark_markdown']
+
 " Autoformat on save
 augroup autoformat
     :autocmd!
