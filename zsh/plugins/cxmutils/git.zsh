@@ -1,7 +1,7 @@
 #############################################################
 ## My custom git shortcuts
 #############################################################
-function git_reset_recurse_submodules {
+function git-reset-recurse-submodules {
     #Cleans and resets a git repo and its submodules
     #https://gist.github.com/nicktoumpelis/11214362
     git reset --hard
@@ -12,7 +12,7 @@ function git_reset_recurse_submodules {
 }
 
 # Remove deleted file from git cache
-function git_prune_cache {
+function git-prune-cache {
     FILES=$(git ls-files -d)
     if [[ ! -z $FILES ]]; then
         git rm $FILES
@@ -22,7 +22,7 @@ function git_prune_cache {
 }
 
 # Remove git submodule
-function git_prune_submodule {
+function git-prune-submodule {
     SUBMODULE=$1
     git submodule deinit -f -- $SUBMODULE
     rm -rf .git/modules/$SUBMODULE

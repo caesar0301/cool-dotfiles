@@ -6,7 +6,7 @@
 # PROXY_HTTP_PORT
 # PROXY_SOCKS_PORT
 #+++++++++++++++++++++++++++++++++++++++
-function proxy_on {
+function proxy-on {
     if [ "x${OLD_PROMPT_PROXY}" != "x" ]; then
         echo "Proxy already ON, run proxy_off first."
         return 0
@@ -28,7 +28,7 @@ function proxy_on {
     export PROMPT="[p]>>$PROMPT"
 }
 
-function proxy_off {
+function proxy-off {
     if [ "x${OLD_PROMPT_PROXY}" != "x" ]; then
         export PROMPT=$OLD_PROMPT_PROXY
         unset OLD_PROMPT_PROXY

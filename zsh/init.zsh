@@ -58,7 +58,6 @@ zi snippet OMZP::colored-man-pages
 # Dev
 zi snippet OMZP::git
 zi snippet OMZP::gitignore
-zi snippet OMZP::mvn
 
 # Web
 zi snippet OMZP::urltools
