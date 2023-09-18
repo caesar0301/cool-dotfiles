@@ -20,8 +20,8 @@ map <leader>sa zg
 map <leader>s? z=
 
 " Eanble checking for textual files
-autocmd FileType markdown setlocal spell
-autocmd BufRead,BufNewFile *.md setlocal spell
+"autocmd FileType markdown setlocal spell spelllang=en_us
+"autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
 
 """"""""""""""""""""""""""""""""""
 " Edit misc
