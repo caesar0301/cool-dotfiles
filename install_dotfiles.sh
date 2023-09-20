@@ -105,8 +105,10 @@ function install_google_java_format {
 }
 
 function install_shfmt {
-    info "Installing shfmt..."
-    curl -sS https://webi.sh/shfmt | sh
+    if ! command -v shfmt 1>/dev/null 2>&1; then
+        info "Installing shfmt..."
+        curl -sS https://webi.sh/shfmt | sh
+    fi
 }
 
 # Autoformat wrapper, for more refer to
@@ -160,7 +162,7 @@ function handle_zsh {
     fi
     mkdir2 $XDG_CONFIG_HOME/zsh
 
-    if [ ! -e $HOME/.zshrc ]; then
+    if [ ! -e $HOME/.zshrc ] || [ -L $HOME/.zshrc ]; then
         # Do not overwrite user local configs
         cp $THISDIR/zsh/zshrc $HOME/.zshrc
     else
@@ -232,7 +234,7 @@ function handle_emacs {
 }
 
 function handle_ctags {
-    if [ ! -e $HOME/.ctags ]; then
+    if [ ! -e $HOME/.ctags ] || [ -L $HOME/.ctags ]; then
         # Do not overwrite user local configs
         if [ x$SOFTLINK == "x1" ]; then
             ln -sf $THISDIR/ctags/ctags $HOME/.ctags
@@ -246,7 +248,7 @@ function handle_ctags {
 
 # auto completion of SBCL with rlwrap
 function handle_rlwrap {
-    if [ ! -e $HOME/.sbcl_completions ]; then
+    if [ ! -e $HOME/.sbcl_completions ] || [ -L $HOME/.sbcl_completions ]; then
         # Do not overwrite user local configs
         if [ x$SOFTLINK == "x1" ]; then
             ln -sf $THISDIR/rlwrap/sbcl_completions $HOME/.sbcl_completions
@@ -259,7 +261,7 @@ function handle_rlwrap {
 }
 
 function handle_shell_proxy {
-    if [ ! -e $HOME/.config/proxy ]; then
+    if [ ! -e $HOME/.config/proxy ] || [ -L $HOME/.config/proxy ]; then
         if [ x$SOFTLINK == "x1" ]; then
             ln -sf $THISDIR/zsh/proxy-config $HOME/.config/proxy
         else
