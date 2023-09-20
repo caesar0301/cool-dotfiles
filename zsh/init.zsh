@@ -3,21 +3,23 @@
 #     About: init script of zsh
 #     Maintained by xiaming.cxm, updated 2023-05-11
 #
-# Install:
-#     mkdir -p ~/.zi/completions
-#     git clone https://github.com/z-shell/zi.git ~/.zi/bin
-#
 # Plugins:
 #     We recommend extend custom zsh settings via plugins.
 #     You can put any plugin or zsh-suffixed scripts in
 #     ~/.config/zsh/plugins to make them work.
 #############################################################
-ZI_HOME="${HOME}/.zi"
+
+# Install zinit
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
+
+ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 ZSH_CONFIG_DIR="${HOME}/.config/zsh"
 ZSH_PLUGIN_DIR="${HOME}/.config/zsh/plugins"
 
 # extra envs
-export ZI_HOME=${ZI_HOME}
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
 export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
 
@@ -28,39 +30,38 @@ export PATH=$PATH:$HOME/.local/bin
 # ZI manager
 #+++++++++++++++++++++++++++++++++++++++
 
-source "${ZI_HOME}/bin/zi.zsh"
-
 autoload -Uz _zi
 (( ${+_comps} )) && _comps[zi]=_zi
 
 # Oh-My-Zsh libs
-zi snippet OMZL::clipboard.zsh
-zi snippet OMZL::compfix.zsh
-zi snippet OMZL::completion.zsh
-zi snippet OMZL::correction.zsh
-zi snippet OMZL::directories.zsh
-zi snippet OMZL::functions.zsh
-zi snippet OMZL::git.zsh
-zi snippet OMZL::spectrum.zsh
-zi snippet OMZL::theme-and-appearance.zsh
+zinit snippet OMZL::clipboard.zsh
+zinit snippet OMZL::compfix.zsh
+zinit snippet OMZL::completion.zsh
+zinit snippet OMZL::correction.zsh
+zinit snippet OMZL::directories.zsh
+zinit snippet OMZL::functions.zsh
+zinit snippet OMZL::git.zsh
+zinit snippet OMZL::spectrum.zsh
+zinit snippet OMZL::theme-and-appearance.zsh
 
 # Efficiency
-zi snippet OMZP::alias-finder
-zi snippet OMZP::extract
-zi snippet OMZP::vi-mode
-zi snippet OMZP::fzf
-zi ice pick"z.sh"
-zi load rupa/z
+zinit snippet OMZP::alias-finder
+zinit snippet OMZP::extract
+zinit snippet OMZP::vi-mode
+zinit snippet OMZP::fzf
+zinit ice pick"z.sh"
+zinit load rupa/z
 
 # Colored
-zi snippet OMZP::colored-man-pages
+zinit snippet OMZP::colored-man-pages
 
 # Dev
-zi snippet OMZP::git
-zi snippet OMZP::gitignore
+zinit snippet OMZP::git
+zinit snippet OMZP::gitignore
 
 # Web
 zi snippet OMZP::urltools
+zi ice svn
 zi snippet OMZP::shell-proxy
 
 # Python
@@ -76,33 +77,33 @@ function _setupPyenv {
     fi
 }
 _setupPyenv
-zi snippet OMZP::pyenv
-zi snippet OMZP::jenv
-zi snippet OMZP::rbenv
-zi snippet OMZP::virtualenv
+zinit snippet OMZP::pyenv
+zinit snippet OMZP::jenv
+zinit snippet OMZP::rbenv
+zinit snippet OMZP::virtualenv
 
 # Theme
-zi cdclear -q
+zinit cdclear -q
 setopt promptsubst
-zi snippet OMZP::themes
-#zi snippet OMZT::robbyrussell
-zi snippet OMZT::jtriley
-#zi snippet OMZT::kafeitu
-#zi snippet OMZT::crcandy
+zinit snippet OMZP::themes
+#zinit snippet OMZT::robbyrussell
+zinit snippet OMZT::jtriley
+#zinit snippet OMZT::kafeitu
+#zinit snippet OMZT::crcandy
 
 # Completion
-zi ice pick"zsh-history-substring-search.zsh"
-zi load zsh-users/zsh-history-substring-search
+zinit ice pick"zsh-history-substring-search.zsh"
+zinit load zsh-users/zsh-history-substring-search
 
-zi ice pick"src"
-zi load zsh-users/zsh-completions
-fpath=($HOME/.zi/plugins/zsh-users---zsh-completions/src $fpath)
+zinit ice pick"src"
+zinit load zsh-users/zsh-completions
+fpath=($ZINIT_WORKDIR/plugins/zsh-users---zsh-completions/src $fpath)
 
 # Fish-shell likes
-zi ice pick"zsh-autosuggestions.zsh"
-zi load zsh-users/zsh-autosuggestions
-zi ice pick "zsh-syntax-highlighting.zsh"
-zi load zsh-users/zsh-syntax-highlighting
+zinit ice pick"zsh-autosuggestions.zsh"
+zinit load zsh-users/zsh-autosuggestions
+zinit ice pick "zsh-syntax-highlighting.zsh"
+zinit load zsh-users/zsh-syntax-highlighting
 
 # Profiling perf
 if [[ ${PROFILE_PERF} == 1 ]]; then
@@ -143,11 +144,11 @@ function _load_custom_extensions {
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
         # Load plugins
         for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
-            zi load $plugin
+            zinit load $plugin
         done
         # Load plain zsh scripts
         for i in `find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"`; do
-            zi snippet $i;
+            zinit snippet $i;
         done
     fi
 }
@@ -156,13 +157,13 @@ _load_custom_extensions
 # Reload zshrc globally
 function zshld {
     myextdir=$(basename $(echo "${ZSH_PLUGIN_DIR}" | sed -E -n "s|(.*[^/])/?|\1|p"))
-    if [ -e $HOME/.zi ]; then
-        ls -d $HOME/.zi/snippets/* | grep "$myextdir" | xargs rm -rf
+    if [ -e $ZINIT_WORKDIR ]; then
+        ls -d $ZINIT_WORKDIR/snippets/* | grep "$myextdir" | xargs rm -rf
     fi
     source $HOME/.zshrc
 }
 
-# Update zsh plugins
+# Update zinit and plugins
 function zshup {
     old_path=$(pwd)
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
@@ -173,8 +174,10 @@ function zshup {
             fi
         done
     fi
-    echo -n "Updating ${ZI_HOME}/bin..."
-    cd ${ZI_HOME}/bin && git pull -q && echo "done" && cd ${old_path}
+    # self update
+    zinit self-update
+    # plugin update
+    zinit update --parallel
 }
 
 # fzf init
