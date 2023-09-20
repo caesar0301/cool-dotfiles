@@ -104,50 +104,81 @@ function install_google_java_format {
     fi
 }
 
-function install_shfmt {
-    if ! command -v shfmt 1>/dev/null 2>&1; then
-        info "Installing shfmt..."
-        curl -sS https://webi.sh/shfmt | sh
-    fi
-}
-
 # Autoformat wrapper, for more refer to
 # https://github.com/vim-autoformat/vim-autoformat/blob/master/README.md
 function install_autoformat_deps {
     info "Installing vim-autoformat dependencies..."
 
-    info "Installing deps from pip..."
-    pip install -U pynvim black sqlformat cmake_format
-
-    info "Installing deps from npm..."
-    sudo npm install --quiet --force -g remark-cli \
-        js-beautify html-beautify \
-        lua-fmt scmindent yaml-language-server
-
-    info "Installing deps from gem..."
-    sudo gem install --quiet ruby-beautify
-
     install_google_java_format
-    install_shfmt
+
+    # pip
+    info "Installing deps from pip..."
+    pip install -U pip pynvim black sqlformat cmake_format
+
+    # npm
+    npmlibs=()
+    if ! command -v js-beautify 1>/dev/null 2>&1; then
+        npmlibs+=(js-beautify)
+    fi
+    if ! command -v remark 1>/dev/null 2>&1; then
+        npmlibs+=(remark-cli)
+    fi
+    if ! command -v html-beautify 1>/dev/null 2>&1; then
+        npmlibs+=(html-beautify)
+    fi
+    if ! command -v luafmt 1>/dev/null 2>&1; then
+        npmlibs+=(lua-fmt)
+    fi
+    if ! command -v scmindent 1>/dev/null 2>&1; then
+        npmlibs+=(scmindent)
+    fi
+    if ! command -v yaml-language-server 1>/dev/null 2>&1; then
+        npmlibs+=(yaml-language-server)
+    fi
+    if command -v npm 1>/dev/null 2>&1; then
+        if [[ ${#npmlibs[@]} > 0 ]]; then
+            info "Installing npm deps: $npmlibs"
+            sudo npm install --quiet --force -g ${npmlibs[@]}
+        fi
+    else
+        warn "Command npm not found."
+    fi
+
+    # gem
+    gemlibs=()
+    if ! command -v ruby-beautify 1>/dev/null 2>&1; then
+        gemlibs+=(ruby-beautify)
+    fi
+    if command -v gem 1>/dev/null 2>&1; then
+        if [[ ${#gemlibs[@]} > 0 ]]; then
+            info "Installing gem deps: $gemlibs"
+            sudo gem install --quiet $gemlibs
+        fi
+    else
+        warn "Command gem not found."
+    fi
+
+    # shfmt
+    if ! command -v shfmt 1>/dev/null 2>&1; then
+        info "Installing shfmt..."
+        curl -sS https://webi.sh/shfmt | sh
+    fi
 
     # Install perl first
     # cpan -i Perl::Tidy
 }
 
-function install_zsh_deps {
+function install_all_deps {
     install_pyenv
+    install_fzf
+    install_jdt_language_server
+    install_hack_nerd_font #Required by nvim-web-devicons
+    install_autoformat_deps
 }
 
 function install_vim_deps {
     install_fzf
     install_jdt_language_server
-    install_autoformat_deps
-}
-
-function install_neovim_deps {
-    install_fzf
-    install_jdt_language_server
-    install_hack_nerd_font #Required by nvim-web-devicons
     install_autoformat_deps
 }
 
@@ -324,9 +355,8 @@ done
 
 if [ "x$WITHDEPS" == "x1" ]; then
     check_sudo_access
-    install_zsh_deps
+    install_all_deps
     #install_vim_deps
-    install_neovim_deps
 fi
 
 install_local_bins
