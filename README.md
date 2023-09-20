@@ -2,9 +2,15 @@
 
 Personal collection of dotfiles
 
-## Usage
+## Install
 
-The script `install_dotfiles.sh` automatically installs dependencies and configures `zsh`, `nvim`, `tmux` and `emacs` etc.
+Clone this repo
+
+```bash
+git clone https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles
+```
+
+Run `install_dotfiles.sh` automatically installs dependencies and configures `zsh`, `nvim`, `tmux` and `emacs` etc.
 
 ```bash
 # Install dotfiles by soft links (default)
