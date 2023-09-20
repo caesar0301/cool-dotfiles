@@ -7,25 +7,6 @@
 # GJF_JAR_FILE
 #+++++++++++++++++++++++++++++++++++++++
 
-
-function _initJenv {
-    if [ -e "$HOME/.jenv" ]; then
-        export PATH="$HOME/.jenv/bin:$PATH"
-        if command -v jenv 1>/dev/null 2>&1; then
-            eval "$(jenv init -)"
-        fi
-    fi
-}
-
-function _initRBenv {
-    if [ -e "$HOME/.rbenv" ]; then
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        if command -v rbenv 1>/dev/null 2>&1; then
-            eval "$(rbenv init - zsh)"
-        fi
-    fi
-}
-
 function _initGoenv {
     GOROOT=${GOROOT:-/usr/local/go}
     if [ -e $GOROOT ]; then
@@ -83,8 +64,6 @@ function _initHaskellEnv {
     fi
 }
 
-_initJenv
-_initRBenv
 _initGoenv
 _initRustEnv
 _initCuda

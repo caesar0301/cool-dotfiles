@@ -61,21 +61,24 @@ zi snippet OMZP::gitignore
 
 # Web
 zi snippet OMZP::urltools
+zi snippet OMZP::shell-proxy
 
 # Python
 function _setupPyenv {
+	# fix badly configured error of plugin
     # Consume 15% startup time
     if [ -e "$HOME/.pyenv" ]; then
         export PYENV_ROOT="$HOME/.pyenv"
         export PATH="$PYENV_ROOT/bin:$PATH"
         if command -v pyenv 1>/dev/null 2>&1; then
-            # Load pyenv automatically
             eval "$(pyenv init --path)"
         fi
     fi
 }
 _setupPyenv
 zi snippet OMZP::pyenv
+zi snippet OMZP::jenv
+zi snippet OMZP::rbenv
 zi snippet OMZP::virtualenv
 
 # Theme

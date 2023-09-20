@@ -118,7 +118,7 @@ function install_autoformat_deps {
     pip install -U pynvim black sqlformat cmake_format
 
     info "Installing deps from npm..."
-    sudo npm install --quiet -g remark-cli \
+    sudo npm install --quiet --force -g remark-cli \
         js-beautify html-beautify \
         lua-fmt scmindent yaml-language-server
 
@@ -258,6 +258,18 @@ function handle_rlwrap {
     fi
 }
 
+function handle_shell_proxy {
+    if [ ! -e $HOME/.config/proxy ]; then
+        if [ x$SOFTLINK == "x1" ]; then
+            ln -sf $THISDIR/zsh/proxy-config $HOME/.config/proxy
+        else
+            cp $THISDIR/zsh/proxy-config $HOME/.config/proxy
+        fi
+    else
+        warn "$HOME/.config/proxy existed, skip without rewriting"
+    fi
+}
+
 function handle_all {
     handle_zsh
     handle_tmux
@@ -265,6 +277,7 @@ function handle_all {
     handle_emacs
     handle_ctags
     handle_rlwrap
+    handle_shell_proxy
 }
 
 ############################################################################
