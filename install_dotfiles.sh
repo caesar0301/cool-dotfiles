@@ -51,9 +51,7 @@ function check_sudo_access {
 ############################################################################
 
 function install_local_bins {
-    if [ -e $HOME/.local/bin ]; then
-        mkdir -p $HOME/.local/bin
-    fi
+    mkdir2 $HOME/.local/bin
     cp $THISDIR/local_bin/* $HOME/.local/bin
 }
 
@@ -263,7 +261,7 @@ function handle_tmux {
 }
 
 function handle_emacs {
-    mkdir2 mkdir ~/.emacs.d
+    mkdir2 ~/.emacs.d
     rm -rf $HOME/.emacs.d/settings
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $THISDIR/emacs/.emacs.d/settings $HOME/.emacs.d/settings
