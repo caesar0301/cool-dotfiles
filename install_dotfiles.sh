@@ -8,6 +8,9 @@ THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
+SHFMT_VERSION="v3.7.0"
+ZSH_VERSION="5.8"
+
 function warn {
     warn_prefix="\033[33m"
     mssg_suffix="\033[00m"
@@ -34,6 +37,10 @@ function usage {
 
 function mkdir2 {
     if [ ! -e $1 ]; then mkdir -p $1; fi
+}
+
+function check_command {
+    return command -v $1 1>/dev/null 2>&1
 }
 
 function check_sudo_access {
@@ -105,6 +112,17 @@ function install_google_java_format {
     fi
 }
 
+function install_shfmt {
+    info "Installing shfmt..."
+    shfmtfile="shfmt_${SHFMT_VERSION}_linux_amd64"
+    if [ "$(uname)" == "Darwin" ]; then
+        shfmtfile="shfmt_${SHFMT_VERSION}_darwin_amd64"
+    fi
+    mkdir2 $HOME/.local/bin
+    curl -L -s https://github.com/mvdan/sh/releases/download/${SHFMT_VERSION}/$shfmtfile -o $HOME/.local/bin/shfmt
+    chmod +x $HOME/.local/bin/shfmt
+}
+
 # Autoformat wrapper, for more refer to
 # https://github.com/vim-autoformat/vim-autoformat/blob/master/README.md
 function install_autoformat_deps {
@@ -114,7 +132,7 @@ function install_autoformat_deps {
 
     # pip
     piplibs=(pip pynvim black sqlformat cmake_format)
-    if command -v pip 1>/dev/null 2>&1; then
+    if ! check_command pip; then
         if [[ ${#piplibs[@]} > 0 ]]; then
             info "Installing pip deps: $piplibs"
             pip install -U ${piplibs[@]}
@@ -125,25 +143,25 @@ function install_autoformat_deps {
 
     # npm
     npmlibs=()
-    if ! command -v js-beautify 1>/dev/null 2>&1; then
+    if ! check_command js-beautify; then
         npmlibs+=(js-beautify)
     fi
-    if ! command -v remark 1>/dev/null 2>&1; then
+    if ! check_command remark; then
         npmlibs+=(remark-cli)
     fi
-    if ! command -v html-beautify 1>/dev/null 2>&1; then
+    if ! check_command html-beautify; then
         npmlibs+=(html-beautify)
     fi
-    if ! command -v luafmt 1>/dev/null 2>&1; then
+    if ! check_command luafmt; then
         npmlibs+=(lua-fmt)
     fi
-    if ! command -v scmindent 1>/dev/null 2>&1; then
+    if ! check_command scmindent; then
         npmlibs+=(scmindent)
     fi
-    if ! command -v yaml-language-server 1>/dev/null 2>&1; then
+    if ! check_command yaml-language-server; then
         npmlibs+=(yaml-language-server)
     fi
-    if command -v npm 1>/dev/null 2>&1; then
+    if check_command npm; then
         if [[ ${#npmlibs[@]} > 0 ]]; then
             info "Installing npm deps: $npmlibs"
             sudo npm install --quiet --force -g ${npmlibs[@]}
@@ -154,10 +172,10 @@ function install_autoformat_deps {
 
     # gem
     gemlibs=()
-    if ! command -v ruby-beautify 1>/dev/null 2>&1; then
+    if ! check_command ruby-beautify; then
         gemlibs+=(ruby-beautify)
     fi
-    if command -v gem 1>/dev/null 2>&1; then
+    if command -v gem; then
         if [[ ${#gemlibs[@]} > 0 ]]; then
             info "Installing gem deps: $gemlibs"
             sudo gem install --quiet $gemlibs
@@ -167,28 +185,36 @@ function install_autoformat_deps {
     fi
 
     # shfmt
-    if ! command -v shfmt 1>/dev/null 2>&1; then
-        info "Installing shfmt..."
-        echo "insecure" >>~/.curlrc # Surpress certificate expired error
-        curl -sS https://webi.sh/shfmt | sh
+    if ! check_command shfmt; then
+        install_shfmt
     fi
-
-    # Install perl first
-    # cpan -i Perl::Tidy
 }
 
-function install_all_deps {
-    install_pyenv
-    install_fzf
-    install_jdt_language_server
-    install_hack_nerd_font #Required by nvim-web-devicons
-    install_autoformat_deps
+function install_zsh {
+    info "Installing zsh..."
+    mkdir2 $HOME/.local/bin
+    mkdir2 /tmp/build-zsh
+    curl -L -s http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xf - -C /tmp/build-zsh/
+    cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
 }
 
 function install_vim_deps {
     install_fzf
     install_jdt_language_server
     install_autoformat_deps
+}
+
+function install_all_deps {
+    install_pyenv
+    install_fzf
+    install_jdt_language_server
+    # required by nvim-web-devicons
+    install_hack_nerd_font
+    install_autoformat_deps
+    #install_vim_deps
+    if ! check_command zsh; then
+        install_zsh
+    fi
 }
 
 ############################################################################
@@ -365,7 +391,6 @@ done
 if [ "x$WITHDEPS" == "x1" ]; then
     check_sudo_access
     install_all_deps
-    #install_vim_deps
 fi
 
 install_local_bins
