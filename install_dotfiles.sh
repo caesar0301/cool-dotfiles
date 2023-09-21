@@ -194,7 +194,7 @@ function install_zsh {
     info "Installing zsh..."
     mkdir2 $HOME/.local/bin
     mkdir2 /tmp/build-zsh
-    curl -L -s http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xf - -C /tmp/build-zsh/
+    curl -L -s http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
     cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
 }
 
