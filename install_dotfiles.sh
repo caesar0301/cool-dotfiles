@@ -51,6 +51,9 @@ function check_sudo_access {
 ############################################################################
 
 function install_local_bins {
+    if [ -e $HOME/.local/bin ]; then
+        mkdir -p $HOME/.local/bin
+    fi
     cp $THISDIR/local_bin/* $HOME/.local/bin
 }
 
