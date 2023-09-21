@@ -90,7 +90,7 @@ function install_hack_nerd_font {
     if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
         info "Install Hack nerd font and update font cache..."
         mkdir2 $FONTDIR
-        curl -L -s https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ - -C $FONTDIR
+        curl -L -s https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
         fc-cache -f
     fi
 }
@@ -112,8 +112,15 @@ function install_autoformat_deps {
     install_google_java_format
 
     # pip
-    info "Installing deps from pip..."
-    pip install -U pip pynvim black sqlformat cmake_format
+    piplibs=(pip pynvim black sqlformat cmake_format)
+    if command -v pip 1>/dev/null 2>&1; then
+        if [[ ${#piplibs[@]} > 0 ]]; then
+            info "Installing pip deps: $piplibs"
+            pip install -U ${piplibs[@]}
+        fi
+    else
+        warn "Command pip not found, install and try again."
+    fi
 
     # npm
     npmlibs=()
@@ -141,7 +148,7 @@ function install_autoformat_deps {
             sudo npm install --quiet --force -g ${npmlibs[@]}
         fi
     else
-        warn "Command npm not found."
+        warn "Command npm not found, install and try again."
     fi
 
     # gem
@@ -155,7 +162,7 @@ function install_autoformat_deps {
             sudo gem install --quiet $gemlibs
         fi
     else
-        warn "Command gem not found."
+        warn "Command gem not found, install and try again."
     fi
 
     # shfmt
