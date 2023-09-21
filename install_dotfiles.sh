@@ -169,6 +169,7 @@ function install_autoformat_deps {
     # shfmt
     if ! command -v shfmt 1>/dev/null 2>&1; then
         info "Installing shfmt..."
+        echo "insecure" >>~/.curlrc # Surpress certificate expired error
         curl -sS https://webi.sh/shfmt | sh
     fi
 
