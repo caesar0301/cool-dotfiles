@@ -40,7 +40,8 @@ function mkdir2 {
 }
 
 function check_command {
-    return command -v $1 1>/dev/null 2>&1
+    command -v $1 1>/dev/null 2>&1
+    return $?
 }
 
 function check_sudo_access {
@@ -132,7 +133,7 @@ function install_autoformat_deps {
 
     # pip
     piplibs=(pip pynvim black sqlformat cmake_format)
-    if ! check_command pip; then
+    if check_command pip; then
         if [[ ${#piplibs[@]} > 0 ]]; then
             info "Installing pip deps: $piplibs"
             pip install -U ${piplibs[@]}
