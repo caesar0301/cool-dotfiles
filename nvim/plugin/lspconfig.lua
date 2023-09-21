@@ -91,7 +91,7 @@ lspconfig.clangd.setup {
     init_options = {
         clangdFileStatus = true
     },
-    cmd = {"clangd", "--background-index=true"},
+    cmd = {"clangd", "--background-index=false"},
     capabilities = common_caps,
     on_attach = function(client, bufnr)
         local bufopts = {
