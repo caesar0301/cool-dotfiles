@@ -85,7 +85,7 @@ function install_jdt_language_server {
     if [ ! -e $dpath/bin/jdtls ]; then
         info "Installing jdt-language-server to $dpath..."
         mkdir2 $dpath >/dev/null
-        curl -L -s $jdtlink | tar zxf - -C $dpath
+        curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
     fi
 }
 
@@ -98,7 +98,7 @@ function install_hack_nerd_font {
     if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
         info "Install Hack nerd font and update font cache..."
         mkdir2 $FONTDIR
-        curl -L -s https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
+        curl -L --progress-bar ttps://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
         fc-cache -f
     fi
 }
@@ -119,7 +119,7 @@ function install_shfmt {
         shfmtfile="shfmt_${SHFMT_VERSION}_darwin_amd64"
     fi
     mkdir2 $HOME/.local/bin
-    curl -L -s https://github.com/mvdan/sh/releases/download/${SHFMT_VERSION}/$shfmtfile -o $HOME/.local/bin/shfmt
+    curl -L --progress-bar https://github.com/mvdan/sh/releases/download/${SHFMT_VERSION}/$shfmtfile -o $HOME/.local/bin/shfmt
     chmod +x $HOME/.local/bin/shfmt
 }
 
@@ -194,7 +194,7 @@ function install_zsh {
     info "Installing zsh..."
     mkdir2 $HOME/.local/bin
     mkdir2 /tmp/build-zsh
-    curl -L -s http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
+    curl -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
     cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
 }
 
