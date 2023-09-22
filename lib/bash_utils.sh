@@ -54,7 +54,7 @@ function check_sudo_access {
 function abspath {
     echo $(dirname $(realpath $0))
 }
-function abspath2 {
+function absfilepath {
     echo $(cd ${0%/*} && echo $PWD/${0##*/})
 }
 
