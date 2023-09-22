@@ -11,55 +11,11 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SHFMT_VERSION="v3.7.0"
 ZSH_VERSION="5.8"
 
-function warn {
-    warn_prefix="\033[33m"
-    mssg_suffix="\033[00m"
-    echo -e "$warn_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
-}
-function info {
-    info_prefix="\033[32m"
-    mssg_suffix="\033[00m"
-    echo -e "$info_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
-}
-function error {
-    erro_prefix="\033[31m"
-    mssg_suffix="\033[00m"
-    echo -e "$erro_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
-}
-
-function usage {
-    info "Usage: install_dotfiles.sh [-f] [-s] [-e]"
-    info "  -f copy and install"
-    info "  -s soft linke install"
-    info "  -e install dependencies"
-    info "  -c cleanse install"
-}
-
-function mkdir2 {
-    if [ ! -e $1 ]; then mkdir -p $1; fi
-}
-
-function check_command {
-    command -v $1 1>/dev/null 2>&1
-    return $?
-}
-
-function check_sudo_access {
-    prompt=$(sudo -nv 2>&1)
-    if [ $? -eq 0 ]; then
-        info "has_sudo__pass_set"
-    elif echo $prompt | grep -q '^sudo:'; then
-        warn "has_sudo__needs_pass"
-        sudo -v
-    else
-        error "no_sudo" && exit 1
-    fi
-}
-
-############################################################################
+# load common utils
+source $THISDIR/lib/bash_utils.sh
 
 function install_local_bins {
-    mkdir2 $HOME/.local/bin
+    mkdir_nowarn $HOME/.local/bin
     cp $THISDIR/local_bin/* $HOME/.local/bin
 }
 
@@ -85,7 +41,7 @@ function install_jdt_language_server {
     dpath=$HOME/.local/share/jdt-language-server
     if [ ! -e $dpath/bin/jdtls ]; then
         info "Installing jdt-language-server to $dpath..."
-        mkdir2 $dpath >/dev/null
+        mkdir_nowarn $dpath >/dev/null
         curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
     fi
 }
@@ -98,7 +54,7 @@ function install_hack_nerd_font {
     # install nerd patched font Hack, required by nvim-web-devicons
     if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
         info "Install Hack nerd font and update font cache..."
-        mkdir2 $FONTDIR
+        mkdir_nowarn $FONTDIR
         curl -L --progress-bar ttps://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
         fc-cache -f
     fi
@@ -119,7 +75,7 @@ function install_shfmt {
     if [ "$(uname)" == "Darwin" ]; then
         shfmtfile="shfmt_${SHFMT_VERSION}_darwin_amd64"
     fi
-    mkdir2 $HOME/.local/bin
+    mkdir_nowarn $HOME/.local/bin
     curl -L --progress-bar https://github.com/mvdan/sh/releases/download/${SHFMT_VERSION}/$shfmtfile -o $HOME/.local/bin/shfmt
     chmod +x $HOME/.local/bin/shfmt
 }
@@ -193,8 +149,8 @@ function install_autoformat_deps {
 
 function install_zsh {
     info "Installing zsh..."
-    mkdir2 $HOME/.local/bin
-    mkdir2 /tmp/build-zsh
+    mkdir_nowarn $HOME/.local/bin
+    mkdir_nowarn /tmp/build-zsh
     curl -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
     cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
 }
@@ -223,11 +179,11 @@ function install_all_deps {
 function handle_zsh {
     # Install ZI
     if [ ! -e $HOME/.zi ]; then
-        mkdir2 "$HOME/.zi/bin"
-        mkdir2 "$HOME/.zi/completions"
+        mkdir_nowarn "$HOME/.zi/bin"
+        mkdir_nowarn "$HOME/.zi/completions"
         git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
     fi
-    mkdir2 $XDG_CONFIG_HOME/zsh
+    mkdir_nowarn $XDG_CONFIG_HOME/zsh
 
     if [ ! -e $HOME/.zshrc ] || [ -L $HOME/.zshrc ]; then
         # Do not overwrite user local configs
@@ -244,7 +200,7 @@ function handle_zsh {
     $CMD $THISDIR/zsh/init.zsh $XDG_CONFIG_HOME/zsh/init.zsh
 
     # Install bundled plugins
-    mkdir2 $XDG_CONFIG_HOME/zsh/plugins
+    mkdir_nowarn $XDG_CONFIG_HOME/zsh/plugins
     for i in $(find $THISDIR/zsh/plugins -name "*.plugin.zsh"); do
         dname=$(dirname $i)
         $CMD $dname $XDG_CONFIG_HOME/zsh/plugins/
@@ -278,7 +234,7 @@ function handle_neovim {
 }
 
 function handle_tmux {
-    mkdir2 $XDG_CONFIG_HOME/tmux
+    mkdir_nowarn $XDG_CONFIG_HOME/tmux
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $THISDIR/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
         ln -sf $THISDIR/tmux/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
@@ -289,7 +245,7 @@ function handle_tmux {
 }
 
 function handle_emacs {
-    mkdir2 ~/.emacs.d
+    mkdir_nowarn ~/.emacs.d
     rm -rf $HOME/.emacs.d/settings
     if [ x$SOFTLINK == "x1" ]; then
         ln -sf $THISDIR/emacs/.emacs.d/settings $HOME/.emacs.d/settings
@@ -374,6 +330,14 @@ function cleanse_all {
     rm -rf $HOME/.ctags
     rm -rf $HOME/.sbcl_completions
     info "All cleansed!"
+}
+
+function usage {
+    info "Usage: install_dotfiles.sh [-f] [-s] [-e]"
+    info "  -f copy and install"
+    info "  -s soft linke install"
+    info "  -e install dependencies"
+    info "  -c cleanse install"
 }
 
 # Change to 0 to install a copy instead of soft link
