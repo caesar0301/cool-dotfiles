@@ -3,6 +3,9 @@
 "let mapleader = ","
 "let maplocalleader = ","
 
+" Enable paste mode
+set paste
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
