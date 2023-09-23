@@ -27,6 +27,20 @@ function install_pyenv {
     fi
 }
 
+function install_jenv {
+    if [ ! -e $HOME/.jenv ]; then
+        info "Installing jenv to $HOME/.jenv..."
+        git clone https://github.com/jenv/jenv.git $HOME/.jenv
+    fi
+}
+
+function install_rbenv {
+    if [ ! -e $HOME/.rbenv ]; then
+        info "Installing rbenv to $HOME/.rbenv..."
+        git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+    fi
+}
+
 function install_fzf {
     if [ ! -e $HOME/.fzf ]; then
         info "Installing fzf to $HOME/.fzf..."
@@ -163,6 +177,8 @@ function install_vim_deps {
 
 function install_all_deps {
     install_pyenv
+    install_jenv
+    install_rbenv
     install_fzf
     install_jdt_language_server
     # required by nvim-web-devicons
