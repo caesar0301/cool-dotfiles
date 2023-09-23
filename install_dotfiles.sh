@@ -177,12 +177,6 @@ function install_all_deps {
 ############################################################################
 
 function handle_zsh {
-    # Install ZI
-    if [ ! -e $HOME/.zi ]; then
-        mkdir_nowarn "$HOME/.zi/bin"
-        mkdir_nowarn "$HOME/.zi/completions"
-        git clone https://github.com/z-shell/zi.git "$HOME/.zi/bin"
-    fi
     mkdir_nowarn $XDG_CONFIG_HOME/zsh
 
     if [ ! -e $HOME/.zshrc ] || [ -L $HOME/.zshrc ]; then
@@ -342,7 +336,7 @@ function usage {
 
 # Change to 0 to install a copy instead of soft link
 SOFTLINK=1
-WITHDEPS=0
+WITHDEPS=1
 while getopts fsech opt; do
     case $opt in
     f) SOFTLINK=0 ;;
