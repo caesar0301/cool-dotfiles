@@ -36,9 +36,8 @@ if !exists("g:os_type")
 endif
 
 " In case default invalid default python version
-" PYTHON_HOME in use with higher priority. Otherwise in PATH
-if $PYTHON_HOME != ""
-  let g:python3_host_prog = substitute(system('echo ${PYTHON_HOME}'), '\n', '', '') .. '/bin/python3'
+if $NVIM_PYTHON3 != ""
+  let g:python3_host_prog = substitute(system('echo ${NVIM_PYTHON3}'), '\n', '', '') .. '/bin/python3'
 endif
 
 " vim copy to clipboard
