@@ -175,6 +175,23 @@ function install_vim_deps {
     install_autoformat_deps
 }
 
+function install_ossutil {
+    VERSION="1.7.17"
+    OSSTR="linux"
+    if [ "$(uname)" == "Darwin" ]; then
+        OSSTR="mac"
+    fi
+    ARCHSTR="amd64"
+    if [ "$(uname -m)" == "aarch64" ] || [ "$(uname -m)" == "arm64" ]; then
+        ARCHSTR="arm64"
+    fi
+    FILENAME="ossutil-v${VERSION}-${OSSTR}-${ARCHSTR}.zip"
+    DLINK="https://github.com/aliyun/ossutil/releases/download/v.$VERSION/$FILENAME"
+    info "Downloading ossutil $FILENAME..."
+    curl -L --progress-bar $DLINK -o /tmp/$FILENAME
+    unzip -o -j /tmp/$FILENAME '*/ossutil' -d $HOME/.local/bin
+}
+
 function install_all_deps {
     install_pyenv
     install_jenv
@@ -184,6 +201,7 @@ function install_all_deps {
     # required by nvim-web-devicons
     install_hack_nerd_font
     install_autoformat_deps
+    install_ossutil
     #install_vim_deps
     if ! check_command zsh; then
         install_zsh
