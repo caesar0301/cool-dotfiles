@@ -42,8 +42,9 @@ augroup autoformat
     :autocmd!
     " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
     au BufWrite *.go,*.py,*.lua,*.rs :Autoformat
-    au BufWrite *.cmake,*.sh,*.tex :Autoformat
     au BufWrite *.lisp,*.scm,*.ss :Autoformat
+    " au BufWrite *.cmake :Autoformat
+    au BufWrite *.sh,*.tex :Autoformat
 augroup END
 doautoall autoformat BufWrite *
 
