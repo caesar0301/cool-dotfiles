@@ -40,11 +40,13 @@ let g:formatters_markdown = ['remark_markdown']
 " Autoformat on save
 augroup autoformat
     :autocmd!
-    " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
-    au BufWrite *.go,*.py,*.lua,*.rs :Autoformat
+    au BufWrite *.go :Autoformat
     au BufWrite *.lisp,*.scm,*.ss :Autoformat
+    au BufWrite *.tex :Autoformat
+    au BufWrite *.rs :Autoformat
+    " au BufWrite *.sh :Autoformat
+    " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
     " au BufWrite *.cmake :Autoformat
-    au BufWrite *.sh,*.tex :Autoformat
 augroup END
 doautoall autoformat BufWrite *
 
