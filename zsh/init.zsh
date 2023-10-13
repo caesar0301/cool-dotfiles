@@ -87,9 +87,9 @@ zinit cdclear -q
 setopt promptsubst
 zinit snippet OMZP::themes
 #zinit snippet OMZT::robbyrussell
-zinit snippet OMZT::jtriley
+#zinit snippet OMZT::jtriley
 #zinit snippet OMZT::kafeitu
-#zinit snippet OMZT::crcandy
+zinit snippet OMZT::crcandy
 
 # Completion
 zinit ice pick"zsh-history-substring-search.zsh"
