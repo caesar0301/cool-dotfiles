@@ -76,6 +76,7 @@ return require("packer").startup(
                 require("nvim-autopairs").setup {}
             end
         }
+
         ---------------------------
         -- Navigation
         ---------------------------
@@ -152,6 +153,16 @@ return require("packer").startup(
         use "tarekbecker/vim-yaml-formatter"
         use "sophacles/vim-bundle-mako"
         use {"vlime/vlime", rtp = "vim/"}
+
+        -- preview markdown
+        use(
+            {
+                "iamcco/markdown-preview.nvim",
+                run = function()
+                    vim.fn["mkdp#util#install"]()
+                end
+            }
+        )
 
         ---------------------------
         -- Misc
