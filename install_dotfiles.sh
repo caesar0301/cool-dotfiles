@@ -161,6 +161,20 @@ function install_autoformat_deps {
     fi
 }
 
+function install_lsp_deps {
+    info "Install LSP dependencies..."
+    piplibs=(pyright)
+    if check_command pip; then
+        if [[ ${#piplibs[@]} > 0 ]]; then
+            info "Installing pip deps: $piplibs"
+            pip install -U ${piplibs[@]}
+        fi
+    else
+        warn "Command pip not found, install and try again."
+    fi
+
+}
+
 function install_zsh {
     info "Installing zsh..."
     mkdir_nowarn $HOME/.local/bin
