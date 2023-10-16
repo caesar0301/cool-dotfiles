@@ -8,7 +8,9 @@ if jdk_home == nil then
     jdk_home = os.getenv("JAVA_HOME")
 end
 local java_bin = "java"
-if not jdk_home == nil then
+if jdk_home == nil then
+    java_bin = "java"
+else
     java_bin = jdk_home .. "/bin/java"
 end
 local gjfjar = os.getenv("GJF_JAR_FILE")
