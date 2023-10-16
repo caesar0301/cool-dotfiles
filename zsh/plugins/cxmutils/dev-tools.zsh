@@ -71,23 +71,6 @@ _initHaskellEnv
 
 #if [[ $OSTYPE == darwin*  ]]; then _initMacEnv; fi
 
-function google-java-format-wrapper {
-    javahome=${JAVA_HOME_4GJF}
-    if [ "x$javahome" == "x"]; then
-        javahome=${JAVA_HOME}
-    fi
-    javacmd="java"
-    if [ "x$javahome" != "x" ]; then
-        javacmd=$javahome/bin/java
-    fi
-    gjfjar=${GJF_JAR_FILE:-"$HOME/.local/share/google-java-format/google-java-format-all-deps.jar"}
-    if [ ! -e $gjfjar ]; then
-        echo "google-java-format jar not found: $gjfjar. Please specify with env GJF_JAR_FILE"
-        return
-    fi
-    $javacmd -jar $gjfjar $@
-}
-
 function maven-quickstart {
     mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
         -DarchetypeArtifactId=maven-archetype-quickstart \
