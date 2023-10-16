@@ -57,7 +57,7 @@ return require("packer").startup(
         ---------------------------
         -- Languages
         ---------------------------
-        use "vim-autoformat/vim-autoformat"
+        use 'mhartington/formatter.nvim'
         use "Olical/conjure"
         use "bhurlow/vim-parinfer"
         use "Vimjas/vim-python-pep8-indent"

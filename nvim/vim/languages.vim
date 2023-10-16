@@ -4,49 +4,21 @@
 
 """"""""""""""""""""""""""""""
 " Code Format
-" Plugins => vim-autoformat
+" Plugins => formatter.nvim
 """"""""""""""""""""""""""""""
-nnoremap <silent> <leader>af :Autoformat<cr>
-let g:autoformat_verbosemode=1
-let g:autoformat_autoindent=0
-let g:autoformat_retab=1
-let g:autoformat_remove_trailing_spaces=1
+nnoremap <silent> <leader>af :Format<cr>
 
-let g:formatdef_gjf='"google-java-format-wrapper -"'
-let g:formatters_java=['gjf']
-
-let g:formatdef_cmakefmt='"cmake-format -"'
-let g:formatters_cmake=['cmakefmt']
-
-let g:formatdef_clangformat= '"clang-format -"'
-let g:formatters_cpp=['clangformat']
-
-let g:formatdef_gofmt_1='"gofmt"'
-
-let g:formatdef_pyfmt='"black -"'
-let g:formatters_python=['pyfmt']
-
-let g:formatdef_latexindent = '"latexindent -"'
-
-let g:formatdef_scmindent = '"scmindent -"'
-let g:formatters_lisp=['scmindent']
-
-let g:formatdef_shfmt = '"shfmt -bn -i ".(&expandtab ? shiftwidth() : "0")'
-let g:formatters_sh=['shfmt']
-
-let g:formatdef_remark_markdown = '"remark --no-color"'
-let g:formatters_markdown = ['remark_markdown']
-
-" Autoformat on save
+" format on save
 augroup autoformat
     :autocmd!
-    au BufWrite *.go :Autoformat
-    au BufWrite *.lisp,*.scm,*.ss :Autoformat
-    au BufWrite *.tex :Autoformat
-    au BufWrite *.rs :Autoformat
-    " au BufWrite *.sh :Autoformat
-    " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Autoformat
-    " au BufWrite *.cmake :Autoformat
+    au BufWrite *.go :Format
+    au BufWrite *.lisp,*.scm,*.ss :Format
+    au BufWrite *.tex :Format
+    au BufWrite *.rs :Format
+    " au BufWrite *.sh :Format
+    " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Format
+    " au BufWrite *.cmake :Format
+    autocmd User FormatterPost lua print "autoformat group performed"
 augroup END
 doautoall autoformat BufWrite *
 
