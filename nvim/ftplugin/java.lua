@@ -4,21 +4,18 @@
 local jdtls = require("jdtls")
 local root_markers = {"gradlew", ".git", "gradlew"}
 local home = os.getenv("HOME")
-
 local jdk_home = os.getenv("JAVA_HOME_4JDTLS")
 if jdk_home == nil then
     jdk_home = os.getenv("JAVA_HOME")
 end
-
 local jdtls_install_folder = os.getenv("JDTLS_INSTALL_HOME")
 if jdtls_install_folder == nil then
     jdtls_install_folder = home .. "/.local/share/jdt-language-server"
 end
-
 local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 
 local config = {
-    -- Java17+
+    -- requires java17+
     cmd = {
         jdk_home .. "/bin/java",
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
@@ -73,4 +70,4 @@ local config = {
     end
 }
 -- This starts a new client & server,
-jdtls.start_or_attach(config)
+-- jdtls.start_or_attach(config)

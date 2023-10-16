@@ -71,7 +71,7 @@ return require("packer").startup(
         use "kchmck/vim-coffee-script"
         use "leafgarland/typescript-vim"
         use "lervag/vimtex"
-        use "mfussenegger/nvim-jdtls"
+        -- use "mfussenegger/nvim-jdtls"
         use "pangloss/vim-javascript"
         use "plasticboy/vim-markdown"
         use "rust-lang/rust.vim"
