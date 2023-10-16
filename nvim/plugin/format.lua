@@ -1,13 +1,25 @@
 -- Utilities for creating configurations
 local util = require "formatter.util"
 
+-- for java formatter
+local home = os.getenv("HOME")
+local jdk_home = os.getenv("JAVA_HOME_4GJF")
+if jdk_home == nil then
+    jdk_home = os.getenv("JAVA_HOME")
+end
+local java_bin = "java"
+if not jdk_home == nil then
+    java_bin = jdk_home .. "/bin/java"
+end
+local gjfjar = os.getenv("GJF_JAR_FILE")
+if gjfjar == nil then
+    gjfjar = home .. "/.local/share/google-java-format/google-java-format-all-deps.jar"
+end
+
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 require("formatter").setup {
-    -- Enable or disable logging
-    logging = true,
-    -- Set the log level
+    logging = false,
     log_level = vim.log.levels.WARN,
-    -- All formatter configurations are opt-in
     filetype = {
         -- Formatter configurations for filetypes go here and will be executed in order
         lua = {
@@ -15,19 +27,6 @@ require("formatter").setup {
         },
         java = {
             function()
-                local home = os.getenv("HOME")
-                local jdk_home = os.getenv("JAVA_HOME_4GJF")
-                if jdk_home == nil then
-                    jdk_home = os.getenv("JAVA_HOME")
-                end
-                local java_bin = "java"
-                if not jdk_home == nil then
-                    java_bin = jdk_home .. "/bin/java"
-                end
-                local gjfjar = os.getenv("GJF_JAR_FILE")
-                if gjfjar == nil then
-                    gjfjar = home .. "/.local/share/google-java-format/google-java-format-all-deps.jar"
-                end
                 return {
                     exe = java_bin,
                     args = {
