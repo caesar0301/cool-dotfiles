@@ -3,26 +3,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
-" Code Format
-" Plugins => formatter.nvim
-""""""""""""""""""""""""""""""
-nnoremap <silent> <leader>af :Format<cr>
-
-" format on save
-augroup autoformat
-    :autocmd!
-    au BufWrite *.go :Format
-    au BufWrite *.lisp,*.scm,*.ss :Format
-    au BufWrite *.tex :Format
-    au BufWrite *.rs :Format
-    " au BufWrite *.sh :Format
-    " au BufWrite *.h,*.hpp,*.C,*.cc,*.cpp,*.CPP,*.c++ :Format
-    " au BufWrite *.cmake :Format
-    autocmd User FormatterPost lua print "autoformat group performed"
-augroup END
-doautoall autoformat BufWrite *
-
-""""""""""""""""""""""""""""""
 " Languages => Python section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
@@ -32,7 +12,6 @@ au BufNewFile,BufRead *.jinja set syntax=htmljinja
 au BufNewFile,BufRead *.mako set ft=mako
 
 au FileType python map <buffer> F :set foldmethod=indent<cr>
-
 au FileType python inoremap <buffer> $r return
 au FileType python inoremap <buffer> $i import
 au FileType python inoremap <buffer> $p print
@@ -85,6 +64,7 @@ au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 if exists('$TMUX')
     set termguicolors
 endif
+autocmd BufRead,BufNewFile *.zsh set filetype=sh
 
 """"""""""""""""""""""""""""""
 " Languages => Twig section

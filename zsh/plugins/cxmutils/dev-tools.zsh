@@ -7,6 +7,12 @@
 # GJF_JAR_FILE
 #+++++++++++++++++++++++++++++++++++++++
 
+function maven-quickstart {
+    mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
+        -DarchetypeArtifactId=maven-archetype-quickstart \
+        -DarchetypeVersion=1.4 $@
+}
+
 function _initGoenv {
     GOROOT=${GOROOT:-/usr/local/go}
     if [ -e $GOROOT ]; then
@@ -70,9 +76,3 @@ _initCuda
 _initHaskellEnv
 
 #if [[ $OSTYPE == darwin*  ]]; then _initMacEnv; fi
-
-function maven-quickstart {
-    mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
-        -DarchetypeArtifactId=maven-archetype-quickstart \
-        -DarchetypeVersion=1.4 $@
-}

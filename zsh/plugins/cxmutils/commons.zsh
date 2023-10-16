@@ -1,11 +1,22 @@
 #+++++++++++++++++++++++++++++++++++++++
 # PATH
 #+++++++++++++++++++++++++++++++++++++++
-function replace {
-    sourcestr="$1"
-    targetstr="$2"
-    pathstr="$3"
-    grep -r $sourcestr $pathstr | awk -F: '{print $1}' | uniq | xargs -I@ sed -i.old -E "s|$sourcestr|$targetstr|g" @
+
+# start or access tmux dev session
+function bingo {
+    if tmux info &> /dev/null; then
+        echo "Do nothing, tmux server already running"
+        return 0
+    fi
+    unset TMUX
+    HOSTNAME=$(hostname | sed -E "s/\./_/g" | head -c 8)
+    SESSION_NAME="bingo"
+    tmux -u start-server
+    tmux -u has-session -t ${SESSION_NAME}
+    if [ $? != 0 ]; then
+        tmux -u new-session -d -s ${SESSION_NAME}
+    fi
+    tmux -u attach -t ${SESSION_NAME}
 }
 
 # Overhead configrator for apps
@@ -52,23 +63,6 @@ function occ {
     ${=EDITOR} $cf
 }
 
-# start or access tmux dev session
-function bingo {
-    if tmux info &> /dev/null; then
-        echo "Do nothing, tmux server already running"
-        return 0
-    fi
-    unset TMUX
-    HOSTNAME=$(hostname | sed -E "s/\./_/g" | head -c 8)
-    SESSION_NAME="bingo"
-    tmux -u start-server
-    tmux -u has-session -t ${SESSION_NAME}
-    if [ $? != 0 ]; then
-        tmux -u new-session -d -s ${SESSION_NAME}
-    fi
-    tmux -u attach -t ${SESSION_NAME}
-}
-
 # Open file window
 function openw {
     KNAME=$(uname -s)
@@ -82,4 +76,11 @@ function openw {
         EXE='open'
     fi
     $EXE $@
+}
+
+function replace {
+    sourcestr="$1"
+    targetstr="$2"
+    pathstr="$3"
+    grep -r $sourcestr $pathstr | awk -F: '{print $1}' | uniq | xargs -I@ sed -i.old -E "s|$sourcestr|$targetstr|g" @
 }
