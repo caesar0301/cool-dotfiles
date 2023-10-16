@@ -8,7 +8,7 @@ cmp.setup(
             end
         },
         window = {
-            completion = cmp.config.window.bordered(),
+            -- completion = cmp.config.window.bordered(),
             documentation = cmp.config.window.bordered()
         },
         mapping = cmp.mapping.preset.insert(
@@ -17,10 +17,11 @@ cmp.setup(
                 ["<C-p>"] = cmp.mapping.select_prev_item(),
                 ["<C-d>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-y>"] = cmp.mapping.complete(),
                 ["<C-e>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm {
-                    behavior = cmp.ConfirmBehavior.Replace,
+                ["<C-Space>"] = cmp.mapping.confirm {
+                    -- behavior = cmp.ConfirmBehavior.Replace,
+                    behavior = cmp.ConfirmBehavior.Insert,
                     select = true
                 },
                 ["<Tab>"] = cmp.mapping(

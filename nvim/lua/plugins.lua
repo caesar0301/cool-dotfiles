@@ -57,7 +57,7 @@ return require("packer").startup(
         ---------------------------
         -- Languages
         ---------------------------
-        use 'mhartington/formatter.nvim'
+        use "mhartington/formatter.nvim"
         use "Olical/conjure"
         use "bhurlow/vim-parinfer"
         use "Vimjas/vim-python-pep8-indent"
@@ -137,12 +137,7 @@ return require("packer").startup(
         }
         use "L3MON4D3/LuaSnip"
         use "PaterJason/cmp-conjure"
-        use {
-            "windwp/nvim-autopairs",
-            config = function()
-                require("nvim-autopairs").setup {}
-            end
-        }
+        use "windwp/nvim-autopairs"
 
         ---------------------------
         -- Themes
