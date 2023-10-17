@@ -112,7 +112,9 @@ zinit ice pick "zsh-syntax-highlighting.zsh"
 zinit load zsh-users/zsh-syntax-highlighting
 
 # Profiling perf
+PROFILE_PERF=0
 if [[ ${PROFILE_PERF} == 1 ]]; then
+    zmodload zsh/zprof
     zprof
 fi
 
@@ -147,12 +149,6 @@ function _load_custom_extensions {
     fi
 }
 _load_custom_extensions
-
-# Diagnose perf
-PROFILE_PERF=0
-if [[ ${PROFILE_PERF} == 1 ]]; then
-    zmodload zsh/zprof
-fi
 
 #+++++++++++++++++++++++++++++++++++++++
 # Basics and commons
