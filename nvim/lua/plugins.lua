@@ -112,12 +112,6 @@ return require("packer").startup(
             end
         }
         use "antoinemadec/FixCursorHold.nvim"
-        use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
-        use "nvim-treesitter/nvim-treesitter-refactor"
-        use {
-            "SmiteshP/nvim-navic",
-            requires = "neovim/nvim-lspconfig"
-        }
 
         ---------------------------
         -- Completion
@@ -135,9 +129,24 @@ return require("packer").startup(
                 {"lukas-reineke/cmp-under-comparator", opt = true}
             }
         }
-        use "L3MON4D3/LuaSnip"
+        use {
+            "SmiteshP/nvim-navic",
+            requires = "neovim/nvim-lspconfig"
+        }
         use "PaterJason/cmp-conjure"
+        use "nvim-treesitter/nvim-treesitter"
+        use "nvim-treesitter/nvim-treesitter-refactor"
         use "windwp/nvim-autopairs"
+        use "windwp/nvim-ts-autotag"
+        use(
+            {
+                "kylechui/nvim-surround",
+                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+                config = function()
+                    require("nvim-surround").setup({})
+                end
+            }
+        )
 
         ---------------------------
         -- Themes
