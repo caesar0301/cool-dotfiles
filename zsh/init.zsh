@@ -89,11 +89,9 @@ zinit snippet OMZP::themes
 #zinit snippet OMZT::agnoster
 #zinit snippet OMZT::crcandy
 #zinit snippet OMZT::gentoo
-#zinit snippet OMZT::gozilla
-zinit snippet OMZT::intheloop
-#zinit snippet OMZT::jispwoso
+zinit snippet OMZT::gozilla
+#zinit snippet OMZT::intheloop
 #zinit snippet OMZT::jreese
-#zinit snippet OMZT::jtriley
 #zinit snippet OMZT::kafeitu
 #zinit snippet OMZT::nicoulaj
 #zinit snippet OMZT::robbyrussell
