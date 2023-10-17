@@ -17,7 +17,8 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 ZSH_CONFIG_DIR="${HOME}/.config/zsh"
-ZSH_PLUGIN_DIR="${HOME}/.config/zsh/plugins"
+ZSH_BUNDLES="${ZSH_CONFIG_DIR}/bundles/"
+ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
 
 # extra envs
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
@@ -116,25 +117,8 @@ if [[ ${PROFILE_PERF} == 1 ]]; then
 fi
 
 #+++++++++++++++++++++++++++++++++++++++
-# Basics and commons
+# Bundles and plugins
 #+++++++++++++++++++++++++++++++++++++++
-
-# Editor
-export EDITOR=nvim
-
-# zsh history
-export HISTFILE=$HOME/.zhistory
-export HISTSIZE=9999
-export SAVEHIST=9999
-
-# Disable Ctrl+D to close session
-setopt IGNORE_EOF
-
-# Diagnose perf
-PROFILE_PERF=0
-if [[ ${PROFILE_PERF} == 1 ]]; then
-    zmodload zsh/zprof
-fi
 
 # zsh bundled
 autoload -U parseopts
@@ -143,6 +127,11 @@ autoload -U zcalc
 autoload -U zed
 autoload -U zmv
 autoload -U compinit && compinit
+
+# Load common bundles
+for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
+    zinit snippet $i;
+done
 
 # Load my extensions under $ZSH_PLUGIN_DIR
 function _load_custom_extensions {
@@ -158,6 +147,27 @@ function _load_custom_extensions {
     fi
 }
 _load_custom_extensions
+
+# Diagnose perf
+PROFILE_PERF=0
+if [[ ${PROFILE_PERF} == 1 ]]; then
+    zmodload zsh/zprof
+fi
+
+#+++++++++++++++++++++++++++++++++++++++
+# Basics and commons
+#+++++++++++++++++++++++++++++++++++++++
+
+# Editor
+export EDITOR=nvim
+
+# zsh history
+export HISTFILE=$HOME/.zhistory
+export HISTSIZE=9999
+export SAVEHIST=9999
+
+# Disable Ctrl+D to close session
+setopt IGNORE_EOF
 
 # Reload zshrc globally
 function zshld {
@@ -185,6 +195,3 @@ function zshup {
         done
     fi
 }
-
-# fzf init
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

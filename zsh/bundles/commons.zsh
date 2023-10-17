@@ -78,9 +78,8 @@ function openw {
     $EXE $@
 }
 
-function replace {
-    sourcestr="$1"
-    targetstr="$2"
-    pathstr="$3"
-    grep -r $sourcestr $pathstr | awk -F: '{print $1}' | uniq | xargs -I@ sed -i.old -E "s|$sourcestr|$targetstr|g" @
+# update nvim plugins
+function nvimup {
+    nvim -c "PackerInstall" -c "PackerSync" \
+        -c "TSInstall lua python java go scala"
 }
