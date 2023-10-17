@@ -201,9 +201,11 @@ function install_ossutil {
     fi
     FILENAME="ossutil-v${VERSION}-${OSSTR}-${ARCHSTR}.zip"
     DLINK="https://github.com/aliyun/ossutil/releases/download/v.$VERSION/$FILENAME"
-    info "Downloading ossutil $FILENAME..."
-    curl -L --progress-bar $DLINK -o /tmp/$FILENAME
-    unzip -o -j /tmp/$FILENAME '*/ossutil' -d $HOME/.local/bin
+    if [ ! -e $HOME/.local/bin/ossutil ]; then
+        info "Downloading ossutil $FILENAME..."
+        curl -L --progress-bar $DLINK -o /tmp/$FILENAME
+        unzip -o -j /tmp/$FILENAME '*/ossutil' -d $HOME/.local/bin
+    fi
 }
 
 function install_all_deps {
