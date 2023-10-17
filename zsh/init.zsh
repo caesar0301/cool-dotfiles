@@ -170,6 +170,11 @@ function zshld {
 
 # Update zinit and plugins
 function zshup {
+    # self update
+    zinit self-update
+    # plugin update
+    zinit update --parallel
+    # update user plugins
     old_path=$(pwd)
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
         for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
@@ -179,10 +184,6 @@ function zshup {
             fi
         done
     fi
-    # self update
-    zinit self-update
-    # plugin update
-    zinit update --parallel
 }
 
 # fzf init
