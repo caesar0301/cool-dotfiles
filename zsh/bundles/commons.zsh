@@ -83,3 +83,12 @@ function nvimup {
     nvim -c "PackerInstall" -c "PackerSync" \
         -c "TSInstall lua python java go scala"
 }
+
+# update dotfiles
+function dotup {
+    DOTHOME=${DOTHOME:-$HOME/.dotfiles}
+    CURDIR=$(pwd)
+    cd $DOTHOME && git pull && $DOTHOME/install_dotfiles.sh
+    cd $CURDIR
+    echo "$HOME/.dotfiles updated"
+}

@@ -242,7 +242,7 @@ function handle_zsh {
         CMD="cp -r"
     fi
     $CMD $THISDIR/zsh/init.zsh $XDG_CONFIG_HOME/zsh/init.zsh
-    $CMD $THISDIR/zsh/bundles $XDG_CONFIG_HOME/zsh/bundles
+    $CMD $THISDIR/zsh/bundles $XDG_CONFIG_HOME/zsh/
 
     # Install bundled plugins
     mkdir_nowarn $XDG_CONFIG_HOME/zsh/plugins

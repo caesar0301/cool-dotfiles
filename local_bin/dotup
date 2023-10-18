@@ -1,6 +1,0 @@
-#!/bin/bash
-DOTHOME=${DOTHOME:-$HOME/.dotfiles}
-CURDIR=$(pwd)
-cd $DOTHOME && git pull > /dev/null 2>&1
-cd $CURDIR
-echo "$HOME/.dotfiles updated"
