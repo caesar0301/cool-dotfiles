@@ -90,12 +90,11 @@ zinit snippet OMZP::themes
 #zinit snippet OMZT::agnoster
 #zinit snippet OMZT::crcandy
 #zinit snippet OMZT::gentoo
-zinit snippet OMZT::gozilla
-#zinit snippet OMZT::intheloop
+#zinit snippet OMZT::gozilla
 #zinit snippet OMZT::jreese
 #zinit snippet OMZT::kafeitu
 #zinit snippet OMZT::nicoulaj
-#zinit snippet OMZT::robbyrussell
+zinit snippet OMZT::robbyrussell
 
 # Completion
 zinit ice pick"zsh-history-substring-search.zsh"
