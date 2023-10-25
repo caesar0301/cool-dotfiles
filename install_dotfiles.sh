@@ -103,7 +103,7 @@ function install_autoformat_deps {
 
     # pip
     piplibs=(pip pynvim black sqlparse cmake_format)
-    if check_command pip; then
+    if checkcmd pip; then
         if [[ ${#piplibs[@]} > 0 ]]; then
             info "Installing pip deps: $piplibs"
             pip install -U ${piplibs[@]}
@@ -114,25 +114,25 @@ function install_autoformat_deps {
 
     # npm
     npmlibs=()
-    if ! check_command js-beautify; then
+    if ! checkcmd js-beautify; then
         npmlibs+=(js-beautify)
     fi
-    if ! check_command remark; then
+    if ! checkcmd remark; then
         npmlibs+=(remark-cli)
     fi
-    if ! check_command html-beautify; then
+    if ! checkcmd html-beautify; then
         npmlibs+=(html-beautify)
     fi
-    if ! check_command luafmt; then
+    if ! checkcmd luafmt; then
         npmlibs+=(lua-fmt)
     fi
-    if ! check_command scmindent; then
+    if ! checkcmd scmindent; then
         npmlibs+=(scmindent)
     fi
-    if ! check_command yaml-language-server; then
+    if ! checkcmd yaml-language-server; then
         npmlibs+=(yaml-language-server)
     fi
-    if check_command npm; then
+    if checkcmd npm; then
         if [[ ${#npmlibs[@]} > 0 ]]; then
             info "Installing npm deps: $npmlibs"
             sudo npm install --quiet --force -g ${npmlibs[@]}
@@ -143,7 +143,7 @@ function install_autoformat_deps {
 
     # gem
     gemlibs=()
-    if ! check_command ruby-beautify; then
+    if ! checkcmd ruby-beautify; then
         gemlibs+=(ruby-beautify)
     fi
     if command -v gem; then
@@ -156,7 +156,7 @@ function install_autoformat_deps {
     fi
 
     # shfmt
-    if ! check_command shfmt; then
+    if ! checkcmd shfmt; then
         install_shfmt
     fi
 }
@@ -164,7 +164,7 @@ function install_autoformat_deps {
 function install_lsp_deps {
     info "Install LSP dependencies..."
     piplibs=(pyright)
-    if check_command pip; then
+    if checkcmd pip; then
         if [[ ${#piplibs[@]} > 0 ]]; then
             info "Installing pip deps: $piplibs"
             pip install -U ${piplibs[@]}
@@ -173,6 +173,10 @@ function install_lsp_deps {
         warn "Command pip not found, install and try again."
     fi
 
+    info "Install R language server..."
+    if checkcmd R; then
+        R -e "install.packages('languageserver', repos='https://mirrors.nju.edu.cn/CRAN/')"
+    fi
 }
 
 function install_zsh {
@@ -213,13 +217,14 @@ function install_all_deps {
     install_jenv
     install_rbenv
     install_fzf
+    install_lsp_deps
     install_jdt_language_server
     # required by nvim-web-devicons
     install_hack_nerd_font
     install_autoformat_deps
     install_ossutil
     #install_vim_deps
-    if ! check_command zsh; then
+    if ! checkcmd zsh; then
         install_zsh
     fi
 }

@@ -27,7 +27,7 @@ function error {
 }
 
 # check command existence
-function check_command {
+function checkcmd {
     command -v $1 1>/dev/null 2>&1
     return $?
 }
