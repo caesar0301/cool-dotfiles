@@ -8,11 +8,15 @@ THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
-SHFMT_VERSION="v3.7.0"
-ZSH_VERSION="5.8"
-
-# load common utils
 source $THISDIR/lib/bash_utils.sh
+
+function usage {
+    info "Usage: install_dotfiles.sh [-f] [-s] [-e]"
+    info "  -f copy and install"
+    info "  -s soft linke install"
+    info "  -e install dependencies"
+    info "  -c cleanse install"
+}
 
 function install_local_bins {
     mkdir_nowarn $HOME/.local/bin
@@ -35,18 +39,6 @@ function install_ossutil {
         info "Downloading ossutil $FILENAME..."
         curl -L --progress-bar $DLINK -o /tmp/$FILENAME
         unzip -o -j /tmp/$FILENAME '*/ossutil' -d $HOME/.local/bin
-    fi
-}
-
-function handle_emacs {
-    mkdir_nowarn ~/.emacs.d
-    rm -rf $HOME/.emacs.d/settings
-    if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $THISDIR/emacs/.emacs.d/settings $HOME/.emacs.d/settings
-        ln -sf $THISDIR/emacs/.emacs.d/init.el $HOME/.emacs.d/init.el
-    else
-        cp -r $THISDIR/emacs/.emacs.d/settings $HOME/.emacs.d/
-        cp $THISDIR/emacs/.emacs.d/init.el $HOME/.emacs.d/
     fi
 }
 
@@ -84,19 +76,9 @@ function cleanse_all {
             rm -f $HOME/.local/bin/$bname
         fi
     done
-    rm -rf $HOME/.emacs.d/settings
-    rm -rf $HOME/.emacs.d/init.el
     rm -rf $HOME/.ctags
     rm -rf $HOME/.sbcl_completions
     info "All cleansed!"
-}
-
-function usage {
-    info "Usage: install_dotfiles.sh [-f] [-s] [-e]"
-    info "  -f copy and install"
-    info "  -s soft linke install"
-    info "  -e install dependencies"
-    info "  -c cleanse install"
 }
 
 # Change to 0 to install a copy instead of soft link
@@ -115,10 +97,10 @@ done
 install_local_bins
 install_ossutil
 
-handle_emacs
 handle_ctags
 handle_rlwrap
 
+sh $THISDIR/emacs/install.sh $@
 sh $THISDIR/zsh/install.sh $@
 sh $THISDIR/nvim/install.sh $@
 sh $THISDIR/tmux/install.sh $@
