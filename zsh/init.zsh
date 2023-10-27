@@ -65,6 +65,17 @@ zi snippet OMZP::urltools
 zi ice svn
 
 # Python
+# fix badly configured error of plugin
+function _setupPyenv {
+    if [ -e "$HOME/.pyenv" ]; then
+        export PYENV_ROOT="$HOME/.pyenv"
+        export PATH="$PYENV_ROOT/bin:$PATH"
+        if command -v pyenv 1>/dev/null 2>&1; then
+            eval "$(pyenv init --path)"
+        fi
+    fi
+}
+_setupPyenv
 zinit snippet OMZP::pyenv
 zinit snippet OMZP::jenv
 zinit snippet OMZP::rbenv
