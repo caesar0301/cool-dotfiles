@@ -152,6 +152,19 @@ function install_all_deps {
     install_autoformat_deps
 }
 
+function handle_ctags {
+    if [ ! -e $HOME/.ctags ] || [ -L $HOME/.ctags ]; then
+        # Do not overwrite user local configs
+        if [ x$SOFTLINK == "x1" ]; then
+            ln -sf $THISDIR/ctags/ctags $HOME/.ctags
+        else
+            cp $THISDIR/ctags/ctags $HOME/.ctags
+        fi
+    else
+        warn "$HOME/.ctags existed, skip without rewriting"
+    fi
+}
+
 function handle_neovim {
     # install plugin manager
     packer_home=$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
@@ -168,8 +181,9 @@ function handle_neovim {
 }
 
 function cleanse_all {
+    rm -rf $HOME/.ctags
     rm -rf $XDG_CONFIG_HOME/nvim
-    info "All cleansed!"
+    info "All nvim cleansed!"
 }
 
 function usage {
@@ -198,6 +212,7 @@ if [ "x$WITHDEPS" == "x1" ]; then
     install_all_deps
 fi
 
+handle_ctags
 handle_neovim
 
-info "Installed successfully!"
+info "Successed! Run :PackerInstall to install nvim plugins"

@@ -18,11 +18,6 @@ function usage {
     info "  -c cleanse install"
 }
 
-function install_local_bins {
-    mkdir_nowarn $HOME/.local/bin
-    cp $THISDIR/local_bin/* $HOME/.local/bin
-}
-
 function install_ossutil {
     VERSION="1.7.17"
     OSSTR="linux"
@@ -42,17 +37,9 @@ function install_ossutil {
     fi
 }
 
-function handle_ctags {
-    if [ ! -e $HOME/.ctags ] || [ -L $HOME/.ctags ]; then
-        # Do not overwrite user local configs
-        if [ x$SOFTLINK == "x1" ]; then
-            ln -sf $THISDIR/ctags/ctags $HOME/.ctags
-        else
-            cp $THISDIR/ctags/ctags $HOME/.ctags
-        fi
-    else
-        warn "$HOME/.ctags existed, skip without rewriting"
-    fi
+function install_local_bins {
+    mkdir_nowarn $HOME/.local/bin
+    cp $THISDIR/local_bin/* $HOME/.local/bin
 }
 
 # auto completion of SBCL with rlwrap
@@ -76,7 +63,6 @@ function cleanse_all {
             rm -f $HOME/.local/bin/$bname
         fi
     done
-    rm -rf $HOME/.ctags
     rm -rf $HOME/.sbcl_completions
     info "All cleansed!"
 }
@@ -96,8 +82,6 @@ done
 
 install_local_bins
 install_ossutil
-
-handle_ctags
 handle_rlwrap
 
 sh $THISDIR/emacs/install.sh $@
