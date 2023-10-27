@@ -66,7 +66,7 @@ function install_autoformat_deps {
     install_google_java_format
 
     # pip
-    piplibs=(pip pynvim black sqlparse cmake_format)
+    piplibs=(pynvim black sqlparse cmake_format)
     if checkcmd pip; then
         if [[ ${#piplibs[@]} > 0 ]]; then
             info "Installing pip deps: $piplibs"
