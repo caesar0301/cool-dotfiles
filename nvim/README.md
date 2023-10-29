@@ -5,6 +5,7 @@
 ## Prerequisites
 
 * Nvim v0.9+
+* Python 3.7.10+
 
 ## Installation
 
