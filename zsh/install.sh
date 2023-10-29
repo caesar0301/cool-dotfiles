@@ -34,14 +34,6 @@ function install_rbenv {
     fi
 }
 
-function install_fzf {
-    if [ ! -e $HOME/.fzf ]; then
-        info "Installing fzf to $HOME/.fzf..."
-        git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-        $HOME/.fzf/install
-    fi
-}
-
 function install_zsh {
     info "Installing zsh..."
     mkdir_nowarn $HOME/.local/bin
@@ -54,7 +46,6 @@ function install_all_deps {
     install_pyenv
     install_jenv
     install_rbenv
-    install_fzf
     if ! checkcmd zsh; then
         install_zsh
     fi

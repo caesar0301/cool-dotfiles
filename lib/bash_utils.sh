@@ -85,3 +85,20 @@ function random_num {
     fi
     echo ${NUMBER}
 }
+
+function current_shell_name {
+    #shellname=$(ps -hp $$ | awk '{print $5}')
+    shellname=$(cat /etc/passwd | grep $(whoami) | awk -F: '{print $7}')
+    echo $(basename $shellname)
+}
+
+function current_shell_config {
+    sname=$(current_shell_name)
+    shellconfig="/dev/null"
+    if [[ x$sname == "xzsh" ]]; then
+        shellconfig="$HOME/.zshrc"
+    elif [[ x$sname == "xbash" ]]; then
+        shellconfig="$HOME/.bashrc"
+    fi
+    echo $shellconfig
+}

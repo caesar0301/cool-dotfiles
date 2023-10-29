@@ -145,6 +145,18 @@ function install_lsp_deps {
     fi
 }
 
+function install_fzf {
+    if [ ! -e $HOME/.fzf ]; then
+        info "Installing fzf to $HOME/.fzf..."
+        git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+        $HOME/.fzf/install
+    fi
+    local config='[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
+    shellconfig=$(current_shell_config)
+    echo "# automatic configs by cool-dotfiles nvim installer" >>$shellconfig
+    echo $config >>$shellconfig
+}
+
 function install_universal_ctags {
     if ! checkcmd ctags; then
         warn "Command ctags not found in PATH. Please install universal-ctags from https://github.com/universal-ctags/ctags"
@@ -164,6 +176,7 @@ function install_all_deps {
     install_jdt_language_server
     install_hack_nerd_font # required by nvim-web-devicons
     install_autoformat_deps
+    install_fzf
     install_universal_ctags
     install_ctags_deps
 }
