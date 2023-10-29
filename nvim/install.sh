@@ -145,6 +145,12 @@ function install_lsp_deps {
     fi
 }
 
+function install_universal_ctags {
+    if ! checkcmd ctags; then
+        warn "Command ctags not found in PATH. Please install universal-ctags from https://github.com/universal-ctags/ctags"
+    fi
+}
+
 function install_all_deps {
     install_lsp_deps
     install_jdt_language_server
@@ -152,16 +158,30 @@ function install_all_deps {
     install_autoformat_deps
 }
 
+function _load_custom_extensions {
+    if [ -e ${ZSH_PLUGIN_DIR} ]; then
+        # Load plugins
+        for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
+            zinit load $plugin
+        done
+        # Load plain zsh scripts
+        for i in $(find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"); do
+            zinit snippet $i
+        done
+    fi
+}
+
 function handle_ctags {
-    if [ ! -e $HOME/.ctags ] || [ -L $HOME/.ctags ]; then
-        # Do not overwrite user local configs
-        if [ x$SOFTLINK == "x1" ]; then
-            ln -sf $THISDIR/ctags/ctags $HOME/.ctags
-        else
-            cp $THISDIR/ctags/ctags $HOME/.ctags
-        fi
-    else
-        warn "$HOME/.ctags existed, skip without rewriting"
+    local ctags_home=$HOME/.ctags.d
+    mkdir_nowarn $ctags_home
+    if [ -e ${ctags_home} ]; then
+        for i in $(find $THISDIR/../ctags -maxdepth 1 -type f -name "*.ctags"); do
+            if [ x$SOFTLINK == "x1" ]; then
+                ln -sf $i $ctags_home/
+            else
+                cp $i $ctags_home/
+            fi
+        done
     fi
 }
 
@@ -187,11 +207,11 @@ function cleanse_all {
 }
 
 function usage {
-    info "Usage: install_dotfiles.sh [-f] [-s] [-e]"
-    info "  -f copy and install"
-    info "  -s soft linke install"
-    info "  -e install dependencies"
-    info "  -c cleanse install"
+    echo "Usage: install.sh [-f] [-s] [-e]"
+    echo "  -f copy and install"
+    echo "  -s soft linke install"
+    echo "  -e install dependencies"
+    echo "  -c cleanse install"
 }
 
 # Change to 0 to install a copy instead of soft link
