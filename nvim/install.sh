@@ -151,11 +151,21 @@ function install_universal_ctags {
     fi
 }
 
+function install_ctags_deps {
+    if checkcmd go; then
+        go install github.com/jstemmer/gotags@latest
+    else
+        warn "Go not found in PATH, skip to install gotags"
+    fi
+}
+
 function install_all_deps {
     install_lsp_deps
     install_jdt_language_server
     install_hack_nerd_font # required by nvim-web-devicons
     install_autoformat_deps
+    install_universal_ctags
+    install_ctags_deps
 }
 
 function _load_custom_extensions {
