@@ -1,5 +1,7 @@
 # Nvim dotfiles
 
+![idelike](https://github.com/caesar0301/cool-dotfiles/blob/721440cf68751aabaa72da106a8f6770d8281964/assets/screenshot.png)
+
 ## Prerequisites
 
 * Nvim v0.9+
@@ -35,6 +37,16 @@ Specifically, it is also required to configure `nvim-treesitter` language module
 ```vim
 :TSInstall lua python go java
 ```
+
+### Plugins for IDE experience
+
+* LanguageServers management: `nvim-lspconfig`
+* Auto completion: code completion with `nvim-cmp`, grammar parsing with `nvim-treesitter`
+* Auto code format: `formatter.nvim`
+* Folder structure: `nvim-tree`
+* Code structure: `tagbar` (depends on external universal-ctags/gotags etc.) with `symbol-outline`
+* Searching: fuzzy finder with `fzf` (<leader>fw), search everywhere (<leader>fW) with `the_silver_searcher`, general fuzzy finder with `nvim-telescope`
+* Git indicators: `vim-gitgutter`
 
 ## Configuration Structures
 
