@@ -38,4 +38,4 @@ Zsh plugins are managed by [zinit project](https://github.com/zdharma-continuum/
 ## Useful Shortcuts
 
 * `zshld`: Reload all zsh configs.
-* `zshup`: Update the whole zsh configs including `~/.dotfiles` and zinit plugins.
+* `zshup`: Update the whole zinit plugins and custom `~/.config/zsh/plugins`.
