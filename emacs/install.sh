@@ -11,11 +11,11 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 source $THISDIR/../lib/bash_utils.sh
 
 function usage {
-    info "Usage: install.sh [-f] [-s] [-e]"
-    info "  -f copy and install"
-    info "  -s soft linke install"
-    info "  -e install dependencies"
-    info "  -c cleanse install"
+    echo "Usage: install.sh [-f] [-s] [-e]"
+    echo "  -f copy and install"
+    echo "  -s soft linke install"
+    echo "  -e install dependencies"
+    echo "  -c cleanse install"
 }
 
 function handle_emacs {

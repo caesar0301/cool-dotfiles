@@ -2,7 +2,7 @@
 
 Personal collection of dotfiles
 
-## Install
+## Install all dotfiles
 
 Clone this repo
 
@@ -25,3 +25,21 @@ Run `install_dotfiles.sh` automatically installs dependencies and configures `zs
 # Cleanse installer changes
 ./install_dotfiles.sh -c
 ```
+
+## Install specific module
+
+### Nvim
+
+Run `sh nvim/install.sh` and refer to [nvim/README.md](nvim/README.md)
+
+### Zsh
+
+Run `sh zsh/install.sh` and refer to [zsh/README.md](zsh/README.md)
+
+### Tmux
+
+Run `sh tmux/install.sh`
+
+### Emacs
+
+Run `sh emacs/install.sh`
