@@ -157,13 +157,11 @@ function install_fzf {
     echo $config >>$shellconfig
 }
 
-function install_universal_ctags {
+function install_ctags_and_deps {
     if ! checkcmd ctags; then
         warn "Command ctags not found in PATH. Please install universal-ctags from https://github.com/universal-ctags/ctags"
     fi
-}
-
-function install_ctags_deps {
+    # gotags
     if checkcmd go; then
         go install github.com/jstemmer/gotags@latest
     else
@@ -177,8 +175,7 @@ function install_all_deps {
     install_hack_nerd_font # required by nvim-web-devicons
     install_autoformat_deps
     install_fzf
-    install_universal_ctags
-    install_ctags_deps
+    install_ctags_and_deps
 }
 
 function _load_custom_extensions {
@@ -198,7 +195,7 @@ function handle_ctags {
     local ctags_home=$HOME/.ctags.d
     mkdir_nowarn $ctags_home
     if [ -e ${ctags_home} ]; then
-        for i in $(find $THISDIR/../ctags -maxdepth 1 -type f -name "*.ctags"); do
+        for i in $(find $THISDIR/ctags -maxdepth 1 -type f -name "*.ctags"); do
             if [ x$SOFTLINK == "x1" ]; then
                 ln -sf $i $ctags_home/
             else
