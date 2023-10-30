@@ -7,23 +7,22 @@
 # Author: xiaming.chen
 #
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
 # colored messages
 function warn {
-    warn_prefix="\033[33m"
-    mssg_suffix="\033[00m"
-    echo -e "$warn_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
+    printf "${YELLOW}[%s] %s${NC}\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
 }
 
 function info {
-    info_prefix="\033[32m"
-    mssg_suffix="\033[00m"
-    echo -e "$info_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
+    printf "${GREEN}[%s] %s${NC}\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
 }
 
 function error {
-    erro_prefix="\033[31m"
-    mssg_suffix="\033[00m"
-    echo -e "$erro_prefix"[$(date '+%Y-%m-%dT%H:%M:%S')] "$@""$mssg_suffix"
+    printf "${RED}[%s] %s${NC}\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
 }
 
 # check command existence
@@ -88,7 +87,13 @@ function random_num {
 
 function current_shell_name {
     #shellname=$(ps -hp $$ | awk '{print $5}')
-    shellname=$(cat /etc/passwd | grep $(whoami) | awk -F: '{print $7}')
+    local ostype=$(uname -s)
+    local username=$(whoami)
+    if [[ $ostype == "Darwin" ]]; then
+        shellname=$(dscl . -read /Users/$username UserShell | awk '{print $2}')
+    else
+        shellname=$(awk -F: -v user="$username" '$1 == user {print $7}' /etc/passwd)
+    fi
     echo $(basename $shellname)
 }
 
