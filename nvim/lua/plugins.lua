@@ -24,6 +24,12 @@ return require("packer").startup(
                 {"echasnovski/mini.base16", opt = true}
             }
         }
+        use {
+            "romgrk/barbar.nvim",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"}
+            }
+        }
         use "preservim/tagbar"
         use {
             "junegunn/fzf.vim",
@@ -157,12 +163,6 @@ return require("packer").startup(
         use "itchyny/lightline.vim"
         use "nvim-lua/lsp-status.nvim"
         use "jlanzarotta/bufexplorer"
-        use {
-            "romgrk/barbar.nvim",
-            requires = {
-                {"nvim-tree/nvim-web-devicons"}
-            }
-        }
 
         ---------------------------
         -- Misc

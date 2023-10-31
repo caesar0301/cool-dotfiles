@@ -44,7 +44,7 @@ Specifically, it is also required to configure `nvim-treesitter` language module
 * LanguageServers management: `nvim-lspconfig`
 * Auto completion: code completion with `nvim-cmp`, grammar parsing with `nvim-treesitter`
 * Auto code format: `formatter.nvim`
-* Folder structure: `nvim-tree`
+* Folder structure: `nvim-tree` and `barbar.nvim` for tabline
 * Code structure: `tagbar` (depends on external `universal-ctags`/`gotags` etc.)
 * Searching: fuzzy finder with `fzf` (<leader>fw), search everywhere (<leader>fW) with `the_silver_searcher`, general fuzzy finder with `nvim-telescope`
 * Git indicators: `vim-gitgutter`
