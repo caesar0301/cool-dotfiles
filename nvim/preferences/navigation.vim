@@ -2,11 +2,15 @@
 " Zen Mode
 """"""""""""""""""""""""""""""""""
 
+"---------------------------------
 " Plugin => ZenCoding
+"---------------------------------
 " Enable all functions in all modes
 let g:user_zen_mode='a'
 
+"---------------------------------
 " Plugin => zenroom & goyo
+"---------------------------------
 let g:goyo_width=100
 let g:goyo_margin_top = 2
 let g:goyo_margin_bottom = 2
@@ -36,7 +40,9 @@ endtry
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
+"---------------------------------
 " Plugin => bufExplorer
+"---------------------------------
 "   <leader>be normal open
 "   <leader>bt toggle open / close
 "   <leader>bs force horizontal split open
@@ -52,7 +58,9 @@ let g:bufExplorerFindActive=1
 let g:bufExplorerSortBy='name'
 map <leader>bn :BufExplorer<cr>
 
+"---------------------------------
 " Plugin => barbar
+"---------------------------------
 " Move to previous/next
 nnoremap <silent> <A-,> <cmd>BufferPrevious<cr>
 nnoremap <silent> <A-.> <cmd>BufferNext<cr>
@@ -106,14 +114,17 @@ map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 " File browser and structure
 """"""""""""""""""""""""""""""""""
 
+"---------------------------------
 " Plugin => nvim-tree, file browsing
+"---------------------------------
 nnoremap <F8> :NvimTreeFindFileToggle!<cr>
 nnoremap <leader>nn :NvimTreeFindFile!<cr>
 
+"---------------------------------
 " Plugin => tagbar
+"---------------------------------
 nnoremap <leader>tb :TagbarToggle<cr>
 nnoremap <F9> :TagbarToggle<cr>
-
 let g:tagbar_position = 'right'
 let g:tagbar_sort = 0
 let g:tagbar_compact=1
@@ -244,23 +255,31 @@ map <C-space> ?
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
+"---------------------------------
 "" Plugin => fzf
+"---------------------------------
 " Search the word under the cursor
 nnoremap <leader>fw <cmd>call fzf#vim#ag(expand('<cword>'))<cr>
 " Search everywhere
 nnoremap <leader>fW <cmd>Ag<cr>
 
+"---------------------------------
 "" Plugin => MRU
+"---------------------------------
 let MRU_Max_Entries = 400
 nnoremap <leader>fr <cmd>MRU<cr>
 
+"---------------------------------
 "" Plugin => telescope
+"---------------------------------
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
+"---------------------------------
 " Plugins => AnyJump
+"---------------------------------
 let g:any_jump_disable_default_keybindings = 1
 nnoremap <leader>aj :AnyJump<cr>
 xnoremap <leader>aj :AnyJumpVisual<cr>
