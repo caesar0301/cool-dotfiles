@@ -26,10 +26,6 @@ return require("packer").startup(
         }
         use "preservim/tagbar"
         use {
-            -- Complement tagbar
-            "simrat39/symbols-outline.nvim"
-        }
-        use {
             "junegunn/fzf.vim",
             requires = {"junegunn/fzf", run = ":call fzf#install()"},
             rtp = "~/.fzf"

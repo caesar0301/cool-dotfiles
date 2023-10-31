@@ -107,15 +107,13 @@ map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 """"""""""""""""""""""""""""""""""
 
 " Plugin => nvim-tree, file browsing
-map <F8> :NvimTreeFindFileToggle!<cr>
-map <leader>nn :NvimTreeFindFile!<cr>
-
-" Plugin => symbols-outline
-nnoremap <leader>so :SymbolsOutline<cr>
-map <F9> :SymbolsOutline<cr>
+nnoremap <F8> :NvimTreeFindFileToggle!<cr>
+nnoremap <leader>nn :NvimTreeFindFile!<cr>
 
 " Plugin => tagbar
 nnoremap <leader>tb :TagbarToggle<cr>
+nnoremap <F9> :TagbarToggle<cr>
+
 let g:tagbar_position = 'right'
 let g:tagbar_sort = 0
 let g:tagbar_compact=1
