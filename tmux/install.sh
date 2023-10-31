@@ -18,14 +18,22 @@ function usage {
     echo "  -c cleanse install"
 }
 
+function install_tpm {
+    info "Installing tpm..."
+    mkdir_nowarn $XDG_CONFIG_HOME/tmux/plugins
+    if [ ! -e $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
+        git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
+    fi
+}
+
 function handle_tmux {
     mkdir_nowarn $XDG_CONFIG_HOME/tmux
     if [ x$SOFTLINK == "x1" ]; then
-        ln -sf $THISDIR/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
-        ln -sf $THISDIR/tmux/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
+        ln -sf $THISDIR/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
+        ln -sf $THISDIR/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
     else
-        cp $THISDIR/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
-        cp $THISDIR/tmux/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
+        cp $THISDIR/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
+        cp $THISDIR/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
     fi
 }
 
@@ -48,6 +56,7 @@ while getopts fsech opt; do
     esac
 done
 
+install_tpm
 handle_tmux
 
 info "Tmux installed successfully!"
