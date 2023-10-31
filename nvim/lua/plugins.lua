@@ -27,8 +27,8 @@ return require("packer").startup(
         use {
             "romgrk/barbar.nvim",
             requires = {
-                {"nvim-tree/nvim-web-devicons", opt = true},
-                {"lewis6991/gitsigns.nvim", opt = true}
+                {"nvim-tree/nvim-web-devicons"},
+                {"lewis6991/gitsigns.nvim"}
             }
         }
         use "preservim/tagbar"
