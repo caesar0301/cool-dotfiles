@@ -2,7 +2,7 @@
 THISFILE=$(cd ${0%/*} && echo $PWD/${0##*/})
 THISPATH=$(dirname $THISFILE)
 
-VERSION="v1.15.1"
+VERSION="v1.16.0"
 RELEASE="https://github.com/MetaCubeX/Clash.Meta/releases/download/$VERSION/clash.meta-linux-amd64-$VERSION.gz"
 
 LOCALCOPY=/tmp/clash.meta-linux-amd64-$VERSION.gz
