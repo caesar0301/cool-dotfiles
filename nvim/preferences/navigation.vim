@@ -123,7 +123,7 @@ nnoremap <leader>nn :NvimTreeFindFile!<cr>
 "---------------------------------
 " Plugin => tagbar
 "---------------------------------
-nnoremap <leader>tb :TagbarToggle<cr>
+nnoremap <leader>tt :TagbarToggle<cr>
 nnoremap <F9> :TagbarToggle<cr>
 let g:tagbar_position = 'right'
 let g:tagbar_sort = 0
