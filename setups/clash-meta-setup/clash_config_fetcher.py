@@ -47,8 +47,14 @@ def rule_key(rule):
 
 
 if __name__ == "__main__":
-    v2ss_link = os.getenv("V2SS_LINK")
-    trojan_link = os.getenv("TROJAN_LINK")
+    v2ss_link = os.getenv("V2SS_LINK", "").strip()
+    trojan_link = os.getenv("TROJAN_LINK", "").strip()
+
+    if not v2ss_link:
+        raise RuntimeError("Empty V2SS_LINK env")
+
+    if not trojan_link:
+        raise RuntimeError("Empty TROJAN_LINK env")
 
     trojan = read_remote_config(trojan_link)
     v2ss = read_remote_config(v2ss_link)
