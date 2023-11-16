@@ -72,7 +72,6 @@ end
 local servers = {
     "rust_analyzer",
     "pyright",
-    "r_language_server",
     "clojure_lsp",
     "metals",
     "cmake"

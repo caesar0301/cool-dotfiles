@@ -70,11 +70,18 @@ return require("packer").startup(
         use "digitaltoad/vim-pug"
         use "editorconfig/editorconfig-vim"
         use "groenewege/vim-less"
-        use "jalvesaq/Nvim-R"
+        use {
+            "jalvesaq/Nvim-R",
+            requires = {
+                {"jalvesaq/cmp-nvim-r"},
+                {"jalvesaq/colorout"},
+                {"jalvesaq/zotcite"},
+                {"jalvesaq/cmp-zotcite"}
+            }
+        }
         use "kchmck/vim-coffee-script"
         use "leafgarland/typescript-vim"
         use "lervag/vimtex"
-        -- use "mfussenegger/nvim-jdtls"
         use "pangloss/vim-javascript"
         use "plasticboy/vim-markdown"
         use "rust-lang/rust.vim"
