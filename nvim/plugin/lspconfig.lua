@@ -172,6 +172,11 @@ local jdk_home = os.getenv("JAVA_HOME_4JDTLS")
 if jdk_home == nil then
     jdk_home = os.getenv("JAVA_HOME")
 end
+if jdk_home == nil then
+    print(
+        "Please set JAVA_HOME correctly. If you are using jenv to manager JDK versions, try to run `jenv enable-plugin export` to activate JAVA_HOME env variable exporting."
+    )
+end
 local jdtls_install_folder = os.getenv("JDTLS_INSTALL_HOME")
 if jdtls_install_folder == nil then
     jdtls_install_folder = home .. "/.local/share/jdt-language-server"
