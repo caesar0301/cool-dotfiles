@@ -151,10 +151,13 @@ function install_fzf {
         git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
         $HOME/.fzf/install
     fi
-    local config='[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
     shellconfig=$(current_shell_config)
-    echo "# automatic configs by cool-dotfiles nvim installer" >>$shellconfig
-    echo $config >>$shellconfig
+    if ! grep -r "source.*\.fzf\.zsh" $shellconfig >/dev/null; then
+        local config='[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
+        echo >>$shellconfig
+        echo "# automatic configs by cool-dotfiles nvim installer" >>$shellconfig
+        echo $config >>$shellconfig
+    fi
 }
 
 function install_ctags_and_deps {
