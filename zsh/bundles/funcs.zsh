@@ -1,6 +1,17 @@
-#+++++++++++++++++++++++++++++++++++++++
-# PATH
-#+++++++++++++++++++++++++++++++++++++++
+# update nvim plugins
+function nvimup {
+    nvim -c "PackerInstall" -c "PackerSync" \
+        -c "TSInstall lua python java go scala"
+}
+
+# update dotfiles
+function dotup {
+    DOTHOME=${DOTHOME:-$HOME/.dotfiles}
+    CURDIR=$(pwd)
+    cd $DOTHOME && git pull && $DOTHOME/install_dotfiles.sh
+    cd $CURDIR
+    echo "$HOME/.dotfiles updated"
+}
 
 # start or access tmux dev session
 function bingo {
@@ -78,17 +89,19 @@ function openw {
     $EXE $@
 }
 
-# update nvim plugins
-function nvimup {
-    nvim -c "PackerInstall" -c "PackerSync" \
-        -c "TSInstall lua python java go scala"
-}
-
-# update dotfiles
-function dotup {
-    DOTHOME=${DOTHOME:-$HOME/.dotfiles}
-    CURDIR=$(pwd)
-    cd $DOTHOME && git pull && $DOTHOME/install_dotfiles.sh
-    cd $CURDIR
-    echo "$HOME/.dotfiles updated"
+# Greping and replace
+function greprp {
+    if [ $# -eq 2 ]; then
+        spath='.'
+        oldstr=$1
+        newstr=$2
+    elif [ $# -eq 3 ]; then
+        spath=$1
+        oldstr=$2
+        newstr=$3
+    else
+        echo "Invalid param number. Usage: greprp [spath] oldstr newstr"
+        exit 1
+    fi
+    grep -r "$oldstr" $spath | awk -F: '{print $1}' | uniq | xargs -i sed -i -E "s|$oldstr|$newstr|g" {}
 }
