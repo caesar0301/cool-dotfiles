@@ -226,6 +226,7 @@ function handle_neovim {
 function cleanse_all {
     rm -rf $HOME/.ctags
     rm -rf $XDG_CONFIG_HOME/nvim
+    rm -rf $XDG_DATA_HOME/nvim/site/pack
     info "All nvim cleansed!"
 }
 

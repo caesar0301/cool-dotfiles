@@ -102,6 +102,7 @@ function cleanse_zsh {
             rm -rf $XDG_CONFIG_HOME/zsh/plugins/$(basename $dname)
         done
     fi
+    rm -rf $XDG_DATA_HOME/zinit
     info "All zsh cleansed!"
 }
 
