@@ -13,15 +13,11 @@ if jdk_home == nil then
 else
     java_bin = jdk_home .. "/bin/java"
 end
-local gjfjar = os.getenv("GJF_JAR_FILE")
-if gjfjar == nil then
-    gjfjar = home .. "/.local/share/google-java-format/google-java-format-all-deps.jar"
-end
 
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 require("formatter").setup {
     logging = true,
-    log_level = vim.log.levels.WARN,
+    log_level = vim.log.levels.DEBUG,
     filetype = {
         -- Formatter configurations for filetypes go here and will be executed in order
         lua = {
@@ -29,6 +25,10 @@ require("formatter").setup {
         },
         java = {
             function()
+                local gjfjar = os.getenv("GJF_JAR_FILE")
+                if gjfjar == nil then
+                    gjfjar = home .. "/.local/share/google-java-format/google-java-format-all-deps.jar"
+                end
                 return {
                     exe = java_bin,
                     args = {
