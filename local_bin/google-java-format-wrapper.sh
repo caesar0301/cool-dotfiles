@@ -14,4 +14,4 @@ if [ x$GJFJAR == "x" ]; then
     GJFJAR=$HOME/.local/share/google-java-format/google-java-format-all-deps.jar
 fi
 
-$JAVABIN -jar $GJFJAR - $@
+$JAVABIN -jar $GJFJAR $@
