@@ -62,7 +62,9 @@ zinit snippet OMZP::gitignore
 
 # Web
 zi snippet OMZP::urltools
+if command -v svn &> /dev/null; then
 zi ice svn
+fi
 
 # Python
 # fix badly configured error of plugin
