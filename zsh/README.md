@@ -39,3 +39,7 @@ Zsh plugins are managed by [zinit project](https://github.com/zdharma-continuum/
 
 * `zshld`: Reload all zsh configs.
 * `zshup`: Update the whole zinit plugins and custom `~/.config/zsh/plugins`.
+
+## Configurable ENV vars
+
+* `SHELLPROXY_URL`: proxy address used by `shell-proxy` plugin.

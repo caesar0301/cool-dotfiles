@@ -62,3 +62,10 @@ To see all shortcuts via
 ```vim
 :map
 ```
+
+## Configurable ENV vars
+
+* `JAVA_HOME_4JDTLS`: JAVA_HOME for jdt-language-server, default empty, use JAVA_HOME instead.
+* `JDTLS_INSTALL_HOME`: Installed home path for jdt-language-server, default `~/.local/share/jdt-language-server`.
+* `JAVA_HOME_4GJF`: JAVA_HOME for google-java-formatter, default empty, use JAVA_HOME instead.
+* `GJF_JAR_FILE`: jar path for google-java-formatter, default `~/.local/share/google-java-format/google-java-format-all-deps.jar`.

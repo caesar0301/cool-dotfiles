@@ -55,6 +55,9 @@ function _initMacEnv {
 			fi
 		done
 	fi
+	# speedup
+	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
+	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
 	# macports
 	export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 	export C_INCLUDE_PATH="/opt/local/include:$C_INCLUDE_PATH"
