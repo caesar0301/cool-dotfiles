@@ -35,35 +35,56 @@ autoload -Uz _zi
 (( ${+_comps} )) && _comps[zi]=_zi
 
 # Oh-My-Zsh libs
+zinit ice wait lucid
 zinit snippet OMZL::clipboard.zsh
-zinit snippet OMZL::compfix.zsh
-zinit snippet OMZL::completion.zsh
+zinit ice wait lucid
 zinit snippet OMZL::correction.zsh
+zinit ice wait lucid
 zinit snippet OMZL::directories.zsh
+zinit ice wait lucid
 zinit snippet OMZL::functions.zsh
-zinit snippet OMZL::git.zsh
+zinit ice wait lucid
 zinit snippet OMZL::spectrum.zsh
-zinit snippet OMZL::theme-and-appearance.zsh
 
 # Efficiency
+zinit ice wait lucid
 zinit snippet OMZP::alias-finder
+zinit ice wait lucid
 zinit snippet OMZP::extract
+zinit ice wait lucid
 zinit snippet OMZP::vi-mode
+zinit ice wait lucid
 zinit snippet OMZP::fzf
-zinit ice pick"z.sh"
+zinit ice pick"z.sh" wait lucid
 zinit load rupa/z
 
-# Colored
-zinit snippet OMZP::colored-man-pages
+# Completion
+zinit ice wait lucid
+zinit snippet OMZL::compfix.zsh
+zinit ice wait lucid
+zinit snippet OMZL::completion.zsh
+zinit ice pick"zsh-history-substring-search.zsh"
+zinit light zsh-users/zsh-history-substring-search
+zinit ice pick"src"
+zinit light zsh-users/zsh-completions
+fpath=($ZINIT_WORKDIR/plugins/zsh-users---zsh-completions/src $fpath)
 
-# Dev
+# Fish-shell likes
+zinit ice pick"zsh-autosuggestions.zsh" wait lucid
+zinit light zsh-users/zsh-autosuggestions
+zinit ice pick "zsh-syntax-highlighting.zsh" wait lucid
+zinit light zsh-users/zsh-syntax-highlighting
+
+# Development
+zinit snippet OMZL::git.zsh
+zinit ice wait lucid
 zinit snippet OMZP::git
+zinit ice wait lucid
 zinit snippet OMZP::gitignore
-
-# Web
+zinit ice wait lucid
 zi snippet OMZP::urltools
 if command -v svn &> /dev/null; then
-zi ice svn
+    zi ice svn
 fi
 
 # Python
@@ -79,58 +100,32 @@ function _setupPyenv {
 }
 _setupPyenv
 zinit snippet OMZP::pyenv
+zinit ice wait lucid
 zinit snippet OMZP::jenv
+zinit ice wait lucid
 zinit snippet OMZP::rbenv
+zinit ice wait lucid
 zinit snippet OMZP::virtualenv
 
 # Theme
 zinit cdclear -q
 setopt promptsubst
+zinit ice wait lucid
+zinit snippet OMZL::theme-and-appearance.zsh
 zinit snippet OMZP::themes
-#zinit snippet OMZT::agnoster
-#zinit snippet OMZT::crcandy
-#zinit snippet OMZT::gentoo
-#zinit snippet OMZT::gozilla
-#zinit snippet OMZT::jreese
-#zinit snippet OMZT::kafeitu
-#zinit snippet OMZT::nicoulaj
-zinit snippet OMZT::robbyrussell
+zinit snippet OMZT::gentoo
 
-# Completion
-zinit ice pick"zsh-history-substring-search.zsh"
-zinit load zsh-users/zsh-history-substring-search
-
-zinit ice pick"src"
-zinit load zsh-users/zsh-completions
-fpath=($ZINIT_WORKDIR/plugins/zsh-users---zsh-completions/src $fpath)
-
-# Fish-shell likes
-zinit ice pick"zsh-autosuggestions.zsh"
-zinit load zsh-users/zsh-autosuggestions
-zinit ice pick "zsh-syntax-highlighting.zsh"
-zinit load zsh-users/zsh-syntax-highlighting
-
-# Profiling perf
-PROFILE_PERF=0
-if [[ ${PROFILE_PERF} == 1 ]]; then
-    zmodload zsh/zprof
-    zprof
-fi
+# Colored
+zinit ice wait lucid
+zinit snippet OMZP::colored-man-pages
 
 #+++++++++++++++++++++++++++++++++++++++
 # Bundles and plugins
 #+++++++++++++++++++++++++++++++++++++++
 
-# zsh bundled
-autoload -U parseopts
-autoload -U zargs
-autoload -U zcalc
-autoload -U zed
-autoload -U zmv
-autoload -U compinit && compinit
-
 # Load common bundles
 for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
+    zinit ice wait lucid
     zinit snippet $i;
 done
 
@@ -139,15 +134,22 @@ function _load_custom_extensions {
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
         # Load plugins
         for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
-            zinit load $plugin
+            zinit ice wait lucid
+            zinit light $plugin
         done
         # Load plain zsh scripts
         for i in `find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"`; do
-            zinit snippet $i;
+            zinit ice wait lucid
+            zinit light $i;
         done
     fi
 }
 _load_custom_extensions
+
+autoload -U parseopts zargs zcalc zed zmv
+autoload -U compinit && compinit
+zinit cdreplay -q
+#zinit cdlist
 
 #+++++++++++++++++++++++++++++++++++++++
 # Basics and commons
