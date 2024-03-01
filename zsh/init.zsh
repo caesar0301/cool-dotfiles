@@ -83,9 +83,6 @@ zinit ice wait lucid
 zinit snippet OMZP::gitignore
 zinit ice wait lucid
 zi snippet OMZP::urltools
-if command -v svn &> /dev/null; then
-    zi ice svn
-fi
 
 # Python
 # fix badly configured error of plugin
