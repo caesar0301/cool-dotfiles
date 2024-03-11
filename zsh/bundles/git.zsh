@@ -1,6 +1,21 @@
 #############################################################
 ## My custom git shortcuts
 #############################################################
+# Git aliases
+alias ga="git add"
+alias gb="git branch"
+alias gba="git branch -av"
+alias gd="git diff --ws-error-highlight=all"
+alias gdc="git diff --cached"
+alias ghf="git log --follow -p --"
+alias gll="git log | less"
+alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
+alias gsrh="git submodule foreach --recursive git reset --hard"
+alias gsur="git submodule update --init --recursive"
+
+alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push"
+alias git-submodule-latest="git submodule foreach git pull origin master"
+
 function git-reset-recurse-submodules {
     #Cleans and resets a git repo and its submodules
     #https://gist.github.com/nicktoumpelis/11214362

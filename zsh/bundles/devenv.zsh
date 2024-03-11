@@ -1,18 +1,6 @@
 #+++++++++++++++++++++++++++++++++++++++
 # DEVTOOLS
-#
-# Dependent envs:
-# JAVA_HOME
-# JAVA_HOME_4GJF
-# GJF_JAR_FILE
 #+++++++++++++++++++++++++++++++++++++++
-
-function maven-quickstart {
-	mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
-		-DarchetypeArtifactId=maven-archetype-quickstart \
-		-DarchetypeVersion=1.4 $@
-}
-
 function _initGoenv {
 	GOROOT=${GOROOT:-/usr/local/go}
 	if [ -e $GOROOT ]; then
@@ -46,15 +34,15 @@ function _initCuda {
 
 function _initMacEnv {
 	# homebrew
-	brew_installed=(gcc) #***
-	if command -v brew &>/dev/null; then
-		for i in ${brew_installed[@]}; do
-			INSTALLED_HOME=$(brew --prefix ${i})
-			if [[ "x$?" == "x0" ]]; then
-				export PATH=$INSTALLED_HOME/bin:$PATH
-			fi
-		done
-	fi
+	# brew_installed=(gcc) #***
+	# if command -v brew &>/dev/null; then
+	# 	for i in ${brew_installed[@]}; do
+	# 		INSTALLED_HOME=$(brew --prefix ${i})
+	# 		if [[ "x$?" == "x0" ]]; then
+	# 			export PATH=$INSTALLED_HOME/bin:$PATH
+	# 		fi
+	# 	done
+	# fi
 	# speedup
 	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
 	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
@@ -62,6 +50,8 @@ function _initMacEnv {
 	export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 	export C_INCLUDE_PATH="/opt/local/include:$C_INCLUDE_PATH"
 	export LD_LIBRARY_PATH="/opt/local/lib:$LD_LIBRARY_PATH"
+	# skim shortcut
+	alias skim="/Applications/Skim.app/Contents/MacOS/Skim"
 }
 
 function _initHaskellEnv {
@@ -73,13 +63,28 @@ function _initHaskellEnv {
 	fi
 }
 
+function _initJavaEnv {
+	# Java decompiler
+	alias java_decompile="java -jar $HOME/.local/bin/cfr-0.152.jar"
+}
+
 _initGoenv
 _initRustEnv
 _initCuda
 _initHaskellEnv
+_initJavaEnv
+if [[ $OSTYPE == darwin*  ]]; then 
+	_initMacEnv
+fi
 
-#if [[ $OSTYPE == darwin*  ]]; then _initMacEnv; fi
+# Quick start a maven project with template
+function maven-quickstart {
+	mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes \
+		-DarchetypeArtifactId=maven-archetype-quickstart \
+		-DarchetypeVersion=1.4 $@
+}
 
+# Quick start a local http server with python
 local-http-server() {
 	# Check python major version
 	PYV=$(python -c "import sys;t='{v[0]}'.format(v=list(sys.version_info[:1]));sys.stdout.write(t)")

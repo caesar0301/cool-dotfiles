@@ -42,9 +42,19 @@ function install_zsh {
     cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
 }
 
+function install_java_decompiler {
+    info "Installing CFR - another java decompiler"
+    mkdir_nowarn $HOME/.local/bin
+    target="$HOME/.local/bin/cfr-0.152.jar"
+    if [ ! -e $target ]; then
+        curl -L --progress-bar https://www.benf.org/other/cfr/cfr-0.152.jar --output $target
+    fi
+}
+
 function install_all_deps {
     install_pyenv
     install_jenv
+    install_java_decompiler
     install_rbenv
     if ! checkcmd zsh; then
         install_zsh
