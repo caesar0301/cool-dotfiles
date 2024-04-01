@@ -42,6 +42,7 @@ zinit ice wait lucid; zinit snippet OMZL::directories.zsh
 zinit ice wait lucid; zinit snippet OMZL::functions.zsh
 zinit ice wait lucid; zinit snippet OMZL::git.zsh
 zinit ice wait lucid; zinit snippet OMZL::spectrum.zsh
+zinit ice wait lucid; zinit snippet OMZL::theme-and-appearance.zsh
 
 # Efficiency
 zinit ice wait lucid; zinit snippet OMZP::alias-finder
