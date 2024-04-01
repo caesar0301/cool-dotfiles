@@ -31,61 +31,43 @@ export PATH=$PATH:$HOME/.local/bin
 # ZI manager
 #+++++++++++++++++++++++++++++++++++++++
 
-autoload -Uz _zi
-(( ${+_comps} )) && _comps[zi]=_zi
+autoload -Uz _zi && (( ${+_comps} )) && _comps[zi]=_zi
 
 # Oh-My-Zsh libs
-zinit ice wait lucid
-zinit snippet OMZL::clipboard.zsh
-zinit ice wait lucid
-zinit snippet OMZL::correction.zsh
-zinit ice wait lucid
-zinit snippet OMZL::directories.zsh
-zinit ice wait lucid
-zinit snippet OMZL::functions.zsh
-zinit ice wait lucid
-zinit snippet OMZL::spectrum.zsh
+zinit ice wait lucid; zinit snippet OMZL::clipboard.zsh
+zinit ice wait lucid; zinit snippet OMZL::compfix.zsh
+zinit ice wait lucid; zinit snippet OMZL::completion.zsh
+zinit ice wait lucid; zinit snippet OMZL::correction.zsh
+zinit ice wait lucid; zinit snippet OMZL::directories.zsh
+zinit ice wait lucid; zinit snippet OMZL::functions.zsh
+zinit ice wait lucid; zinit snippet OMZL::git.zsh
+zinit ice wait lucid; zinit snippet OMZL::spectrum.zsh
 
 # Efficiency
-zinit ice wait lucid
-zinit snippet OMZP::alias-finder
-zinit ice wait lucid
-zinit snippet OMZP::extract
-zinit ice wait lucid
-zinit snippet OMZP::vi-mode
-zinit ice wait lucid
-zinit snippet OMZP::fzf
-zinit ice pick"z.sh" wait lucid
-zinit load rupa/z
+zinit ice wait lucid; zinit snippet OMZP::alias-finder
+zinit ice wait lucid; zinit snippet OMZP::extract
+zinit ice wait lucid; zinit snippet OMZP::vi-mode
+zinit ice wait lucid; zinit snippet OMZP::fzf
+zinit ice pick"z.sh" wait lucid; zinit load rupa/z
 
-# Completion
-zinit ice wait lucid
-zinit snippet OMZL::compfix.zsh
-zinit ice wait lucid
-zinit snippet OMZL::completion.zsh
+# Completion & search
+zinit ice lucid wait='0' atload='_zsh_autosuggest_start'
+zinit light zsh-users/zsh-autosuggestions
+zinit ice pick"src"; zinit light zsh-users/zsh-completions
+fpath=($ZINIT_WORKDIR/plugins/zsh-users---zsh-completions/src $fpath)
 zinit ice pick"zsh-history-substring-search.zsh"
 zinit light zsh-users/zsh-history-substring-search
-zinit ice pick"src"
-zinit light zsh-users/zsh-completions
-fpath=($ZINIT_WORKDIR/plugins/zsh-users---zsh-completions/src $fpath)
-
-# Fish-shell likes
-zinit ice pick"zsh-autosuggestions.zsh" wait lucid
-zinit light zsh-users/zsh-autosuggestions
 zinit ice pick "zsh-syntax-highlighting.zsh" wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
 
-# Development
-zinit snippet OMZL::git.zsh
-zinit ice wait lucid
-zinit snippet OMZP::git
-zinit ice wait lucid
-zinit snippet OMZP::gitignore
-zinit ice wait lucid
-zi snippet OMZP::urltools
+# Theme
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# Python
-# fix badly configured error of plugin
+# Development
+zinit ice wait lucid; zinit snippet OMZP::git
+zinit ice wait lucid; zinit snippet OMZP::colored-man-pages
+
+## Python
 function _setupPyenv {
     if [ -e "$HOME/.pyenv" ]; then
         export PYENV_ROOT="$HOME/.pyenv"
@@ -96,48 +78,22 @@ function _setupPyenv {
     fi
 }
 _setupPyenv
-zinit snippet OMZP::pyenv
-zinit ice wait lucid
-zinit snippet OMZP::jenv
-zinit ice wait lucid
-zinit snippet OMZP::rbenv
-zinit ice wait lucid
-zinit snippet OMZP::virtualenv
 
-# Theme
-zinit cdclear -q
-setopt promptsubst
-zinit ice wait lucid
-zinit snippet OMZL::theme-and-appearance.zsh
-zinit snippet OMZP::themes
-zinit snippet OMZT::gentoo
-
-# Colored
-zinit ice wait lucid
-zinit snippet OMZP::colored-man-pages
-
-#+++++++++++++++++++++++++++++++++++++++
-# Bundles and plugins
-#+++++++++++++++++++++++++++++++++++++++
-
-# Load common bundles
+# Load custom bundles
 for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
-    zinit ice wait lucid
-    zinit snippet $i;
+    zinit ice wait lucid; zinit snippet $i;
 done
 
-# Load my extensions under $ZSH_PLUGIN_DIR
+# Load custom extensions under $ZSH_PLUGIN_DIR
 function _load_custom_extensions {
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
         # Load plugins
         for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
-            zinit ice wait lucid
-            zinit light $plugin
+            zinit ice wait lucid; zinit light $plugin
         done
         # Load plain zsh scripts
         for i in `find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"`; do
-            zinit ice wait lucid
-            zinit light $i;
+            zinit ice wait lucid; zinit light $i;
         done
     fi
 }
