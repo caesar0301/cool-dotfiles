@@ -9,6 +9,8 @@
 --
 -- Usage: :PackerInstall
 -------------------------------------------------------------
+-- Setup globals that I expect to be always available.
+require("globals")
 
 -- Load all plugins
 require("plugins")

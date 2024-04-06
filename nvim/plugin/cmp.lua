@@ -1,14 +1,29 @@
 local cmp = require "cmp"
+local luasnip = require("luasnip")
+local lspkind = require("lspkind")
 
 cmp.setup(
     {
+        matching = {},
         snippet = {
             expand = function(args)
-                require("luasnip").lsp_expand(args.body)
+                luasnip.lsp_expand(args.body)
             end
         },
         window = {
-            -- completion = cmp.config.window.bordered(),
+            -- completion = {
+            --   col_offset = -3 -- align the abbr and word on cursor (due to fields order below)
+            -- },
+            -- documentation = {
+            --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
+            -- },
+            -- border style
+            completion = cmp.config.window.bordered(
+                {
+                    col_offset = -3, -- align the abbr and word on cursor (due to fields order below)
+                    side_padding = 0
+                }
+            ),
             documentation = cmp.config.window.bordered()
         },
         mapping = cmp.mapping.preset.insert(
@@ -19,8 +34,6 @@ cmp.setup(
                             cmp.select_next_item()
                         elseif luasnip.expand_or_locally_jumpable() then
                             luasnip.expand_or_jump()
-                        elseif has_words_before() then
-                            cmp.complete()
                         else
                             fallback()
                         end
@@ -39,10 +52,10 @@ cmp.setup(
                     end,
                     {"i", "s"}
                 ),
-                ["<C-n>"] = cmp.mapping.select_next_item(),
                 ["<C-p>"] = cmp.mapping.select_prev_item(),
+                ["<C-n>"] = cmp.mapping.select_next_item(),
                 ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-                ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-u>"] = cmp.mapping.scroll_docs(4),
                 ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), {"i", "c"}),
                 ["<C-y>"] = cmp.config.disable,
                 ["<C-e>"] = cmp.mapping(
@@ -61,7 +74,32 @@ cmp.setup(
                 {name = "path"},
                 {name = "buffer"}
             }
-        )
+        ),
+        formatting = {
+            fields = {"kind", "abbr", "menu"},
+            format = lspkind.cmp_format(
+                {
+                    mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+                    maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                    -- menu = ({ -- showing type in menu
+                    --   nvim_lsp = "(LSP)",
+                    --   path = "(Path)",
+                    --   buffer = "(Buffer)",
+                    --   luasnip = "(LuaSnip)",
+                    -- }),
+                    before = function(entry, vim_item)
+                        vim_item.menu = "(" .. vim_item.kind .. ")"
+                        vim_item.dup =
+                            ({
+                            nvim_lsp = 0,
+                            path = 0
+                        })[entry.source.name] or 0
+                        vim_item = formatForTailwindCSS(entry, vim_item) -- for tailwind css autocomplete
+                        return vim_item
+                    end
+                }
+            )
+        }
     }
 )
 
@@ -80,34 +118,157 @@ cmp.setup.filetype(
     }
 )
 
--- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(
     {"/", "?"},
     {
-        mapping = cmp.mapping.preset.cmdline(),
+        mapping = cmp.mapping.preset.cmdline(
+            {
+                ["<C-p>"] = cmp.mapping(
+                    {
+                        c = function(fallback)
+                            if cmp.visible() then
+                                return cmp.select_prev_item()
+                            end
+                            fallback()
+                        end
+                    }
+                ),
+                ["<C-n>"] = cmp.mapping(
+                    {
+                        c = function(fallback)
+                            if cmp.visible() then
+                                return cmp.select_next_item()
+                            end
+                            fallback()
+                        end
+                    }
+                ),
+                ["<Tab>"] = cmp.mapping(
+                    {
+                        c = function(fallback)
+                            if cmp.visible() then
+                                return cmp.confirm(
+                                    {
+                                        behavior = cmp.ConfirmBehavior.Replace, -- e.g. console.log -> console.inlog -> console.info
+                                        select = true -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                                    }
+                                )
+                            else
+                                return fallback()
+                            end
+                        end
+                    }
+                )
+            }
+        ),
         sources = {
             {name = "buffer"}
+        },
+        formatting = {
+            fields = {"abbr", "kind"},
+            format = lspkind.cmp_format(
+                {
+                    mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+                    maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                    before = function(_, vim_item)
+                        if vim_item.kind == "Text" then
+                            vim_item.kind = ""
+                            return vim_item
+                        end
+                        -- just show the icon
+                        vim_item.kind =
+                            lspkind.symbolic(vim_item.kind) and lspkind.symbolic(vim_item.kind) or vim_item.kind
+                        return vim_item
+                    end
+                }
+            )
         }
     }
 )
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(
     ":",
     {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources(
+        completion = {
+            autocomplete = false
+        },
+        mapping = cmp.mapping.preset.cmdline(
             {
-                {name = "path"}
-            },
-            {
-                {
-                    name = "cmdline",
-                    option = {
-                        ignore_cmds = {"Man", "!"}
+                ["<C-p>"] = cmp.mapping(
+                    {
+                        c = function(fallback)
+                            if cmp.visible() then
+                                return cmp.select_prev_item()
+                            end
+                            fallback()
+                        end
                     }
+                ),
+                ["<C-n>"] = cmp.mapping(
+                    {
+                        c = function(fallback)
+                            if cmp.visible() then
+                                return cmp.select_next_item()
+                            end
+                            fallback()
+                        end
+                    }
+                ),
+                ["<Tab>"] = cmp.mapping(
+                    {
+                        c = function()
+                            if cmp.visible() then
+                                return cmp.select_next_item()
+                            else
+                                cmp.complete()
+                                cmp.select_next_item()
+                                return
+                            end
+                        end
+                    }
+                ),
+                ["<S-Tab>"] = cmp.mapping(
+                    {
+                        c = function()
+                            if cmp.visible() then
+                                return cmp.select_prev_item()
+                            else
+                                cmp.complete()
+                                cmp.select_next_item()
+                                return
+                            end
+                        end
+                    }
+                )
+            }
+        ),
+        sources = {
+            {name = "path"},
+            {
+                name = "cmdline",
+                option = {
+                    ignore_cmds = {"Man", "!"}
                 }
             }
-        )
+        },
+        formatting = {
+            fields = {"abbr", "kind"},
+            format = lspkind.cmp_format(
+                {
+                    mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+                    maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                    before = function(_, vim_item)
+                        if vim_item.kind == "Variable" then
+                            vim_item.kind = ""
+                            return vim_item
+                        end
+                        -- just show the icon
+                        vim_item.kind =
+                            lspkind.symbolic(vim_item.kind) and lspkind.symbolic(vim_item.kind) or vim_item.kind
+                        return vim_item
+                    end
+                }
+            )
+        }
     }
 )

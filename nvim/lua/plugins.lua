@@ -110,7 +110,17 @@ return require("packer").startup(
         ---------------------------
         use "neovim/nvim-lspconfig"
         use "ojroques/nvim-lspfuzzy"
-        use "onsails/lspkind.nvim"
+        -- vscode-like pictograms
+        use {
+            "onsails/lspkind-nvim",
+            config = function()
+                require("lspkind").init(
+                    {
+                        preset = "codicons"
+                    }
+                )
+            end
+        }
         use {
             "rmagatti/goto-preview",
             config = function()
