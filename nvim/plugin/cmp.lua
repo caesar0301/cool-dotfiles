@@ -4,19 +4,12 @@ local lspkind = require("lspkind")
 
 cmp.setup(
     {
-        matching = {},
         snippet = {
             expand = function(args)
                 luasnip.lsp_expand(args.body)
             end
         },
         window = {
-            -- completion = {
-            --   col_offset = -3 -- align the abbr and word on cursor (due to fields order below)
-            -- },
-            -- documentation = {
-            --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
-            -- },
             -- border style
             completion = cmp.config.window.bordered(
                 {
@@ -24,6 +17,9 @@ cmp.setup(
                     side_padding = 0
                 }
             ),
+            -- documentation = {
+            --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
+            -- },
             documentation = cmp.config.window.bordered()
         },
         mapping = cmp.mapping.preset.insert(
