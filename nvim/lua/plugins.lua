@@ -16,6 +16,7 @@ return require("packer").startup(
         ---------------------------
         -- Navigation
         ---------------------------
+        -- folder view
         use {
             "nvim-tree/nvim-tree.lua",
             requires = {
@@ -24,6 +25,7 @@ return require("packer").startup(
                 {"echasnovski/mini.base16", opt = true}
             }
         }
+        -- tabline
         use {
             "romgrk/barbar.nvim",
             requires = {
@@ -31,6 +33,7 @@ return require("packer").startup(
                 {"lewis6991/gitsigns.nvim"}
             }
         }
+        -- file structure
         use "preservim/tagbar"
         use {
             "junegunn/fzf.vim",
@@ -56,6 +59,13 @@ return require("packer").startup(
                 require("hlargs").setup()
             end
         }
+        -- floating cmdline
+        use {
+            "VonHeikemen/fine-cmdline.nvim",
+            requires = {
+                {"MunifTanjim/nui.nvim"}
+            }
+        }
 
         ---------------------------
         -- Languages
@@ -74,7 +84,7 @@ return require("packer").startup(
             "jalvesaq/Nvim-R",
             requires = {
                 {"jalvesaq/cmp-nvim-r"},
-                {"jalvesaq/colorout"},
+                {"jalvesaq/colorout"}
                 -- {"jalvesaq/zotcite"},
                 -- {"jalvesaq/cmp-zotcite"}
             }
