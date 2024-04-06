@@ -1,18 +1,4 @@
 """"""""""""""""""""""""""""""""""
-" Zen Mode
-""""""""""""""""""""""""""""""""""
-
-"######Plugin=>ZenCoding
-" Enable all functions in all modes
-let g:user_zen_mode='a'
-
-"######Plugin=>zenroom & goyo
-let g:goyo_width=100
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
-nnoremap <silent> <leader>z :Goyo<cr>
-
-""""""""""""""""""""""""""""""""""
 " Windodws
 """"""""""""""""""""""""""""""""""
 
@@ -52,15 +38,25 @@ let g:bufExplorerFindActive=1
 let g:bufExplorerSortBy='name'
 map <leader>bn :BufExplorer<cr>
 
+""""""""""""""""""""""""""""""""""
+" Tabs
+""""""""""""""""""""""""""""""""""
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>t<leader> :tabnext
+
 "######Plugin=>barbar
 " Move to previous/next
 nnoremap <silent> <A-,> <cmd>BufferPrevious<cr>
 nnoremap <silent> <A-.> <cmd>BufferNext<cr>
-
 " Re-order to previous/next
 nnoremap <silent> <A-<> <cmd>BufferMovePrevious<cr>
 nnoremap <silent> <A->> <cmd>BufferMoveNext<cr>
-
 " Goto buffer in position...
 nnoremap <silent> <A-1> <cmd>BufferGoto 1<cr>
 nnoremap <silent> <A-2> <cmd>BufferGoto 2<cr>
@@ -72,7 +68,6 @@ nnoremap <silent> <A-7> <cmd>BufferGoto 7<cr>
 nnoremap <silent> <A-8> <cmd>BufferGoto 8<cr>
 nnoremap <silent> <A-9> <cmd>BufferGoto 9<cr>
 nnoremap <silent> <A-0> <cmd>BufferLast<cr>
-
 " Pin/unpin buffer
 nnoremap <silent> <A-p> <cmd>BufferPin<cr>
 " Close buffer
@@ -81,26 +76,6 @@ nnoremap <silent> <A-x> <cmd>BufferClose<cr>
 nnoremap <silent> <A-X> <cmd>BufferCloseAllButCurrent<cr>
 " Restore buffer
 nnoremap <silent> <A-s-x> <cmd>BufferRestore<cr>
-
-""""""""""""""""""""""""""""""""""
-" Tabs
-""""""""""""""""""""""""""""""""""
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-map <leader>t<leader> :tabnext
-
-" Let 'tl' toggle between this and the last accessed tab
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<cr>
-au TabLeave * let g:lasttab = tabpagenr()
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
 """"""""""""""""""""""""""""""""""
 " File browser and structure
@@ -265,3 +240,17 @@ nnoremap <leader>aj :AnyJump<cr>
 xnoremap <leader>aj :AnyJumpVisual<cr>
 nnoremap <leader>ab :AnyJumpBack<cr>
 nnoremap <leader>al :AnyJumpLastResults<cr>
+
+""""""""""""""""""""""""""""""""""
+" Zen Mode
+""""""""""""""""""""""""""""""""""
+
+"######Plugin=>ZenCoding
+" Enable all functions in all modes
+let g:user_zen_mode='a'
+
+"######Plugin=>zenroom & goyo
+let g:goyo_width=100
+let g:goyo_margin_top = 2
+let g:goyo_margin_bottom = 2
+nnoremap <silent> <leader>z :Goyo<cr>
