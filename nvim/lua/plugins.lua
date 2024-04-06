@@ -59,13 +59,6 @@ return require("packer").startup(
                 require("hlargs").setup()
             end
         }
-        -- floating cmdline
-        use {
-            "VonHeikemen/fine-cmdline.nvim",
-            requires = {
-                {"MunifTanjim/nui.nvim"}
-            }
-        }
 
         ---------------------------
         -- Languages
