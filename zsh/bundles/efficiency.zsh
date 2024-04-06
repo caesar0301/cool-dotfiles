@@ -27,7 +27,7 @@ function openw {
         if [[ $KREL =~ "microsoft-standard" ]]; then
             EXE='explorer.exe'
         fi
-    elif [[ $KNAME == "Darwin"  ]]; then
+    elif [[ $KNAME == "Darwin" ]]; then
         EXE='open'
     fi
     $EXE $@

@@ -75,8 +75,8 @@ return require("packer").startup(
             requires = {
                 {"jalvesaq/cmp-nvim-r"},
                 {"jalvesaq/colorout"},
-                {"jalvesaq/zotcite"},
-                {"jalvesaq/cmp-zotcite"}
+                -- {"jalvesaq/zotcite"},
+                -- {"jalvesaq/cmp-zotcite"}
             }
         }
         use "kchmck/vim-coffee-script"

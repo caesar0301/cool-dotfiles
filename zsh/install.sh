@@ -24,6 +24,7 @@ function install_jenv {
     if [ ! -e $HOME/.jenv ]; then
         info "Installing jenv to $HOME/.jenv..."
         git clone https://github.com/jenv/jenv.git $HOME/.jenv
+        ~/.jenv/bin/jenv enable-plugin export
     fi
 }
 

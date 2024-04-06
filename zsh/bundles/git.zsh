@@ -43,4 +43,3 @@ function git-prune-submodule {
     rm -rf .git/modules/$SUBMODULE
     git rm -f $SUBMODULE
 }
-
