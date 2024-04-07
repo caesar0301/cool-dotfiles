@@ -51,10 +51,10 @@ Specifically, it is also required to configure `nvim-treesitter` language module
 
 ## Configuration Structures
 
-* `~/.config/nvim`: Default installation of all configs
-* `~/.config/nvim/lua/plugins.lua`: All plugins declaration
-* `~/.config/nvim/plugin/`: Plugins setup in Lua
-* `~/.config/nvim/vim`: Plugin configurations in Vim script
+* `~/.config/nvim`: Nvim runtime directory
+* `~/.config/nvim/lua/packerman`: All Packer.nvim plugins declaration
+* `~/.config/nvim/plugin/`: Plugins setup
+* `~/.config/nvim/after/plugin`: User plugin preferences
 
 ## Shortcuts
 
