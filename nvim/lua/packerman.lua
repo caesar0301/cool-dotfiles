@@ -12,7 +12,6 @@ return require("packer").startup(
         use "maxbrunsfeld/vim-yankstack"
         use "tpope/vim-commentary"
         use "tpope/vim-repeat"
-        use "tpope/vim-surround"
 
         ---------------------------
         -- Navigation
@@ -164,8 +163,6 @@ return require("packer").startup(
         use "PaterJason/cmp-conjure"
         use "nvim-treesitter/nvim-treesitter"
         use "nvim-treesitter/nvim-treesitter-refactor"
-        use "windwp/nvim-autopairs"
-        use "windwp/nvim-ts-autotag"
         use(
             {
                 "kylechui/nvim-surround",
@@ -175,6 +172,13 @@ return require("packer").startup(
                 end
             }
         )
+        use {
+            "windwp/nvim-autopairs",
+            event = "InsertEnter",
+            config = function()
+                require("nvim-autopairs").setup {}
+            end
+        }
 
         ---------------------------
         -- Themes

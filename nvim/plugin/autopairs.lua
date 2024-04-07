@@ -1,5 +1,4 @@
--- autopairs
-require("nvim-autopairs").setup()
+require("nvim-autopairs").setup {}
 
 -- Insert `(` after select function or method item
 local cmp = require "cmp"
