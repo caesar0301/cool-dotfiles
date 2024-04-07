@@ -51,7 +51,6 @@ return require("packer").startup(
         use "pechorin/any-jump.vim"
         use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
         use {"mg979/vim-visual-multi", branch = "master"}
-        use "michaeljsmith/vim-indent-object"
         use "preservim/vim-indent-guides"
         use "vim-scripts/mru.vim"
         use {
