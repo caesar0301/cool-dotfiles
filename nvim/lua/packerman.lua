@@ -9,7 +9,6 @@ return require("packer").startup(
         -- Editing
         ---------------------------
 
-        use "maxbrunsfeld/vim-yankstack"
         use "tpope/vim-commentary"
         use "tpope/vim-repeat"
 
@@ -168,6 +167,15 @@ return require("packer").startup(
         use "nvim-treesitter/nvim-treesitter-refactor"
         use "windwp/nvim-autopairs"
         use "junegunn/rainbow_parentheses.vim"
+        use(
+            {
+                "kylechui/nvim-surround",
+                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+                config = function()
+                    require("nvim-surround").setup({})
+                end
+            }
+        )
 
         ---------------------------
         -- Themes

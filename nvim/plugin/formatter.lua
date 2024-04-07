@@ -1,21 +1,23 @@
 -- Utilities for creating configurations
 local util = require "formatter.util"
+local formatter = require "formatter"
 
--- for java formatter
-local home = os.getenv("HOME")
-local jdk_home = os.getenv("JAVA_HOME_4GJF")
-if jdk_home == nil then
-    jdk_home = os.getenv("JAVA_HOME")
-end
-local java_bin = "java"
-if jdk_home == nil then
-    java_bin = "java"
-else
-    java_bin = jdk_home .. "/bin/java"
+vim.keymap.set("n", "<leader>af", ":Format<CR>")
+
+function getJavaBin()
+    local jdkhome = os.getenv("JAVA_HOME_4GJF")
+    if jdkhome == nil then
+        jdkhome = os.getenv("JAVA_HOME")
+    end
+    if jdkhome == nil then
+        return "java"
+    else
+        return jdkhome .. "/bin/java"
+    end
 end
 
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-require("formatter").setup {
+formatter.setup {
     logging = true,
     log_level = vim.log.levels.DEBUG,
     filetype = {
@@ -27,10 +29,10 @@ require("formatter").setup {
             function()
                 local gjfjar = os.getenv("GJF_JAR_FILE")
                 if gjfjar == nil then
-                    gjfjar = home .. "/.local/share/google-java-format/google-java-format-all-deps.jar"
+                    gjfjar = "~/.local/share/google-java-format/google-java-format-all-deps.jar"
                 end
                 return {
-                    exe = java_bin,
+                    exe = getJavaBin(),
                     args = {
                         "-jar",
                         gjfjar,

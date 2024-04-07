@@ -64,8 +64,8 @@ cmp.setup(
                     end,
                     {"i", "s"}
                 ),
-                ["<C-p>"] = cmp.mapping.select_prev_item(),
-                ["<C-n>"] = cmp.mapping.select_next_item(),
+                ["<C-k>"] = cmp.mapping.select_prev_item(),
+                ["<C-j>"] = cmp.mapping.select_next_item(),
                 ["<C-d>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-u>"] = cmp.mapping.scroll_docs(4),
                 ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), {"i", "c"}),
@@ -146,7 +146,7 @@ cmp.setup.cmdline(
     {
         mapping = cmp.mapping.preset.cmdline(
             {
-                ["<C-p>"] = cmp.mapping(
+                ["<C-k>"] = cmp.mapping(
                     {
                         c = function(fallback)
                             if cmp.visible() then
@@ -156,7 +156,7 @@ cmp.setup.cmdline(
                         end
                     }
                 ),
-                ["<C-n>"] = cmp.mapping(
+                ["<C-j>"] = cmp.mapping(
                     {
                         c = function(fallback)
                             if cmp.visible() then
@@ -217,7 +217,7 @@ cmp.setup.cmdline(
         },
         mapping = cmp.mapping.preset.cmdline(
             {
-                ["<C-p>"] = cmp.mapping(
+                ["<C-k>"] = cmp.mapping(
                     {
                         c = function(fallback)
                             if cmp.visible() then
@@ -227,7 +227,7 @@ cmp.setup.cmdline(
                         end
                     }
                 ),
-                ["<C-n>"] = cmp.mapping(
+                ["<C-j>"] = cmp.mapping(
                     {
                         c = function(fallback)
                             if cmp.visible() then
