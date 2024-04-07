@@ -6,6 +6,9 @@
 " Paste mode (conflicts with autopairs)
 "set paste
 
+" vim copy to clipboard
+set clipboard+=unnamedplus
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -16,9 +19,6 @@ filetype indent on
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" vim copy to clipboard
-set clipboard+=unnamedplus
-
 " Turn backup off, since most stuff is in SVN, git etc. anyway...
 set nobackup
 set nowb
@@ -28,6 +28,3 @@ set noswapfile
 if $NVIM_PYTHON3 != ""
   let g:python3_host_prog = substitute(system('echo ${NVIM_PYTHON3}'), '\n', '', '') .. '/bin/python3'
 endif
-
-" Quickly quit terminal mode: <C-\><C-n>
-tnoremap <leader>kt <C-\><C-n>

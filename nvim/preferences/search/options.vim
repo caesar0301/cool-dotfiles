@@ -10,6 +10,3 @@ imap <C-e> <ESC>A
 " Map <leader> to / (search) and Ctrl-<leader> to ? (backwards search)
 map <space> /
 map <C-space> ?
-
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>

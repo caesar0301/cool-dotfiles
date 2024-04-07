@@ -11,6 +11,7 @@ return require("packer").startup(
 
         use "tpope/vim-commentary"
         use "tpope/vim-repeat"
+        use "mhartington/formatter.nvim"
 
         ---------------------------
         -- Navigation
@@ -57,8 +58,6 @@ return require("packer").startup(
                 require("hlargs").setup()
             end
         }
-        -- buffer
-        use "jlanzarotta/bufexplorer"
         -- statusline
         use "itchyny/lightline.vim"
         use "nvim-lua/lsp-status.nvim"
@@ -67,16 +66,15 @@ return require("packer").startup(
         -- Languages
         ---------------------------
 
-        use "mhartington/formatter.nvim"
         use "Olical/conjure"
-        use "bhurlow/vim-parinfer"
-        use "Vimjas/vim-python-pep8-indent"
         use "cdelledonne/vim-cmake"
         use "chr4/nginx.vim"
-        use "chrisbra/csv.vim"
         use "digitaltoad/vim-pug"
         use "editorconfig/editorconfig-vim"
         use "groenewege/vim-less"
+        use "kchmck/vim-coffee-script"
+        use "leafgarland/typescript-vim"
+        use "pangloss/vim-javascript"
         use {
             "jalvesaq/Nvim-R",
             requires = {
@@ -86,20 +84,18 @@ return require("packer").startup(
                 -- {"jalvesaq/cmp-zotcite"}
             }
         }
-        use "kchmck/vim-coffee-script"
-        use "leafgarland/typescript-vim"
         use "lervag/vimtex"
-        use "pangloss/vim-javascript"
-        use "plasticboy/vim-markdown"
         use "rust-lang/rust.vim"
         use "neovimhaskell/haskell-vim"
+        -- python
+        use "Vimjas/vim-python-pep8-indent"
         use "nvie/vim-flake8"
-        use "vim-ruby/vim-ruby"
-        use "tarekbecker/vim-yaml-formatter"
         use "sophacles/vim-bundle-mako"
+        use "vim-ruby/vim-ruby"
         use {"vlime/vlime", rtp = "vim/"}
-
-        -- preview markdown
+        use "chrisbra/csv.vim"
+        use "tarekbecker/vim-yaml-formatter"
+        use "plasticboy/vim-markdown"
         use(
             {
                 "iamcco/markdown-preview.nvim",
@@ -167,6 +163,7 @@ return require("packer").startup(
         use "nvim-treesitter/nvim-treesitter-refactor"
         use "windwp/nvim-autopairs"
         use "junegunn/rainbow_parentheses.vim"
+        use "bhurlow/vim-parinfer"
         use(
             {
                 "kylechui/nvim-surround",
