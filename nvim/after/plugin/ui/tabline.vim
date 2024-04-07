@@ -35,7 +35,7 @@ nnoremap <silent> <leader><A-p> <cmd>BufferPin<cr>
 nnoremap <silent> <leader><A-x> <cmd>BufferClose<cr>
 
 " Restore buffer
-nnoremap <silent> <leader><A-X> <cmd>BufferRestore<cr>
+nnoremap <silent> <leader><A-r> <cmd>BufferRestore<cr>
 
 " Close all but current
 nnoremap <silent> <leader><A-c> <cmd>BufferCloseAllButCurrent<cr>
