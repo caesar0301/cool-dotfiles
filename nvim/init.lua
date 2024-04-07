@@ -10,13 +10,7 @@
 -- Usage: :PackerInstall
 -------------------------------------------------------------
 -- Setup globals that I expect to be always available.
-require("globals")
+require("caesardev")
 
 -- Load all plugins
-require("plugins")
-
--- Load all vim settings
-local paths = vim.split(vim.fn.glob("~/.config/nvim/preferences/*.vim"), "\n")
-for i, file in pairs(paths) do
-    vim.cmd("source " .. file)
-end
+require("packerman")

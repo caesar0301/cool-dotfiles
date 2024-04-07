@@ -1,6 +1,28 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Basics => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Show line number
+set nu
+
+" Text, tab and indent related
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+" Chinese line wrapping
+set fo+=mM
+
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
@@ -72,10 +94,6 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Basics => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Enable syntax highlighting
 syntax enable
 
@@ -85,11 +103,14 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 set background=dark
-
 try
     colorscheme codedark
 catch
 endtry
+
+if exists('$TMUX')
+    set termguicolors
+endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -123,33 +144,3 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-
-""""""""""""""""""""""""""""""
-" Status line
-""""""""""""""""""""""""""""""
-" Always show the status line
-set laststatus=2
-set noshowmode
-
-" Plugin => lsp-status
-function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
-  return ''
-endfunction
-
-" Plugin => lightline
-let g:lightline  = {'colorscheme': 'wombat'}
-let g:lightline.enable = {'statusline': 1, 'tabline': 0} " tabline conflicts with barbar
-let g:lightline.component = {
-    \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-    \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-    \   'fugitive': '%{exists("*FugitiveHead")?FugitiveHead():""}',
-    \   'lspstatus': '%{exists("*LspStatus")?LspStatus():""}'
-    \   }
-let g:lightline.active = {
-    \   'left': [ ['mode', 'paste'],
-    \             ['fugitive', 'readonly', 'gitbranch', 'filename', 'modified'] ],
-    \   'right': [ ['lineinfo'], ['percent'], ['lspstatus'] ]
-    \   }

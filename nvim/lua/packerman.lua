@@ -8,6 +8,7 @@ return require("packer").startup(
         ---------------------------
         -- Editing
         ---------------------------
+
         use "maxbrunsfeld/vim-yankstack"
         use "tpope/vim-commentary"
         use "tpope/vim-repeat"
@@ -16,6 +17,7 @@ return require("packer").startup(
         ---------------------------
         -- Navigation
         ---------------------------
+
         -- folder view
         use {
             "nvim-tree/nvim-tree.lua",
@@ -63,6 +65,7 @@ return require("packer").startup(
         ---------------------------
         -- Languages
         ---------------------------
+
         use "mhartington/formatter.nvim"
         use "Olical/conjure"
         use "bhurlow/vim-parinfer"
@@ -108,6 +111,7 @@ return require("packer").startup(
         ---------------------------
         -- LSP and improvement
         ---------------------------
+
         use "neovim/nvim-lspconfig"
         use "ojroques/nvim-lspfuzzy"
         -- vscode-like pictograms
@@ -139,6 +143,7 @@ return require("packer").startup(
         ---------------------------
         -- Completion
         ---------------------------
+
         use {
             "hrsh7th/nvim-cmp",
             requires = {
@@ -174,6 +179,7 @@ return require("packer").startup(
         ---------------------------
         -- Themes
         ---------------------------
+
         use "dracula/vim"
         use "altercation/vim-colors-solarized"
         use "morhetz/gruvbox"
@@ -188,6 +194,7 @@ return require("packer").startup(
         ---------------------------
         -- Misc
         ---------------------------
+
         use "airblade/vim-gitgutter"
         use "tpope/vim-fugitive"
         use "mattn/vim-gist"

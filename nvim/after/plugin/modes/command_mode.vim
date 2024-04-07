@@ -1,14 +1,8 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Command mode related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 func! CurrentFileDir(cmd)
     return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
 
-" Smart mappings on the command line
 cno $h e ~/
-cno $d e ~/Desktop/
-cno $j e ./
 cno $c e <C-\>eCurrentFileDir("e")<cr>
 
 func! DeleteTillSlash()

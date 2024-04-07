@@ -9,9 +9,6 @@ set paste
 " Sets how many lines of history VIM has to remember
 set history=500
 
-" Chinese line wrapping
-set fo+=mM
-
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -19,12 +16,17 @@ filetype indent on
 " Set to auto read when a file is changed from the outside
 set autoread
 
+" vim copy to clipboard
+set clipboard+=unnamedplus
+
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowb
+set noswapfile
+
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
-
-" Show line number
-set nu
 
 " Detect OS type
 if !exists("g:os_type")
@@ -39,45 +41,6 @@ endif
 if $NVIM_PYTHON3 != ""
   let g:python3_host_prog = substitute(system('echo ${NVIM_PYTHON3}'), '\n', '', '') .. '/bin/python3'
 endif
-
-" vim copy to clipboard
-set clipboard+=unnamedplus
-
-" Turn backup off, since most stuff is in SVN, git etc. anyway...
-set nobackup
-set nowb
-set noswapfile
-
-"" Text, tab and indent related
-" Use spaces instead of tabs
-set expandtab
-
-" Be smart when using tabs ;)
-set smarttab
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-
-" Linebreak on 500 characters
-set lbr
-set tw=500
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
-
-""""""""""""""""""""""""""""""""""
-" Git related
-""""""""""""""""""""""""""""""""""
-
-" Plugin Git gutter (Git diff)
-let g:gitgutter_enabled=0
-nnoremap <silent> <leader>gu :GitGutterToggle<cr>
-
-""""""""""""""""""""""""""""""""""
-" Misc
-""""""""""""""""""""""""""""""""""
 
 " Edit vimr configuration file
 nnoremap <leader>ve :e $MYVIMRC<cr>
