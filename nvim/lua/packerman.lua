@@ -51,7 +51,6 @@ return require("packer").startup(
         use "pechorin/any-jump.vim"
         use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
         use {"mg979/vim-visual-multi", branch = "master"}
-        use "preservim/vim-indent-guides"
         use "vim-scripts/mru.vim"
         use {
             "m-demare/hlargs.nvim",
@@ -59,6 +58,11 @@ return require("packer").startup(
                 require("hlargs").setup()
             end
         }
+        -- buffer
+        use "jlanzarotta/bufexplorer"
+        -- statusline
+        use "itchyny/lightline.vim"
+        use "nvim-lua/lsp-status.nvim"
 
         ---------------------------
         -- Languages
@@ -163,21 +167,16 @@ return require("packer").startup(
         use "nvim-treesitter/nvim-treesitter"
         use "nvim-treesitter/nvim-treesitter-refactor"
         use "windwp/nvim-autopairs"
+        use "junegunn/rainbow_parentheses.vim"
 
         ---------------------------
         -- Themes
         ---------------------------
 
         use "dracula/vim"
-        use "altercation/vim-colors-solarized"
         use "morhetz/gruvbox"
-        use "therubymug/vim-pyte"
-        use "vim-scripts/mayansmoke"
         use "tomasiser/vim-code-dark"
-        use "junegunn/rainbow_parentheses.vim"
-        use "itchyny/lightline.vim"
-        use "nvim-lua/lsp-status.nvim"
-        use "jlanzarotta/bufexplorer"
+        use "Mofiqul/vscode.nvim"
 
         ---------------------------
         -- Misc

@@ -98,13 +98,12 @@ endif
 
 set background=dark
 try
-    colorscheme codedark
+    "colorscheme dracula
+    "colorscheme gruvbox
+    colorscheme vscode
+    "colorscheme codedark
 catch
 endtry
-
-if exists('$TMUX')
-    set termguicolors
-endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -112,6 +111,10 @@ if has("gui_running")
     set guioptions-=e
     set t_Co=256
     set guitablabel=%M\ %t
+endif
+
+if exists('$TMUX')
+    set termguicolors
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
