@@ -14,3 +14,9 @@ require("caesardev")
 
 -- Load all plugins
 require("packerman")
+
+-- Load all user preferences
+local paths = vim.split(vim.fn.glob("~/.config/nvim/preferences/**/*.vim"), "\n")
+for i, file in pairs(paths) do
+    vim.cmd("source " .. file)
+end
