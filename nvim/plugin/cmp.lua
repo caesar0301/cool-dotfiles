@@ -96,10 +96,11 @@ cmp.setup(
                     side_padding = 0
                 }
             ),
-            -- documentation = {
-            --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
-            -- },
-            documentation = cmp.config.window.bordered()
+            documentation = cmp.config.window.bordered(
+                {
+                    winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
+                }
+            )
         },
         formatting = {
             fields = {"kind", "abbr", "menu"},
@@ -107,13 +108,8 @@ cmp.setup(
                 {
                     mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
                     maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                    menu = ({
-                        -- showing type in menu
-                        nvim_lsp = "(LSP)",
-                        path = "(Path)",
-                        buffer = "(Buffer)",
-                        luasnip = "(LuaSnip)"
-                    }),
+                    ellipsis_char = "...",
+                    show_labelDetails = true,
                     before = function(entry, vim_item)
                         vim_item.menu = "(" .. vim_item.kind .. ")"
                         vim_item.dup =
