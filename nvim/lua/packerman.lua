@@ -163,22 +163,7 @@ return require("packer").startup(
         use "PaterJason/cmp-conjure"
         use "nvim-treesitter/nvim-treesitter"
         use "nvim-treesitter/nvim-treesitter-refactor"
-        use(
-            {
-                "kylechui/nvim-surround",
-                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-                config = function()
-                    require("nvim-surround").setup({})
-                end
-            }
-        )
-        use {
-            "windwp/nvim-autopairs",
-            event = "InsertEnter",
-            config = function()
-                require("nvim-autopairs").setup {}
-            end
-        }
+        use "windwp/nvim-autopairs"
 
         ---------------------------
         -- Themes
