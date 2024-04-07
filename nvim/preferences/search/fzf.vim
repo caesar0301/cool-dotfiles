@@ -30,7 +30,7 @@ let g:terminal_ansi_colors = [
   \ '#add4fb', '#ffafaf', '#87d7d7', '#e4e4e4'
 \ ]
 
-"Ag: Start ag in the specified directory e.g. :Ag ~/foo
+"Ag: Start ag in the specified directory e.g. :Agdir ~/foo
 function! s:ag_in(bang, ...)
     if !isdirectory(a:1)
         throw 'not a valid directory: ' .. a:1
@@ -39,7 +39,7 @@ function! s:ag_in(bang, ...)
     call fzf#vim#ag(join(a:000[1:], ' '),
                 \ fzf#vim#with_preview({'dir': a:1}, 'right:50%', '?'), a:bang)
 endfunction
-command! -bang -nargs=+ -complete=dir Ag call s:ag_in(<bang>0, <f-args>)
+command! -bang -nargs=+ -complete=dir Agdir call s:ag_in(<bang>0, <f-args>)
 
 " Search the word under the cursor
 nnoremap <leader>fw <cmd>call fzf#vim#ag(expand('<cword>'), fzf#vim#with_preview())<cr>
