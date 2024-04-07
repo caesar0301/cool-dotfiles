@@ -32,25 +32,18 @@ cmp.setup(
                 luasnip.lsp_expand(args.body)
             end
         },
-        window = {
-            -- border style
-            completion = cmp.config.window.bordered(
-                {
-                    col_offset = -3, -- align the abbr and word on cursor (due to fields order below)
-                    side_padding = 0
-                }
-            ),
-            -- documentation = {
-            --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
-            -- },
-            documentation = cmp.config.window.bordered()
-        },
         mapping = cmp.mapping.preset.insert(
             {
                 ["<Tab>"] = cmp.mapping(
                     function(fallback)
                         if cmp.visible() then
-                            cmp.select_next_item()
+                            -- cmp.select_next_item()
+                            cmp.confirm(
+                                {
+                                    behavior = cmp.ConfirmBehavior.Replace, -- e.g. console.log -> console.inlog -> console.info
+                                    select = true -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                                }
+                            )
                         elseif luasnip.expand_or_locally_jumpable() then
                             luasnip.expand_or_jump()
                         else
@@ -88,24 +81,39 @@ cmp.setup(
         ),
         sources = cmp.config.sources(
             {
+                -- ordering is matter
                 {name = "nvim_lsp"},
                 {name = "luasnip"},
                 {name = "path"},
-                {name = "buffer"}
+                {name = "buffer", keyword_length = 5} -- show buffer's completion only if type more then keyword_length
             }
         ),
+        window = {
+            -- border style
+            completion = cmp.config.window.bordered(
+                {
+                    col_offset = -3, -- align the abbr and word on cursor (due to fields order below)
+                    side_padding = 0
+                }
+            ),
+            -- documentation = {
+            --   winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
+            -- },
+            documentation = cmp.config.window.bordered()
+        },
         formatting = {
             fields = {"kind", "abbr", "menu"},
             format = lspkind.cmp_format(
                 {
                     mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
                     maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                    -- menu = ({ -- showing type in menu
-                    --   nvim_lsp = "(LSP)",
-                    --   path = "(Path)",
-                    --   buffer = "(Buffer)",
-                    --   luasnip = "(LuaSnip)",
-                    -- }),
+                    menu = ({
+                        -- showing type in menu
+                        nvim_lsp = "(LSP)",
+                        path = "(Path)",
+                        buffer = "(Buffer)",
+                        luasnip = "(LuaSnip)"
+                    }),
                     before = function(entry, vim_item)
                         vim_item.menu = "(" .. vim_item.kind .. ")"
                         vim_item.dup =
@@ -168,8 +176,8 @@ cmp.setup.cmdline(
                             if cmp.visible() then
                                 return cmp.confirm(
                                     {
-                                        behavior = cmp.ConfirmBehavior.Replace, -- e.g. console.log -> console.inlog -> console.info
-                                        select = true -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                                        behavior = cmp.ConfirmBehavior.Replace,
+                                        select = true
                                     }
                                 )
                             else
