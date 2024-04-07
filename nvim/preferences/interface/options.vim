@@ -103,6 +103,7 @@ try
     colorscheme vscode
     "colorscheme codedark
 catch
+    colorscheme elflord
 endtry
 
 " Set extra options when running in GUI mode
