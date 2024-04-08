@@ -195,12 +195,21 @@ return require("packer").startup(
         -- Misc
         ---------------------------
 
+        -- git
         use "airblade/vim-gitgutter"
         use "tpope/vim-fugitive"
         use "mattn/vim-gist"
-        use "amix/open_file_under_cursor.vim"
+        use(
+            {
+                "wintermute-cell/gitignore.nvim",
+                requires = {
+                    "nvim-telescope/telescope.nvim" -- optional: for multi-select
+                }
+            }
+        )
         use "kassio/neoterm"
         use "mfussenegger/nvim-dap" --  Debug Adapter Protocol client
+        use "amix/open_file_under_cursor.vim"
         use {
             "https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b",
             as = "peepopen.vim",
