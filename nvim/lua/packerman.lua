@@ -9,6 +9,7 @@ return require("packer").startup(
         -- Editing
         ---------------------------
 
+        use "nathom/filetype.nvim"
         use "tpope/vim-commentary"
         use "tpope/vim-repeat"
         use "mhartington/formatter.nvim"

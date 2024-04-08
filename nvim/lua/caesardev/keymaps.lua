@@ -112,4 +112,11 @@ vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", {noremap = true,
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", {noremap = true, silent = true})
 
 -- Zen mode with plugin Goyo
-vim.api.nvim_set_keymap("n", "<leader>z", ":Goyo<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>z", ":Goyo<CR>", {noremap = true, silent = true})
+
+-- Compile run
+vim.keymap.set("n", "<F5>", "<cmd>call CompileRun()<CR>", {noremap = true})
+vim.keymap.set("i", "<F5>", "<Esc><cmd>call CompileRun()<CR>", {noremap = true})
+vim.keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>", {noremap = true})
+
+-- vimtex shortcuts
