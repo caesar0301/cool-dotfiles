@@ -18,7 +18,7 @@ return require("packer").startup(
         -- Navigation
         ---------------------------
 
-        -- folder view
+        -- folder and file view
         use {
             "nvim-tree/nvim-tree.lua",
             requires = {
@@ -26,6 +26,13 @@ return require("packer").startup(
                 {"antosha417/nvim-lsp-file-operations", opt = true},
                 {"echasnovski/mini.base16", opt = true}
             }
+        }
+        use "preservim/tagbar"
+        use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
+        use {"mg979/vim-visual-multi", branch = "master"}
+        use {
+            "amix/vim-zenroom2",
+            requires = {{"junegunn/goyo.vim"}}
         }
         -- tabline
         use {
@@ -35,8 +42,7 @@ return require("packer").startup(
                 {"lewis6991/gitsigns.nvim"}
             }
         }
-        -- file structure
-        use "preservim/tagbar"
+        -- find and replace
         use {
             "junegunn/fzf.vim",
             requires = {"junegunn/fzf", run = ":call fzf#install()"},
@@ -48,19 +54,14 @@ return require("packer").startup(
             requires = {{"nvim-lua/plenary.nvim"}}
         }
         use {
-            "amix/vim-zenroom2",
-            requires = {{"junegunn/goyo.vim"}}
+            "nvim-pack/nvim-spectre",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"},
+                {"nvim-lua/plenary.nvim"}
+            }
         }
-        use "pechorin/any-jump.vim"
-        use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
-        use {"mg979/vim-visual-multi", branch = "master"}
+        -- open history list
         use "vim-scripts/mru.vim"
-        use {
-            "m-demare/hlargs.nvim",
-            config = function()
-                require("hlargs").setup()
-            end
-        }
         -- statusline
         use {
             "nvim-lualine/lualine.nvim",
@@ -69,6 +70,94 @@ return require("packer").startup(
                 {"nvim-lua/lsp-status.nvim"}
             }
         }
+
+        ---------------------------
+        -- Themes
+        ---------------------------
+
+        use "dracula/vim"
+        use "morhetz/gruvbox"
+        use "tomasiser/vim-code-dark"
+        use "Mofiqul/vscode.nvim"
+
+        ---------------------------
+        -- LSP and improvement
+        ---------------------------
+
+        use "neovim/nvim-lspconfig"
+        use "ojroques/nvim-lspfuzzy"
+        -- vscode-like pictograms
+        use {
+            "onsails/lspkind-nvim",
+            config = function()
+                require("lspkind").init(
+                    {
+                        preset = "codicons"
+                    }
+                )
+            end
+        }
+        use "pechorin/any-jump.vim"
+        use {
+            "rmagatti/goto-preview",
+            config = function()
+                require("goto-preview").setup()
+            end
+        }
+        use "weilbith/nvim-code-action-menu"
+        use {
+            "kosayoda/nvim-lightbulb",
+            config = function()
+                require("nvim-lightbulb").setup({autocmd = {enabled = true}})
+            end
+        }
+        use "antoinemadec/FixCursorHold.nvim"
+
+        ---------------------------
+        -- Completion
+        ---------------------------
+
+        use {
+            "hrsh7th/nvim-cmp",
+            requires = {
+                {"neovim/nvim-lspconfig"},
+                {"hrsh7th/cmp-nvim-lsp", branch = "main"},
+                {"hrsh7th/cmp-buffer"},
+                {"hrsh7th/cmp-path"},
+                {"hrsh7th/cmp-cmdline"},
+                {"L3MON4D3/LuaSnip"},
+                {"saadparwaiz1/cmp_luasnip"},
+                {"lukas-reineke/cmp-under-comparator", opt = true}
+            }
+        }
+        use {
+            "SmiteshP/nvim-navic",
+            requires = "neovim/nvim-lspconfig"
+        }
+        use "PaterJason/cmp-conjure"
+        use "nvim-treesitter/nvim-treesitter"
+        use "nvim-treesitter/nvim-treesitter-refactor"
+        use {
+            "m-demare/hlargs.nvim",
+            config = function()
+                require("hlargs").setup()
+            end,
+            requires = {
+                {"nvim-treesitter/nvim-treesitter"}
+            }
+        }
+        use "windwp/nvim-autopairs"
+        use "junegunn/rainbow_parentheses.vim"
+        use "bhurlow/vim-parinfer"
+        use(
+            {
+                "kylechui/nvim-surround",
+                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+                config = function()
+                    require("nvim-surround").setup({})
+                end
+            }
+        )
 
         ---------------------------
         -- Languages
@@ -112,84 +201,6 @@ return require("packer").startup(
                 end
             }
         )
-
-        ---------------------------
-        -- LSP and improvement
-        ---------------------------
-
-        use "neovim/nvim-lspconfig"
-        use "ojroques/nvim-lspfuzzy"
-        -- vscode-like pictograms
-        use {
-            "onsails/lspkind-nvim",
-            config = function()
-                require("lspkind").init(
-                    {
-                        preset = "codicons"
-                    }
-                )
-            end
-        }
-        use {
-            "rmagatti/goto-preview",
-            config = function()
-                require("goto-preview").setup()
-            end
-        }
-        use "weilbith/nvim-code-action-menu"
-        use {
-            "kosayoda/nvim-lightbulb",
-            config = function()
-                require("nvim-lightbulb").setup({autocmd = {enabled = true}})
-            end
-        }
-        use "antoinemadec/FixCursorHold.nvim"
-
-        ---------------------------
-        -- Completion
-        ---------------------------
-
-        use {
-            "hrsh7th/nvim-cmp",
-            requires = {
-                {"neovim/nvim-lspconfig"},
-                {"hrsh7th/cmp-nvim-lsp", branch = "main"},
-                {"hrsh7th/cmp-buffer"},
-                {"hrsh7th/cmp-path"},
-                {"hrsh7th/cmp-cmdline"},
-                {"L3MON4D3/LuaSnip"},
-                {"saadparwaiz1/cmp_luasnip"},
-                {"lukas-reineke/cmp-under-comparator", opt = true}
-            }
-        }
-        use {
-            "SmiteshP/nvim-navic",
-            requires = "neovim/nvim-lspconfig"
-        }
-        use "PaterJason/cmp-conjure"
-        use "nvim-treesitter/nvim-treesitter"
-        use "nvim-treesitter/nvim-treesitter-refactor"
-        use "windwp/nvim-autopairs"
-        use "junegunn/rainbow_parentheses.vim"
-        use "bhurlow/vim-parinfer"
-        use(
-            {
-                "kylechui/nvim-surround",
-                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-                config = function()
-                    require("nvim-surround").setup({})
-                end
-            }
-        )
-
-        ---------------------------
-        -- Themes
-        ---------------------------
-
-        use "dracula/vim"
-        use "morhetz/gruvbox"
-        use "tomasiser/vim-code-dark"
-        use "Mofiqul/vscode.nvim"
 
         ---------------------------
         -- Misc

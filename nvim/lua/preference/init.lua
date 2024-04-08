@@ -1,6 +1,5 @@
 require("preference.ui")
 require("preference.edit")
 require("preference.tabline")
-require("preference.search")
 require("preference.zen")
 require("preference.misc")

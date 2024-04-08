@@ -111,6 +111,40 @@ vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", {noremap = tru
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", {noremap = true, silent = true})
 
+-- Search with plugin Spectre
+vim.keymap.set(
+    "n",
+    "<leader>S",
+    '<cmd>lua require("spectre").toggle()<CR>',
+    {
+        desc = "Toggle Spectre"
+    }
+)
+vim.keymap.set(
+    "n",
+    "<leader>sw",
+    '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
+    {
+        desc = "Search current word"
+    }
+)
+vim.keymap.set(
+    "v",
+    "<leader>sw",
+    '<esc><cmd>lua require("spectre").open_visual()<CR>',
+    {
+        desc = "Search current word"
+    }
+)
+vim.keymap.set(
+    "n",
+    "<leader>sp",
+    '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
+    {
+        desc = "Search on current file"
+    }
+)
+
 -- Zen mode with plugin Goyo
 vim.keymap.set("n", "<leader>z", ":Goyo<CR>", {noremap = true, silent = true})
 
