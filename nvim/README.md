@@ -36,7 +36,7 @@ After nvim configs installation, manually installation of plugins is performed b
 Specifically, it is also required to configure `nvim-treesitter` language modules to suppress some warnings.
 
 ```vim
-:TSInstall lua python go java
+:TSInstall lua python go java vim vimdoc
 ```
 
 ### Plugins for IDE experience

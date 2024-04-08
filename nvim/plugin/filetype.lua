@@ -28,6 +28,7 @@ require("filetype").setup(
                 end,
                 ["md"] = function()
                     vim.opt_local.textwidth = 80
+                    vim.opt_local.foldenable = false
                 end,
                 ["js"] = function()
                     vim.opt_local.foldmethod = "syntax"
