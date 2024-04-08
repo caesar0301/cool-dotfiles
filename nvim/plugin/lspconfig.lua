@@ -167,26 +167,36 @@ vim.api.nvim_create_autocmd(
 )
 
 -- Java
-local home = os.getenv("HOME")
-local jdk_home = os.getenv("JAVA_HOME_4JDTLS")
-if jdk_home == nil then
-    jdk_home = os.getenv("JAVA_HOME")
+local function getJavaHome()
+    local jdkhome = os.getenv("JAVA_HOME_4JDTLS")
+    if jdkhome == nil or jdkhome == "" then
+        jdkhome = os.getenv("JAVA_HOME")
+    end
+    if jdkhome == nil or jdkhome == "" then
+        print(
+            "Please set JAVA_HOME correctly. If you are using jenv to manager JDK versions, try to run `jenv enable-plugin export` to activate JAVA_HOME env variable exporting."
+        )
+    end
+    return jdkhome
 end
-if jdk_home == nil then
-    print(
-        "Please set JAVA_HOME correctly. If you are using jenv to manager JDK versions, try to run `jenv enable-plugin export` to activate JAVA_HOME env variable exporting."
-    )
+
+local function getJDTLSHome()
+    local home = os.getenv("HOME")
+    local jdtls_home = os.getenv("JDTLS_INSTALL_HOME")
+    if jdtls_home == nil or jdtls_home == "" then
+        jdtls_home = home .. "/.local/share/jdt-language-server"
+    end
+    return jdtls_home
 end
-local jdtls_install_folder = os.getenv("JDTLS_INSTALL_HOME")
-if jdtls_install_folder == nil then
-    jdtls_install_folder = home .. "/.local/share/jdt-language-server"
-end
-local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+
+local java_home = getJavaHome()
+local jdtls_home = getJDTLSHome()
+local workspace_folder = os.getenv("HOME") .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 lspconfig.jdtls.setup {
     on_attach = common_on_attach,
     capabilities = common_caps,
     cmd = {
-        jdk_home .. "/bin/java",
+        java_home .. "/bin/java",
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
         "-Dosgi.bundles.defaultStartLevel=4",
         "-Declipse.product=org.eclipse.jdt.ls.core.product",
@@ -199,15 +209,15 @@ lspconfig.jdtls.setup {
         "--add-opens",
         "java.base/java.lang=ALL-UNNAMED",
         "-jar",
-        vim.fn.glob(jdtls_install_folder .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
+        vim.fn.glob(jdtls_home .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
         "-configuration",
-        jdtls_install_folder .. "/config_linux",
+        jdtls_home .. "/config_linux",
         "-data",
         workspace_folder
     },
     single_file_support = true,
     init_options = {
         jvm_args = {},
-        workspace = "/home/user/.cache/jdtls/workspace"
+        workspace = os.getenv("HOME") .. "/.cache/jdtls/workspace"
     }
 }
