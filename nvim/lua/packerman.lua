@@ -43,11 +43,13 @@ return require("packer").startup(
         }
         use {
             "nvim-telescope/telescope.nvim",
-            tag = "0.1.1",
+            tag = "0.1.6",
             requires = {{"nvim-lua/plenary.nvim"}}
         }
-        use "amix/vim-zenroom2"
-        use "junegunn/goyo.vim"
+        use {
+            "amix/vim-zenroom2",
+            requires = {{"junegunn/goyo.vim"}}
+        }
         use "pechorin/any-jump.vim"
         use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
         use {"mg979/vim-visual-multi", branch = "master"}
@@ -59,8 +61,13 @@ return require("packer").startup(
             end
         }
         -- statusline
-        use "itchyny/lightline.vim"
-        use "nvim-lua/lsp-status.nvim"
+        use {
+            "nvim-lualine/lualine.nvim",
+            requires = {
+                {"nvim-tree/nvim-web-devicons", opt = true},
+                {"nvim-lua/lsp-status.nvim"}
+            }
+        }
 
         ---------------------------
         -- Languages

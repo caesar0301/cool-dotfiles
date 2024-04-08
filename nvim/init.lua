@@ -1,6 +1,5 @@
 -------------------------------------------------------------
 -- Maintainer:
---       Amir Salihefendic — @amix3k
 --       Xiaming Chen - @caesar0301
 --
 -- Prerequisites:
@@ -9,14 +8,17 @@
 --
 -- Usage: :PackerInstall
 -------------------------------------------------------------
--- Setup globals that I expect to be always available.
-require("caesardev")
-
 -- Load all plugins
 require("packerman")
 
+-- Setup globals that I expect to be always available.
+require("caesardev")
+
+-- Preferred settings
+require("preference")
+
 -- Load all user preferences
-local paths = vim.split(vim.fn.glob("~/.config/nvim/preferences/**/*.vim"), "\n")
+local paths = vim.split(vim.fn.glob("~/.config/nvim/vimscripts/**/*.vim"), "\n")
 for i, file in pairs(paths) do
     vim.cmd("source " .. file)
 end
