@@ -148,3 +148,8 @@ vim.keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>", {noremap = true})
 
 -- Trigger gitignore interactive
 vim.keymap.set("n", "<leader>gi", require("gitignore").generate)
+
+-- Yank in terminal ssh
+vim.keymap.set("n", "<leader>Y", "y:Oscyank<cr>", {})
+vim.keymap.set("v", "<leader>Y", "y:Oscyank<cr>", {})
+vim.keymap.set("x", "<F7>", "y:Oscyank<cr>", {})
