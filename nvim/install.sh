@@ -140,7 +140,7 @@ function install_formatter_utils {
 
 function install_lsp_deps {
     info "Install LSP dependencies..."
-    piplibs=(pyright)
+    piplibs=(pyright cmake-language-server)
     if checkcmd pip; then
         if [[ ${#piplibs[@]} > 0 ]]; then
             info "Installing pip deps: $piplibs"
