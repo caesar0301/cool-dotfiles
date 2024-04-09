@@ -92,24 +92,17 @@ vim.keymap.set("n", "<space>", "/", {noremap = true})
 vim.keymap.set("n", "<C-space>", "?", {noremap = true})
 
 -- Search the word under the cursor, with plugin fzf.vim
-vim.keymap.set(
-    "n",
-    "<leader>fw",
-    '<cmd>lua fzf#vim#ag(vim.fn.expand("<cword>"), fzf#vim#with_preview())<CR>',
-    {noremap = true, silent = true}
-)
-
--- Search everywhere, requires the_silver_searcher
-vim.keymap.set("n", "<leader>fW", ":Ag<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fw", '<cmd>lua fzf#vim#ag(vim.fn.expand("<cword>"), fzf#vim#with_preview())<CR>', {})
 
 -- Search MRU file history, with plugin mru.vim
-vim.keymap.set("n", "<leader>fr", "<cmd>MRU<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>fr", "<cmd>MRU<CR>", {})
 
 -- Search with plugin Telescope
-vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<CR>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<CR>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", {noremap = true, silent = true})
+local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
 
 -- Search with plugin Spectre
 vim.keymap.set(
@@ -153,4 +146,5 @@ vim.keymap.set("n", "<F5>", "<cmd>call CompileRun()<CR>", {noremap = true})
 vim.keymap.set("i", "<F5>", "<Esc><cmd>call CompileRun()<CR>", {noremap = true})
 vim.keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>", {noremap = true})
 
--- vimtex shortcuts
+-- Trigger gitignore interactive
+vim.keymap.set("n", "<leader>gi", require("gitignore").generate)

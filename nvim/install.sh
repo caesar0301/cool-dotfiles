@@ -58,9 +58,17 @@ function install_shfmt {
     chmod +x $HOME/.local/bin/shfmt
 }
 
-# Autoformat wrapper, for more refer to
-# https://github.com/vim-autoformat/vim-autoformat/blob/master/README.md
-function install_autoformat_deps {
+function install_yamlfmt {
+    info "Installing yamlfmt..."
+    if checkcmd go; then
+        go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+    else
+        warn "Go not found in PATH, skip to install yamlfmt"
+    fi
+}
+
+# Formatting dependencies
+function install_formatter_utils {
     info "Installing vim-autoformat dependencies..."
 
     install_google_java_format
@@ -123,6 +131,11 @@ function install_autoformat_deps {
     if ! checkcmd shfmt; then
         install_shfmt
     fi
+
+    # yamlfmt
+    if ! checkcmd yamlfmt; then
+        install_yamlfmt
+    fi
 }
 
 function install_lsp_deps {
@@ -176,7 +189,7 @@ function install_all_deps {
     install_lsp_deps
     install_jdt_language_server
     install_hack_nerd_font # required by nvim-web-devicons
-    install_autoformat_deps
+    install_formatter_utils
     install_fzf
     install_ctags_and_deps
 }

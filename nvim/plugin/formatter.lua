@@ -42,26 +42,53 @@ formatter.setup {
                 }
             end
         },
+        c = {
+            require("formatter.filetypes.c").clangformat
+        },
         cpp = {
             require("formatter.filetypes.cpp").clangformat
         },
         go = {
             require("formatter.filetypes.go").gofmt
         },
-        python = {
-            require("formatter.filetypes.python").black
+        json = {
+            require("formatter.filetypes.json").jsbeautify
+        },
+        proto = {
+            require("formatter.filetypes.proto").buf_format
         },
         python = {
             require("formatter.filetypes.python").black
+        },
+        yaml = {
+            require("formatter.filetypes.yaml").yamlfmt
         },
         latex = {
             require("formatter.filetypes.latex").latexindent
         },
+        r = {
+            require("formatter.filetypes.r").styler
+        },
+        rust = {
+            require("formatter.filetypes.rust").rustfmt
+        },
         sh = {
             require("formatter.filetypes.sh").shfmt
         },
+        sql = {
+            require("formatter.filetypes.sql").sqlfluff
+        },
         cmake = {
             require("formatter.filetypes.cmake").cmakeformat
+        },
+        xhtml = {
+            require("formatter.filetypes.xhtml").tidy
+        },
+        xml = {
+            require("formatter.filetypes.xml").xmllint
+        },
+        toml = {
+            require("formatter.filetypes.toml").taplo
         },
         markdown = {
             function()

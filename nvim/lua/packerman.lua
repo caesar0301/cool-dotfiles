@@ -5,19 +5,16 @@ return require("packer").startup(
         -- Packer can manage itself
         use "wbthomason/packer.nvim"
 
-        ---------------------------
-        -- Editing
-        ---------------------------
-
+        -- Comment out with gc/gcc/gcap
         use "tpope/vim-commentary"
+
+        -- Enable repeating supported plugin maps with "."
         use "tpope/vim-repeat"
+
+        -- Code style formatter
         use "mhartington/formatter.nvim"
 
-        ---------------------------
-        -- Navigation
-        ---------------------------
-
-        -- folder and file view
+        -- Folder and file tree view
         use {
             "nvim-tree/nvim-tree.lua",
             requires = {
@@ -26,14 +23,24 @@ return require("packer").startup(
                 {"echasnovski/mini.base16", opt = true}
             }
         }
+
+        -- Displays tags in a window, ordered by scope
         use "preservim/tagbar"
-        use "terryma/vim-expand-region" -- Usage: +/- to expand/shrink
+
+        -- Visually select increasingly larger regions of text.
+        -- Use +/- to expand/shrink.
+        use "terryma/vim-expand-region"
+
+        -- Multiple selection and edit
         use {"mg979/vim-visual-multi", branch = "master"}
+
+        -- Zen coding
         use {
             "amix/vim-zenroom2",
             requires = {{"junegunn/goyo.vim"}}
         }
-        -- tabline
+
+        -- Tabline with auto-sizing, clickable tabs, icons, highlighting etc.
         use {
             "romgrk/barbar.nvim",
             requires = {
@@ -41,17 +48,30 @@ return require("packer").startup(
                 {"lewis6991/gitsigns.nvim"}
             }
         }
-        -- find and replace
+
+        -- Highly extendable fuzzy finder over file and symbols
+        use {
+            "nvim-telescope/telescope.nvim",
+            tag = "0.1.6",
+            requires = {
+                {"nvim-lua/plenary.nvim"},
+                {"BurntSushi/ripgrep"},
+                {"nvim-telescope/telescope-fzf-native.nvim"},
+                {"sharkdp/fd", opt = true},
+                {"nvim-treesitter/nvim-treesitter", opt = true},
+                {"nvim-tree/nvim-web-devicons", opt = true}
+            }
+        }
+
+        -- Fuzzy finder integrating ag/ripgrep
+        -- TODO: (xiaming.cxm) migrate to telescope
         use {
             "junegunn/fzf.vim",
             requires = {"junegunn/fzf", run = ":call fzf#install()"},
             rtp = "~/.fzf"
         }
-        use {
-            "nvim-telescope/telescope.nvim",
-            tag = "0.1.6",
-            requires = {{"nvim-lua/plenary.nvim"}}
-        }
+
+        -- Find and replace
         use {
             "nvim-pack/nvim-spectre",
             requires = {
@@ -59,9 +79,11 @@ return require("packer").startup(
                 {"nvim-lua/plenary.nvim"}
             }
         }
-        -- open history list
+
+        -- File open history with Most Recently Used
         use "vim-scripts/mru.vim"
-        -- statusline
+
+        -- Configure neovim statusline
         use {
             "nvim-lualine/lualine.nvim",
             requires = {
@@ -70,52 +92,44 @@ return require("packer").startup(
             }
         }
 
-        ---------------------------
         -- Themes
-        ---------------------------
-
         use "dracula/vim"
         use "morhetz/gruvbox"
         use "tomasiser/vim-code-dark"
         use "Mofiqul/vscode.nvim"
 
-        ---------------------------
-        -- LSP and improvement
-        ---------------------------
-
+        -- Quickstart configs for Nvim LSP
         use "neovim/nvim-lspconfig"
+
+        -- Make the LSP client use FZF
         use "ojroques/nvim-lspfuzzy"
-        -- vscode-like pictograms
-        use {
-            "onsails/lspkind-nvim",
-            config = function()
-                require("lspkind").init(
-                    {
-                        preset = "codicons"
-                    }
-                )
-            end
-        }
-        use "pechorin/any-jump.vim"
+
+        -- Previewing native LSP's goto definition etc. in floating window
         use {
             "rmagatti/goto-preview",
             config = function()
                 require("goto-preview").setup()
             end
         }
-        use "weilbith/nvim-code-action-menu"
+
+        -- vscode-like lightbulb in the sign column
         use {
             "kosayoda/nvim-lightbulb",
             config = function()
                 require("nvim-lightbulb").setup({autocmd = {enabled = true}})
             end
         }
-        use "antoinemadec/FixCursorHold.nvim"
 
-        ---------------------------
-        -- Completion
-        ---------------------------
+        -- winbar/statusline plugin that shows current code context
+        use {
+            "SmiteshP/nvim-navic",
+            requires = "neovim/nvim-lspconfig"
+        }
 
+        -- Finding defs/refs/impls using regexp engines like ripgrep/ag.
+        use "pechorin/any-jump.vim"
+
+        -- Code completion for Nvim LSP
         use {
             "hrsh7th/nvim-cmp",
             requires = {
@@ -129,13 +143,29 @@ return require("packer").startup(
                 {"lukas-reineke/cmp-under-comparator", opt = true}
             }
         }
+
+        -- vscode-like pictograms for neovim LSP completion items
         use {
-            "SmiteshP/nvim-navic",
-            requires = "neovim/nvim-lspconfig"
+            "onsails/lspkind-nvim",
+            config = function()
+                require("lspkind").init(
+                    {
+                        preset = "codicons"
+                    }
+                )
+            end
         }
-        use "PaterJason/cmp-conjure"
+
+        -- Nvim interface to configure tree-sitter and syntax highlighting
         use "nvim-treesitter/nvim-treesitter"
-        use "nvim-treesitter/nvim-treesitter-refactor"
+        use {
+            "nvim-treesitter/nvim-treesitter-refactor",
+            requires = {
+                {"nvim-treesitter/nvim-treesitter"}
+            }
+        }
+
+        -- Highlight arguments' definitions and usages, using Treesitter
         use {
             "m-demare/hlargs.nvim",
             config = function()
@@ -145,9 +175,19 @@ return require("packer").startup(
                 {"nvim-treesitter/nvim-treesitter"}
             }
         }
+
+        -- Autopairs supporting multiple characters
         use "windwp/nvim-autopairs"
-        use "junegunn/rainbow_parentheses.vim"
-        use "bhurlow/vim-parinfer"
+
+        -- Rainbow delimiters for Neovim with Tree-sitter
+        use {
+            "HiPhish/rainbow-delimiters.nvim",
+            requires = {
+                {"nvim-treesitter/nvim-treesitter"}
+            }
+        }
+
+        -- Add/change/delete surrounding delimiter pairs with ease
         use(
             {
                 "kylechui/nvim-surround",
@@ -158,19 +198,45 @@ return require("packer").startup(
             }
         )
 
-        ---------------------------
-        -- Languages
-        ---------------------------
+        -- nvim-cmp source for conjure
+        use "PaterJason/cmp-conjure"
 
+        -- Indent clojure and lisp code using parinfer
+        use "bhurlow/vim-parinfer"
+
+        -- Interactive evaluation Conjure and lisp code
         use "Olical/conjure"
-        use "cdelledonne/vim-cmake"
+
+        -- CMake integration comparable to vscode-cmake-tools
+        use {
+            "Civitasv/cmake-tools.nvim",
+            requires = {
+                {"nvim-lua/plenary.nvim"}
+            }
+        }
+
+        -- Syntax highlighting for Nginx
         use "chr4/nginx.vim"
+
+        -- Syntax highlighting for Pug (formerly Jade) templates
         use "digitaltoad/vim-pug"
+
+        -- Synatx highlighting for EditorConfig
         use "editorconfig/editorconfig-vim"
+
+        -- Synatx highlighting for LESS
         use "groenewege/vim-less"
+
+        -- CoffeeScript support for vim, syntax/indenting/compiling
         use "kchmck/vim-coffee-script"
+
+        -- Synatx highlighting for TypeScript
         use "leafgarland/typescript-vim"
+
+        -- Javascript indentation and syntax support
         use "pangloss/vim-javascript"
+
+        -- Rlang support for vim
         use {
             "jalvesaq/Nvim-R",
             requires = {
@@ -180,18 +246,38 @@ return require("packer").startup(
                 -- {"jalvesaq/cmp-zotcite"}
             }
         }
+
+        -- Synatx highlighting for LaTeX
         use "lervag/vimtex"
+
+        -- Rust support for vim
         use "rust-lang/rust.vim"
+
+        -- Synatx highlighting for Haskell
         use "neovimhaskell/haskell-vim"
-        -- python
+
+        -- Python indentation style to comply with PEP8
         use "Vimjas/vim-python-pep8-indent"
+
+        -- Python static syntax and style checker using Flake8
         use "nvie/vim-flake8"
+
+        -- Synatx highlighting for Mako
         use "sophacles/vim-bundle-mako"
+
+        -- Synatx highlighting for Ruby
         use "vim-ruby/vim-ruby"
+
+        -- Common Lisp dev environment for Vim
         use {"vlime/vlime", rtp = "vim/"}
+
+        -- CSV filetype integration
         use "chrisbra/csv.vim"
-        use "tarekbecker/vim-yaml-formatter"
+
+        -- Markdown support in vim
         use "plasticboy/vim-markdown"
+
+        -- Preview Markdown in modern browser
         use(
             {
                 "iamcco/markdown-preview.nvim",
@@ -201,14 +287,16 @@ return require("packer").startup(
             }
         )
 
-        ---------------------------
-        -- Misc
-        ---------------------------
-
-        -- git
+        -- Show git diff markers in the sign column
         use "airblade/vim-gitgutter"
+
+        -- Git command wrapper
         use "tpope/vim-fugitive"
+
+        -- A vimscript for creating gists
         use "mattn/vim-gist"
+
+        -- Generating .gitignore files
         use(
             {
                 "wintermute-cell/gitignore.nvim",
@@ -217,13 +305,11 @@ return require("packer").startup(
                 }
             }
         )
+
+        -- Wrapper of some vim/neovim's :terminal functions
         use "kassio/neoterm"
-        use "mfussenegger/nvim-dap" --  Debug Adapter Protocol client
-        use "amix/open_file_under_cursor.vim"
-        use {
-            "https://gist.github.com/caesar0301/29d5af8cd360e0ff9bf443bf949a179b",
-            as = "peepopen.vim",
-            run = "mkdir -p plugin; cp -f *.vim plugin/"
-        }
+
+        -- Debug Adapter Protocol client implementation for Neovim
+        use "mfussenegger/nvim-dap"
     end
 )

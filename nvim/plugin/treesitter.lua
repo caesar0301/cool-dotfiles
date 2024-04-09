@@ -24,6 +24,7 @@ require "nvim-treesitter.configs".setup {
             node_decremental = "grm"
         }
     },
+	-- requires nvim-treesitter-refactor
     refactor = {
         highlight_definitions = {
             enable = true,
@@ -32,6 +33,13 @@ require "nvim-treesitter.configs".setup {
         },
         highlight_current_scope = {
             enable = true
+        },
+        smart_rename = {
+            enable = true,
+            -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
+            keymaps = {
+                smart_rename = "grr"
+            }
         }
     }
 }
