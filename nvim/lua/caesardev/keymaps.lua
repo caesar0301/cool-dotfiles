@@ -91,17 +91,25 @@ vim.keymap.set("i", "<C-e>", "<ESC>A", {noremap = true})
 vim.keymap.set("n", "<space>", "/", {noremap = true})
 vim.keymap.set("n", "<C-space>", "?", {noremap = true})
 
--- Search the word under the cursor, with plugin fzf.vim
-vim.keymap.set("n", "<leader>fw", '<cmd>lua fzf#vim#ag(vim.fn.expand("<cword>"), fzf#vim#with_preview())<CR>', {})
-
 -- Search MRU file history, with plugin mru.vim
 vim.keymap.set("n", "<leader>fr", "<cmd>MRU<CR>", {})
 
 -- Search with plugin Telescope
 local builtin = require("telescope.builtin")
+
+-- Lists files in your current working directory, respects .gitignore
 vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+
+-- Lists open buffers in current neovim instance
 vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
+
+-- Searches for the string under your cursor or selection in your current working directory
+vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
+
+-- Search for a string in your current working directory and get results live as you type, respects .gitignore
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+
+-- Lists available help tags and opens a new window with the relevant help info on <cr>
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
 
 -- Search with plugin Spectre
