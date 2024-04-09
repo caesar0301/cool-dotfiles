@@ -66,7 +66,7 @@ vim.keymap.set("n", "<leader><A-x>", "<cmd>BufferClose<CR>", {noremap = true, si
 vim.keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {noremap = true, silent = true})
 
 -- Close all but current, with plugin barbar
-vim.keymap.set("n", "<leader><A-c>", "<cmd>BufferCloseAllButCurrent<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader><A-X>", "<cmd>BufferCloseAllButCurrent<CR>", {noremap = true, silent = true})
 
 -- Tagbar mappings, with plugin tagbar
 vim.keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {noremap = true, silent = true})
