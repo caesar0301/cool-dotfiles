@@ -63,14 +63,6 @@ return require("packer").startup(
             }
         }
 
-        -- Fuzzy finder integrating ag/ripgrep
-        -- TODO: (xiaming.cxm) migrate to telescope
-        use {
-            "junegunn/fzf.vim",
-            requires = {"junegunn/fzf", run = ":call fzf#install()"},
-            rtp = "~/.fzf"
-        }
-
         -- Find and replace
         use {
             "nvim-pack/nvim-spectre",
