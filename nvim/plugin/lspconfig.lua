@@ -167,17 +167,15 @@ vim.api.nvim_create_autocmd(
 )
 
 -- Java
-local function getJavaHome()
-    local jdkhome = os.getenv("JAVA_HOME_4JDTLS")
-    if jdkhome == nil or jdkhome == "" then
+local function getJavaBinary()
+    local jdkhone = os.getenv("JAVA_HOME_4JDTLS")
+    if not jdkhome then
         jdkhome = os.getenv("JAVA_HOME")
     end
-    if jdkhome == nil or jdkhome == "" then
-        print(
-            "Please set JAVA_HOME correctly. If you are using jenv to manager JDK versions, try to run `jenv enable-plugin export` to activate JAVA_HOME env variable exporting."
-        )
+    if jdkhome then
+        return jdkhome .. "/bin/java"
     end
-    return jdkhome
+    return "/usr/local/bin/java"
 end
 
 local function getJDTLSHome()
@@ -189,14 +187,13 @@ local function getJDTLSHome()
     return jdtls_home
 end
 
-local java_home = getJavaHome()
 local jdtls_home = getJDTLSHome()
 local workspace_folder = os.getenv("HOME") .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 lspconfig.jdtls.setup {
     on_attach = common_on_attach,
     capabilities = common_caps,
     cmd = {
-        java_home .. "/bin/java",
+        getJavaBinary(),
         "-Declipse.application=org.eclipse.jdt.ls.core.id1",
         "-Dosgi.bundles.defaultStartLevel=4",
         "-Declipse.product=org.eclipse.jdt.ls.core.product",
