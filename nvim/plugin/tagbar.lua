@@ -5,7 +5,6 @@ vim.g.tagbar_compact = 1
 vim.g.tagbar_show_data_type = 1
 vim.g.tagbar_indent = 1
 vim.g.tagbar_show_tag_linenumbers = 1
-vim.g.tagbar_width = math.max(25, vim.fn.winwidth(0) / 5)
 vim.g.tagbar_zoomwidth = 0
 vim.g.tagbar_autofocus = 1
 vim.g.tagbar_autopreview = 0
