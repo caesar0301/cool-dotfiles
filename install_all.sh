@@ -39,7 +39,7 @@ function install_ossutil {
 
 function install_local_bins {
     mkdir_nowarn $HOME/.local/bin
-    cp $THISDIR/local_bin/* $HOME/.local/bin
+    cp $THISDIR/bin/* $HOME/.local/bin
 }
 
 # auto completion of SBCL with rlwrap
@@ -57,7 +57,7 @@ function handle_rlwrap {
 }
 
 function cleanse_all {
-    for i in $(ls $THISDIR/local_bin/); do
+    for i in $(ls $THISDIR/bin/); do
         bname=$(basename $i)
         if [ -e $HOME/.local/bin/$bname ]; then
             rm -f $HOME/.local/bin/$bname
