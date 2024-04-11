@@ -1,5 +1,7 @@
+local api = vim.api
+
 -- Use Telescope to search the provided path
-vim.api.nvim_create_user_command(
+api.nvim_create_user_command(
     "FindDir",
     function(opts)
         local builtin = require("telescope.builtin")
@@ -7,3 +9,10 @@ vim.api.nvim_create_user_command(
     end,
     {nargs = 1}
 )
+
+-- Avoid accidental case changing
+api.nvim_create_user_command("W", "w", {})
+api.nvim_create_user_command("Q", "q", {})
+api.nvim_create_user_command("Wq", "wq", {})
+api.nvim_create_user_command("WQ", "wq", {})
+api.nvim_create_user_command("Qa", "qa", {})

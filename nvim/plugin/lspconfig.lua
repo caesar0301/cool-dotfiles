@@ -44,7 +44,7 @@ local lsp_keymaps = function(client, bufnr)
     -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bufopts)
     vim.keymap.set("n", "ca", ":CodeActionMenu<CR>", bufopts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-    vim.keymap.set("n", "<leader>aF", vim.lsp.buf.format, bufopts)
+    vim.keymap.set("n", "<leader>=", vim.lsp.buf.format, bufopts)
     vim.keymap.set("n", "<leader>ai", vim.lsp.buf.incoming_calls, bufopts)
     vim.keymap.set("n", "<leader>ao", vim.lsp.buf.outgoing_calls, bufopts)
     vim.keymap.set("n", "<leader>gw", vim.lsp.buf.document_symbol, bufopts)
@@ -174,6 +174,8 @@ local function getJavaBinary()
     end
     if jdkhome then
         return jdkhome .. "/bin/java"
+    else
+        print("Please set JAVA_HOME correctly, as required by JDT language server")
     end
     return "/usr/local/bin/java"
 end

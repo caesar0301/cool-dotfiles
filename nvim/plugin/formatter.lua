@@ -2,8 +2,6 @@
 local util = require "formatter.util"
 local formatter = require "formatter"
 
-vim.keymap.set("n", "<leader>af", ":Format<CR>")
-
 function getJavaBin()
     local jdkhome = os.getenv("JAVA_HOME_4GJF")
     if jdkhome == nil then

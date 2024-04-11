@@ -46,7 +46,7 @@ Specifically, it is also required to configure `nvim-treesitter` language module
 * Auto code format: `formatter.nvim`
 * Folder structure: `nvim-tree` and `barbar.nvim` for tabline
 * Code structure: `tagbar` (depends on external `universal-ctags`/`gotags` etc.)
-* Searching: fuzzy finder with `fzf` (<leader>fw), search everywhere (<leader>fW) with `the_silver_searcher`, general fuzzy finder with `nvim-telescope`
+* Searching: general fuzzy finder with `nvim-telescope`
 * Git indicators: `vim-gitgutter`
 
 ## Configuration Structures
@@ -61,6 +61,15 @@ Specifically, it is also required to configure `nvim-treesitter` language module
 To see all shortcuts via
 ```vim
 :map
+```
+
+## Formatters
+
+`formatter.nvim` depends on local installation of linter tools. Part of them are
+installed by the `install.sh` script. The left should be installed manully:
+
+```
+brew install bufbuild/buf/buf  # for proto
 ```
 
 ## Configurable ENV vars
