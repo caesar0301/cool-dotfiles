@@ -70,7 +70,7 @@ keymap.set("n", "<leader><A-x>", "<cmd>BufferClose<CR>", {noremap = true, silent
 keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {noremap = true, silent = true})
 
 -- Close all but current, with plugin barbar
-keymap.set("n", "<leader><A-X>", "<cmd>BufferCloseAllButCurrent<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader><A-c>", "<cmd>BufferCloseAllButCurrent<CR>", {noremap = true, silent = true})
 
 -- Tagbar mappings, with plugin tagbar
 keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {noremap = true, silent = true})
