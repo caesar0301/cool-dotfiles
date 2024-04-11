@@ -19,6 +19,7 @@ ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 ZSH_CONFIG_DIR="${HOME}/.config/zsh"
 ZSH_BUNDLES="${ZSH_CONFIG_DIR}/bundles/"
 ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
+ZSH_DEVTOOLS="${ZSH_CONFIG_DIR}/caesardev/"
 
 # extra envs
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
@@ -27,10 +28,7 @@ export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
 # add local bin
 export PATH=$PATH:$HOME/.local/bin
 
-#+++++++++++++++++++++++++++++++++++++++
-# ZI manager
-#+++++++++++++++++++++++++++++++++++++++
-
+#<<<<<<<<<<<<<<<< ZI manager <<<<<<<<<<<<<<<<<<<<<<
 autoload -Uz _zi && (( ${+_comps} )) && _comps[zi]=_zi
 
 # Oh-My-Zsh libs
@@ -80,11 +78,6 @@ function _setupPyenv {
 }
 _setupPyenv
 
-# Load custom bundles
-for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
-    zinit ice wait lucid; zinit snippet $i;
-done
-
 # Load custom extensions under $ZSH_PLUGIN_DIR
 function _load_custom_extensions {
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
@@ -100,25 +93,30 @@ function _load_custom_extensions {
 }
 _load_custom_extensions
 
+# Load custom bundles
+for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
+    zinit ice wait lucid; zinit snippet $i;
+done
+
+# Personal devtools
+for i in `find ${ZSH_DEVTOOLS} -maxdepth 1 -type f -name "*.zsh"`; do
+    zinit ice wait lucid; zinit snippet $i;
+done
+
 autoload -U parseopts zargs zcalc zed zmv
 autoload -U compinit && compinit
 zinit cdreplay -q
 #zinit cdlist
 
-#+++++++++++++++++++++++++++++++++++++++
-# Basics and commons
-#+++++++++++++++++++++++++++++++++++++++
+#>>>>>>>>>>>>>>>> ZI manager >>>>>>>>>>>>>>>>>>>>>>
 
-# Editor
-export EDITOR=nvim
+# Disable Ctrl+D to close session
+setopt IGNORE_EOF
 
 # zsh history
 export HISTFILE=$HOME/.zhistory
 export HISTSIZE=9999
 export SAVEHIST=9999
-
-# Disable Ctrl+D to close session
-setopt IGNORE_EOF
 
 # Reload zshrc globally
 function zshld {
