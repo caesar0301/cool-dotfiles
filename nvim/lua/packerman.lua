@@ -93,15 +93,6 @@ return require("packer").startup(
         -- Quickstart configs for Nvim LSP
         use "neovim/nvim-lspconfig"
 
-        -- Make the LSP client use FZF
-        -- use {
-        --     "ojroques/nvim-lspfuzzy",
-        --     requires = {
-        --         {"junegunn/fzf"},
-        --         {"junegunn/fzf.vim"} -- to enable preview (optional)
-        --     }
-        -- }
-
         -- Previewing native LSP's goto definition etc. in floating window
         use {
             "rmagatti/goto-preview",

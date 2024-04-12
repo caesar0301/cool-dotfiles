@@ -10,15 +10,6 @@ keymap.set("t", "<leader>kt", [[<C-\><C-n>]])
 -- Toggle plugin gitgutter
 keymap.set("n", "<leader>gu", "<cmd>GitGutterToggle<cr>", {silent = true})
 
--- Pressing ,ss will toggle and untoggle spell checking
-keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>")
-
--- Extra spelling shortcuts
-keymap.set("", "<learder>sn", "]s")
-keymap.set("", "<learder>sp", "[s")
-keymap.set("", "<learder>sa", "zg")
-keymap.set("", "<learder>s?", "z=")
-
 -- Smart way to move between windows
 keymap.set("", "<C-j>", "<C-W>j")
 keymap.set("", "<C-k>", "<C-W>k")
@@ -153,13 +144,13 @@ keymap.set(
 -- Search and replace in current word (case sensitive)
 keymap.set(
     "n",
-    "<leader>s",
+    "<leader>R",
     ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
     {desc = "Replace current word (case sensitive)"}
 )
 keymap.set(
     "v",
-    "<leader>s",
+    "<leader>R",
     ":s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
     {desc = "Replace current word (case sensitive)"}
 )
@@ -195,9 +186,9 @@ keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>")
 -- Trigger gitignore interactive
 keymap.set("n", "<leader>gi", require("gitignore").generate, {desc = "Add gitignore"})
 
--- Write and quita all buffers
-keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers (:wa)"})
-keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quite all buffers (:qa)"})
+-- Write and quit all buffers
+keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {noremap = true, desc = "Save all buffers (:wa)"})
+keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {noremap = true, desc = "Quite all buffers (:qa)"})
 
 -- Smart insert in blank line (auto indent)
 keymap.set(

@@ -12,7 +12,11 @@ vim.opt.backup = false
 vim.opt.wb = false
 vim.opt.swapfile = false
 
--- In case of invalid default python3 version
+-- Enable spell checking, excluding Chinese char
+vim.opt.spelllang = vim.opt.spelllang + "en_us" + "cjk"
+vim.opt.spell = true
+
+-- In case of invalid default Python3 version
 local nvimpy = os.getenv("NVIM_PYTHON3")
 if nvimpy ~= nil and python_path ~= "" then
     vim.g.python3_host_prog = nvimpy .. "/bin/python3"
