@@ -118,11 +118,12 @@ export HISTFILE=$HOME/.zhistory
 export HISTSIZE=9999
 export SAVEHIST=9999
 
-# Reload zshrc globally
+# Reload zsh configs globally
 function zshld {
     myextdir=$(basename $(echo "${ZSH_PLUGIN_DIR}" | sed -E -n "s|(.*[^/])/?|\1|p"))
     if [ -e $ZINIT_WORKDIR ]; then
         ls -d $ZINIT_WORKDIR/snippets/* | grep "$myextdir" | xargs rm -rf
     fi
     source $HOME/.zshrc
+    echo "zsh config reloaded!"
 }
