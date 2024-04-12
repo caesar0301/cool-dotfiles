@@ -158,6 +158,7 @@ keymap.set(
 -- Format with plugin formatter.nvim
 keymap.set("n", "<leader>af", ":Format<CR>")
 keymap.set("n", "<leader>=", ":Format<CR>")
+keymap.set("n", "<leader>F", ":Format<CR>")
 
 -- Zen mode with plugin Goyo
 keymap.set("n", "<leader>z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN mode"})
