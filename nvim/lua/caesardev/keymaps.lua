@@ -17,8 +17,8 @@ keymap.set("", "<C-h>", "<C-W>h")
 keymap.set("", "<C-l>", "<C-W>l")
 
 -- Toggle plugin nvim-tree
-keymap.set("n", "<F8>", "<cmd>:NvimTreeFindFileToggle!<cr>", {noremap = true})
-keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFile!<cr>", {noremap = true})
+keymap.set("n", "<F8>", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
+keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFile!<cr>", {})
 
 -- Switch CWD to the directory of the open buffer
 keymap.set("", "<leader>cd", "<cmd>cd %:p:h<cr>:pwd<cr>")
@@ -32,40 +32,40 @@ keymap.set("n", "<leader>tm", ":tabmove")
 keymap.set("n", "<leader>t<leader>", ":tabnext<CR>")
 
 -- Move to previous/next, with plugin barbar
-keymap.set("n", "<A-,>", "<cmd>BufferPrevious<CR>", {noremap = true, silent = true})
-keymap.set("n", "<A-.>", "<cmd>BufferNext<CR>", {noremap = true, silent = true})
+keymap.set("n", "<A-,>", "<cmd>BufferPrevious<CR>", {silent = true})
+keymap.set("n", "<A-.>", "<cmd>BufferNext<CR>", {silent = true})
 
 -- Re-order to previous/next, with plugin barbar
-keymap.set("n", "<A-<>", "<cmd>BufferMovePrevious<CR>", {noremap = true, silent = true})
-keymap.set("n", "<A->>", "<cmd>BufferMoveNext<CR>", {noremap = true, silent = true})
+keymap.set("n", "<A-<>", "<cmd>BufferMovePrevious<CR>", {silent = true})
+keymap.set("n", "<A->>", "<cmd>BufferMoveNext<CR>", {silent = true})
 
 -- Goto buffer in position..., with plugin barbar
-keymap.set("n", "<leader><A-1>", "<cmd>BufferGoto 1<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-2>", "<cmd>BufferGoto 2<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-3>", "<cmd>BufferGoto 3<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-4>", "<cmd>BufferGoto 4<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-5>", "<cmd>BufferGoto 5<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-6>", "<cmd>BufferGoto 6<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-7>", "<cmd>BufferGoto 7<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-8>", "<cmd>BufferGoto 8<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-9>", "<cmd>BufferGoto 9<CR>", {noremap = true, silent = true})
-keymap.set("n", "<leader><A-0>", "<cmd>BufferLast<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader><A-1>", "<cmd>BufferGoto 1<CR>", {silent = true})
+keymap.set("n", "<leader><A-2>", "<cmd>BufferGoto 2<CR>", {silent = true})
+keymap.set("n", "<leader><A-3>", "<cmd>BufferGoto 3<CR>", {silent = true})
+keymap.set("n", "<leader><A-4>", "<cmd>BufferGoto 4<CR>", {silent = true})
+keymap.set("n", "<leader><A-5>", "<cmd>BufferGoto 5<CR>", {silent = true})
+keymap.set("n", "<leader><A-6>", "<cmd>BufferGoto 6<CR>", {silent = true})
+keymap.set("n", "<leader><A-7>", "<cmd>BufferGoto 7<CR>", {silent = true})
+keymap.set("n", "<leader><A-8>", "<cmd>BufferGoto 8<CR>", {silent = true})
+keymap.set("n", "<leader><A-9>", "<cmd>BufferGoto 9<CR>", {silent = true})
+keymap.set("n", "<leader><A-0>", "<cmd>BufferLast<CR>", {silent = true})
 
 -- Pin/unpin buffer, with plugin barbar
-keymap.set("n", "<leader><A-p>", "<cmd>BufferPin<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader><A-p>", "<cmd>BufferPin<CR>", {silent = true})
 
 -- Close buffer, with plugin barbar
-keymap.set("n", "<leader><A-x>", "<cmd>BufferClose<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader><A-x>", "<cmd>BufferClose<CR>", {silent = true})
 
 -- Restore buffer, with plugin barbar
-keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {silent = true})
 
 -- Close all but current, with plugin barbar
-keymap.set("n", "<leader><A-c>", "<cmd>BufferCloseAllButCurrent<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader><A-c>", "<cmd>BufferCloseAllButCurrent<CR>", {silent = true})
 
 -- Tagbar mappings, with plugin tagbar
-keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {noremap = true, silent = true})
-keymap.set("n", "<F9>", ":TagbarToggle<CR>", {noremap = true, silent = true})
+keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {silent = true})
+keymap.set("n", "<F9>", ":TagbarToggle<CR>", {silent = true})
 
 -- Goto code, with plugin AnyJump
 keymap.set("n", "<leader>aj", ":AnyJump<CR>", {silent = true})
@@ -107,26 +107,37 @@ keymap.set("n", "<leader>fh", builtin.help_tags)
 -- Find and replace with plugin Spectre
 keymap.set(
     "n",
-    "<leader>fr",
+    "<leader>S",
     '<cmd>lua require("spectre").toggle()<CR>',
     {
         desc = "Toggle Spectre"
     }
 )
 
+-- Search and replace in current word
+keymap.set(
+    "n",
+    "<leader>sw",
+    '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
+    {
+        desc = "Search current word"
+    }
+)
+
 -- Search and replace in current word (case sensitive)
 keymap.set(
     "n",
-    "<leader>R",
+    "<leader>rw",
     ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
     {desc = "Replace current word (case sensitive)"}
 )
 keymap.set(
     "v",
-    "<leader>R",
+    "<leader>rw",
     ":s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
     {desc = "Replace current word (case sensitive)"}
 )
+keymap.set({"n", "v"}, "<leader>R", "<leader>rw", {remap = true})
 
 -- clear highlight of search, messages, floating windows
 keymap.set(
@@ -160,8 +171,8 @@ keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>")
 keymap.set("n", "<leader>gi", require("gitignore").generate, {desc = "Add gitignore"})
 
 -- Write and quit all buffers
-keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {noremap = true, desc = "Save all buffers (:wa)"})
-keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {noremap = true, desc = "Quite all buffers (:qa)"})
+keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers (:wa)"})
+keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quite all buffers (:qa)"})
 
 -- Smart insert in blank line (auto indent)
 keymap.set(
