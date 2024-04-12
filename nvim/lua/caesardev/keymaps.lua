@@ -86,9 +86,6 @@ keymap.set("i", "<C-e>", "<ESC>A", {noremap = true})
 keymap.set("n", "<space>", "/", {noremap = true})
 keymap.set("n", "<C-space>", "?", {noremap = true})
 
--- Search MRU file history, with plugin mru.vim
-keymap.set("n", "<leader>fr", "<cmd>MRU<CR>")
-
 -- Search with plugin Telescope
 local builtin = require("telescope.builtin")
 
@@ -107,37 +104,13 @@ keymap.set("n", "<leader>fg", builtin.live_grep)
 -- Lists available help tags and opens a new window with the relevant help info on <cr>
 keymap.set("n", "<leader>fh", builtin.help_tags)
 
--- Search with plugin Spectre
+-- Find and replace with plugin Spectre
 keymap.set(
     "n",
-    "<leader>S",
+    "<leader>fr",
     '<cmd>lua require("spectre").toggle()<CR>',
     {
         desc = "Toggle Spectre"
-    }
-)
-keymap.set(
-    "n",
-    "<leader>sw",
-    '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
-    {
-        desc = "Search current word"
-    }
-)
-keymap.set(
-    "v",
-    "<leader>sw",
-    '<esc><cmd>lua require("spectre").open_visual()<CR>',
-    {
-        desc = "Search current word"
-    }
-)
-keymap.set(
-    "n",
-    "<leader>sp",
-    '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
-    {
-        desc = "Search on current file"
     }
 )
 

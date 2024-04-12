@@ -16,3 +16,6 @@ api.nvim_create_user_command("Q", "q", {})
 api.nvim_create_user_command("Wq", "wq", {})
 api.nvim_create_user_command("WQ", "wq", {})
 api.nvim_create_user_command("Qa", "qa", {})
+
+-- List recent open file history
+api.nvim_create_user_command("FileHistory", "MRU", {})
