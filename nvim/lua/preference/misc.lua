@@ -14,7 +14,7 @@ vim.opt.swapfile = false
 
 -- Enable spell checking, excluding Chinese char
 vim.opt.spelllang = vim.opt.spelllang + "en_us" + "cjk"
-vim.opt.spell = true
+vim.opt.spell = false
 
 -- In case of invalid default Python3 version
 local nvimpy = os.getenv("NVIM_PYTHON3")

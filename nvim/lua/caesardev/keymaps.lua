@@ -222,3 +222,6 @@ keymap.set({"n", "v"}, "C", '"_C', {desc = "Change without yank"})
 keymap.set("n", "<leader>Y", "y:Oscyank<cr>")
 keymap.set("v", "<leader>Y", "y:Oscyank<cr>")
 keymap.set("x", "<F7>", "y:Oscyank<cr>")
+
+-- Pressing ,ss will toggle and untoggle spell checking
+keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>")
