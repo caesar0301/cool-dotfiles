@@ -275,6 +275,7 @@ return require("packer").startup(
         use "chrisbra/csv.vim"
 
         -- Markdown support in vim
+        use "godlygeek/tabular"
         use "plasticboy/vim-markdown"
 
         -- Preview Markdown in modern browser
