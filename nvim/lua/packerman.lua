@@ -51,9 +51,14 @@ return require("packer").startup(
 
         -- Improved fzf.vim written in lua
         use {
+            "junegunn/fzf",
+            run = function()
+                vim.fn["fzf#install"]()
+            end
+        }
+        use {
             "ibhagwan/fzf-lua",
             requires = {
-                {"junegunn/fzf", run = "./install --bin"},
                 {"nvim-tree/nvim-web-devicons"}
             }
         }

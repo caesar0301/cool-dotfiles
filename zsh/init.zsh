@@ -46,7 +46,6 @@ zinit ice wait lucid; zinit snippet OMZL::theme-and-appearance.zsh
 zinit ice wait lucid; zinit snippet OMZP::alias-finder
 zinit ice wait lucid; zinit snippet OMZP::extract
 zinit ice wait lucid; zinit snippet OMZP::vi-mode
-zinit ice wait lucid; zinit snippet OMZP::fzf
 zinit ice pick"z.sh" wait lucid; zinit load rupa/z
 
 # Completion & search
