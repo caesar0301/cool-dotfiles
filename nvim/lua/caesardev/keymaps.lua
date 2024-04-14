@@ -8,6 +8,11 @@ api.nvim_create_user_command("Wq", "waq", {})
 api.nvim_create_user_command("WQ", "waqa", {})
 api.nvim_create_user_command("Qa", "qa", {})
 
+-- Save with Ctrl + s
+keymap.set("n", "<C-s>", ":w<CR>")
+keymap.set("i", "<C-s>", "<ESC>:w<CR>a")
+keymap.set("v", "<C-s>", "<ESC>:w<CR>")
+
 -- MLE: disable Join to avoid accidental trigger
 keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "disable [J]oin action"})
 

@@ -112,6 +112,11 @@ zinit cdreplay -q
 # Disable Ctrl+D to close session
 setopt IGNORE_EOF
 
+# Enable Ctrl+s and Ctrl+q
+stty start undef
+stty stop undef
+setopt noflowcontrol
+
 # zsh history
 export HISTFILE=$HOME/.zhistory
 export HISTSIZE=9999
