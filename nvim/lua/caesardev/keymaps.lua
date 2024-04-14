@@ -26,7 +26,7 @@ keymap.set("", "<C-l>", "<C-W>l")
 -- Toggle plugin nvim-tree
 keymap.set("n", "<F8>", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
 keymap.set("n", "<leader>N", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
-keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFile!<cr>", {})
+keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
 
 -- Switch CWD to the directory of the open buffer
 keymap.set("", "<leader>cd", "<cmd>cd %:p:h<cr>:pwd<cr>")
