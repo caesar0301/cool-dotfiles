@@ -92,37 +92,14 @@ local builtin = require("telescope.builtin")
 -- Lists files in your current working directory, respects .gitignore
 keymap.set("n", "<leader>ff", builtin.find_files)
 
--- Lists open buffers in current neovim instance
-keymap.set("n", "<leader>fb", builtin.buffers)
-
 -- Searches for the string under your cursor or selection in your current working directory
 keymap.set("n", "<leader>fw", builtin.grep_string)
 
 -- Search for a string in your current working directory and get results live as you type, respects .gitignore
 keymap.set("n", "<leader>fg", builtin.live_grep)
 
--- Lists available help tags and opens a new window with the relevant help info on <cr>
-keymap.set("n", "<leader>fh", builtin.help_tags)
-
--- Find and replace with plugin Spectre
-keymap.set(
-    "n",
-    "<leader>S",
-    '<cmd>lua require("spectre").toggle()<CR>',
-    {
-        desc = "Toggle Spectre"
-    }
-)
-
--- Search and replace in current word
-keymap.set(
-    "n",
-    "<leader>sw",
-    '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
-    {
-        desc = "Search current word"
-    }
-)
+-- open file_browser with the path of the current buffer
+keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
 
 -- Search and replace in current word (case sensitive)
 keymap.set(
@@ -161,7 +138,7 @@ keymap.set("n", "<leader>=", ":Format<CR>")
 keymap.set("n", "<leader>F", ":Format<CR>")
 
 -- Zen mode with plugin Goyo
-keymap.set("n", "<leader>z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN mode"})
+keymap.set("n", "<leader>Z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN mode"})
 
 -- Compile run
 keymap.set("n", "<F5>", "<cmd>call CompileRun()<CR>")
@@ -189,6 +166,10 @@ keymap.set(
     {expr = true}
 )
 
+-- Move line in visual mode
+keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
 -- Mapping for dd that doesn't yank an empty line into your default register:
 keymap.set(
     "n",
@@ -203,20 +184,12 @@ keymap.set(
     {expr = true}
 )
 
--- Move line in visual mode
-keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+-- greatest remap ever (Paste over selection without yanking)
+keymap.set("x", "p", "P")
 
 -- Delete a word using Ctrl+Backspace
 keymap.set("i", "<C-BS>", "<C-w>")
 keymap.set("c", "<C-BS>", "<C-w>")
-
--- greatest remap ever (Paste over selection without yanking)
-keymap.set("x", "p", "P")
-
--- using change without yank
-keymap.set({"n", "v"}, "c", '"_c', {desc = "Change without yank"})
-keymap.set({"n", "v"}, "C", '"_C', {desc = "Change without yank"})
 
 -- Yank in terminal ssh
 keymap.set("n", "<leader>Y", "y:Oscyank<cr>")

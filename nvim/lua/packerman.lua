@@ -19,8 +19,8 @@ return require("packer").startup(
             "nvim-tree/nvim-tree.lua",
             requires = {
                 {"nvim-tree/nvim-web-devicons"},
-                {"antosha417/nvim-lsp-file-operations", opt = true},
-                {"echasnovski/mini.base16", opt = true}
+                {"antosha417/nvim-lsp-file-operations"},
+                {"echasnovski/mini.base16"}
             }
         }
 
@@ -49,6 +49,14 @@ return require("packer").startup(
             }
         }
 
+        -- Improved fzf.vim written in lua
+        use {
+            "ibhagwan/fzf-lua",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"}
+            }
+        }
+
         -- Highly extendable fuzzy finder over file and symbols
         use {
             "nvim-telescope/telescope.nvim",
@@ -57,30 +65,29 @@ return require("packer").startup(
                 {"nvim-lua/plenary.nvim"},
                 {"BurntSushi/ripgrep"},
                 {"nvim-telescope/telescope-fzf-native.nvim"},
-                {"sharkdp/fd", opt = true},
-                {"nvim-treesitter/nvim-treesitter", opt = true},
-                {"nvim-tree/nvim-web-devicons", opt = true}
+                {"sharkdp/fd"},
+                {"nvim-treesitter/nvim-treesitter"},
+                {"nvim-tree/nvim-web-devicons"}
             }
         }
 
-        -- Find and replace
+        -- File Browser extension for telescope.nvim
         use {
-            "nvim-pack/nvim-spectre",
-            requires = {
-                {"nvim-tree/nvim-web-devicons"},
-                {"nvim-lua/plenary.nvim"}
-            }
+            "nvim-telescope/telescope-file-browser.nvim",
+            requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}
         }
 
-        -- File open history with Most Recently Used
-        use "vim-scripts/mru.vim"
-
-        -- Configure neovim statusline
+        -- Better quickfix window in Neovim, polish old quickfix window
         use {
-            "nvim-lualine/lualine.nvim",
+            "kevinhwang91/nvim-bqf",
             requires = {
-                {"nvim-tree/nvim-web-devicons", opt = true},
-                {"nvim-lua/lsp-status.nvim"}
+                {
+                    "junegunn/fzf",
+                    run = function()
+                        vim.fn["fzf#install"]()
+                    end
+                },
+                {"nvim-treesitter/nvim-treesitter"}
             }
         }
 
@@ -109,6 +116,15 @@ return require("packer").startup(
             end
         }
 
+        -- Configure neovim statusline
+        use {
+            "nvim-lualine/lualine.nvim",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"},
+                {"nvim-lua/lsp-status.nvim"}
+            }
+        }
+
         -- winbar/statusline plugin that shows current code context
         use {
             "SmiteshP/nvim-navic",
@@ -129,7 +145,7 @@ return require("packer").startup(
                 {"hrsh7th/cmp-cmdline"},
                 {"L3MON4D3/LuaSnip"},
                 {"saadparwaiz1/cmp_luasnip"},
-                {"lukas-reineke/cmp-under-comparator", opt = true}
+                {"lukas-reineke/cmp-under-comparator"}
             }
         }
 
@@ -147,12 +163,7 @@ return require("packer").startup(
 
         -- Nvim interface to configure tree-sitter and syntax highlighting
         use "nvim-treesitter/nvim-treesitter"
-        use {
-            "nvim-treesitter/nvim-treesitter-refactor",
-            requires = {
-                {"nvim-treesitter/nvim-treesitter"}
-            }
-        }
+        use "nvim-treesitter/nvim-treesitter-refactor"
 
         -- Highlight arguments' definitions and usages, using Treesitter
         use {
