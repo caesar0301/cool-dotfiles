@@ -1,6 +1,13 @@
 local api = vim.api
 local keymap = vim.keymap
 
+-- Avoid accidental case changing
+api.nvim_create_user_command("W", "wa", {})
+api.nvim_create_user_command("Q", "qa", {})
+api.nvim_create_user_command("Wq", "waq", {})
+api.nvim_create_user_command("WQ", "waqa", {})
+api.nvim_create_user_command("Qa", "qa", {})
+
 -- MLE: disable Join to avoid accidental trigger
 keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "disable [J]oin action"})
 
@@ -18,6 +25,7 @@ keymap.set("", "<C-l>", "<C-W>l")
 
 -- Toggle plugin nvim-tree
 keymap.set("n", "<F8>", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
+keymap.set("n", "<leader>N", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
 keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFile!<cr>", {})
 
 -- Switch CWD to the directory of the open buffer
@@ -98,13 +106,34 @@ keymap.set("n", "<leader>fw", builtin.grep_string)
 -- Search for a string in your current working directory and get results live as you type, respects .gitignore
 keymap.set("n", "<leader>fg", builtin.live_grep)
 
--- open file_browser with the path of the current buffer
+-- Find and replace with cdo
+vim.api.nvim_create_user_command(
+    "FindAndReplace",
+    function(opts)
+        vim.api.nvim_command(string.format("cdo s/%s/%s", opts.fargs[1], opts.fargs[2]))
+        vim.api.nvim_command("cfdo update")
+    end,
+    {nargs = "*"}
+)
+keymap.set("n", "<leader>fr", ":FindAndReplace ", {noremap = true})
+
+-- Open file_browser with the path of the current buffer
 keymap.set(
     "n",
     "<leader>fb",
     function()
         require("telescope").extensions.file_browser.file_browser()
-    end
+   end
+)
+
+-- Use Telescope to search the provided path
+api.nvim_create_user_command(
+    "GrepDir",
+    function(opts)
+        local builtin = require("telescope.builtin")
+        builtin.live_grep({prompt_title = "Search in " .. opts.fargs[1], cwd = opts.fargs[1]})
+    end,
+    {nargs = 1}
 )
 
 -- Search and replace in current word (case sensitive)
@@ -189,9 +218,6 @@ keymap.set(
     end,
     {expr = true}
 )
-
--- greatest remap ever (Paste over selection without yanking)
-keymap.set("x", "p", "P")
 
 -- Delete a word using Ctrl+Backspace
 keymap.set("i", "<C-BS>", "<C-w>")
