@@ -2,7 +2,7 @@
 -- vim.opt.paste = true
 
 -- vim copy to clipboard
-vim.opt.clipboard:append {"unnamed", "unnamedplus"}
+-- vim.opt.clipboard:append {"unnamed", "unnamedplus"}
 
 -- Sets how many lines of history VIM has to remember
 vim.opt.history = 500
