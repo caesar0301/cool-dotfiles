@@ -53,6 +53,7 @@ return require("packer").startup(
         use {
             "ibhagwan/fzf-lua",
             requires = {
+                {"junegunn/fzf", run = "./install --bin"},
                 {"nvim-tree/nvim-web-devicons"}
             }
         }
@@ -81,12 +82,6 @@ return require("packer").startup(
         use {
             "kevinhwang91/nvim-bqf",
             requires = {
-                {
-                    "junegunn/fzf",
-                    run = function()
-                        vim.fn["fzf#install"]()
-                    end
-                },
                 {"nvim-treesitter/nvim-treesitter"}
             }
         }
