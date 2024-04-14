@@ -99,7 +99,13 @@ keymap.set("n", "<leader>fw", builtin.grep_string)
 keymap.set("n", "<leader>fg", builtin.live_grep)
 
 -- open file_browser with the path of the current buffer
-keymap.set("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
+keymap.set(
+    "n",
+    "<leader>fb",
+    function()
+        require("telescope").extensions.file_browser.file_browser()
+    end
+)
 
 -- Search and replace in current word (case sensitive)
 keymap.set(
