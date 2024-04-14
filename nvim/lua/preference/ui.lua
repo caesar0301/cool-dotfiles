@@ -79,9 +79,6 @@ vim.opt.errorbells = false
 vim.opt.visualbell = false
 vim.opt.tm = 500
 
--- Enable syntax highlighting
-vim.cmd("syntax enable")
-
 -- Enable 256 colors palette in Gnome Terminal
 if vim.env.COLORTERM == "gnome-terminal" then
     vim.opt.termguicolors = true
