@@ -46,6 +46,20 @@ def rule_key(rule):
         return (parts[0], parts[2])
 
 
+def add_group(target, new_group):
+    groups = target.get("proxy-groups", [])
+    group_name = new_group["name"]
+    found = False
+    for i in range(0, len(groups)):
+        if groups[i]["name"] == group_name:
+            groups[i] = new_group
+            found = True
+            break
+    if not found:
+        groups.append(new_group)
+    target["proxy-groups"] = groups
+
+
 def finalize(trojan, v2ss):
     if trojan is not None and v2ss is None:
         final = trojan
@@ -61,37 +75,43 @@ def finalize(trojan, v2ss):
             list(set(trojan["rules"]).union(set(v2ss["rules"]))),
             key=lambda x: rule_key(x),
         )
-        final["proxy-groups"].append(
-            create_proxy_group(
-                name="Proxy",
-                proxy_configs=trojan["proxies"] + v2ss["proxies"],
-                type="select",
-                extra_names=["AutoTrojan", "AutoV2ss"],
-            )
-        )
-        final["proxy-groups"].append(
-            create_proxy_group(
-                name="AutoTrojan", proxy_configs=trojan["proxies"], type="url-test"
-            )
-        )
-        final["proxy-groups"].append(
-            create_proxy_group(
-                name="AutoV2ss", proxy_configs=v2ss["proxies"], type="url-test"
-            )
-        )
-    us_proxies = [i for i in final["proxies"] if "美国" in i["name"]]
-    jp_proxies = [i for i in final["proxies"] if "日本" in i["name"]]
-    hk_proxies = [i for i in final["proxies"] if "香港" in i["name"]]
-    final["proxy-groups"].append(
-        create_proxy_group(name="AutoUS", proxy_configs=us_proxies, type="url-test")
-    )
-    final["proxy-groups"].append(
-        create_proxy_group(name="AutoJP", proxy_configs=jp_proxies, type="url-test")
-    )
-    final["proxy-groups"].append(
-        create_proxy_group(name="AutoHK", proxy_configs=hk_proxies, type="url-test")
-    )
+
     final["secret"] = "canyoukissme"
+    final["proxy-groups"] = list()
+
+    # unified group, required by client
+    auto_group = create_proxy_group(
+        name="Auto", proxy_configs=final["proxies"], type="url-test"
+    )
+    add_group(final, auto_group)
+
+    # country groups
+    us_proxies = [i for i in final["proxies"] if "美国" in i["name"]]
+    us_group = create_proxy_group(
+        name="AutoUS", proxy_configs=us_proxies, type="url-test"
+    )
+    add_group(final, us_group)
+
+    jp_proxies = [i for i in final["proxies"] if "日本" in i["name"]]
+    jp_group = create_proxy_group(
+        name="AutoJP", proxy_configs=jp_proxies, type="url-test"
+    )
+    add_group(final, jp_group)
+
+    hk_proxies = [i for i in final["proxies"] if "香港" in i["name"]]
+    hk_group = create_proxy_group(
+        name="AutoHK", proxy_configs=hk_proxies, type="url-test"
+    )
+    add_group(final, hk_group)
+
+    manual_group = create_proxy_group(
+        name="Proxy",
+        proxy_configs=final["proxies"],
+        type="select",
+        extra_names=["Auto", "AutoUS", "AutoJP", "AutoHK"],
+    )
+    add_group(final, manual_group)
+
     return final
 
 
