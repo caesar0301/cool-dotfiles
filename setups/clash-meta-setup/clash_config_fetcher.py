@@ -46,28 +46,21 @@ def rule_key(rule):
         return (parts[0], parts[2])
 
 
-if __name__ == "__main__":
-    v2ss_link = os.getenv("V2SS_LINK", "").strip()
-    trojan_link = os.getenv("TROJAN_LINK", "").strip()
-
-    if not v2ss_link:
-        raise RuntimeError("Empty V2SS_LINK env")
-
-    if not trojan_link:
-        raise RuntimeError("Empty TROJAN_LINK env")
-
-    trojan = read_remote_config(trojan_link)
-    v2ss = read_remote_config(v2ss_link)
-
+def finalize(trojan, v2ss):
     if trojan is not None and v2ss is None:
         final = trojan
     elif trojan is None and v2ss is not None:
         final = v2ss
-    elif not None in [trojan, v2ss]:
-        # Fianlize merging
+    elif trojan is None and v2ss is None:
+        return None
+    else:
+        # not None in [trojan, v2ss]:
         final = copy.deepcopy(trojan)
-        final["secret"] = "canyoukissme"
         final["proxies"] += v2ss["proxies"]
+        final["rules"] = sorted(
+            list(set(trojan["rules"]).union(set(v2ss["rules"]))),
+            key=lambda x: rule_key(x),
+        )
         final["proxy-groups"] = [
             create_proxy_group(
                 name="AutoTrojan", proxy_configs=trojan["proxies"], type="url-test"
@@ -82,15 +75,27 @@ if __name__ == "__main__":
                 extra_names=["AutoTrojan", "AutoV2ss"],
             ),
         ]
-        final["rules"] = sorted(
-            list(set(trojan["rules"]).union(set(v2ss["rules"]))),
-            key=lambda x: rule_key(x),
-        )
-    else:
-        final = None
+    final["secret"] = "canyoukissme"
+    return final
+
+
+if __name__ == "__main__":
+    v2ss_link = os.getenv("V2SS_LINK", "").strip()
+    trojan_link = os.getenv("TROJAN_LINK", "").strip()
+
+    if not v2ss_link:
+        print("WARNNING: emptry V2SS_LINK env")
+
+    if not trojan_link:
+        print("WARNNING: emptry TROJAN_LINK env")
+
+    trojan = read_remote_config(trojan_link)
+    v2ss = read_remote_config(v2ss_link)
+
+    final = finalize(trojan, v2ss)
+    if not final:
         raise RuntimeError(
             "At least one of V2SS_LINK and TROJAN_LINK env should be set"
         )
-
-    if final:
-        print(dump(final, Dumper=Dumper))
+    with open("config.merged", "w") as ofile:
+        dump(final, ofile)
