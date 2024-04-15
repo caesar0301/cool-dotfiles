@@ -4,7 +4,9 @@ require("telescope").setup {
     defaults = {
         mappings = {
             i = {
-                ["<esc>"] = actions.close
+                ["<esc>"] = actions.close,
+                ["<C-p>"] = actions.cycle_history_prev,
+                ["<C-n>"] = actions.cycle_history_next
             }
         }
     },
