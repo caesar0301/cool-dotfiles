@@ -61,20 +61,36 @@ def finalize(trojan, v2ss):
             list(set(trojan["rules"]).union(set(v2ss["rules"]))),
             key=lambda x: rule_key(x),
         )
-        final["proxy-groups"] = [
-            create_proxy_group(
-                name="AutoTrojan", proxy_configs=trojan["proxies"], type="url-test"
-            ),
-            create_proxy_group(
-                name="AutoV2ss", proxy_configs=v2ss["proxies"], type="url-test"
-            ),
+        final["proxy-groups"].append(
             create_proxy_group(
                 name="Proxy",
                 proxy_configs=trojan["proxies"] + v2ss["proxies"],
                 type="select",
                 extra_names=["AutoTrojan", "AutoV2ss"],
-            ),
-        ]
+            )
+        )
+        final["proxy-groups"].append(
+            create_proxy_group(
+                name="AutoTrojan", proxy_configs=trojan["proxies"], type="url-test"
+            )
+        )
+        final["proxy-groups"].append(
+            create_proxy_group(
+                name="AutoV2ss", proxy_configs=v2ss["proxies"], type="url-test"
+            )
+        )
+    us_proxies = [i for i in final["proxies"] if "美国" in i["name"]]
+    jp_proxies = [i for i in final["proxies"] if "日本" in i["name"]]
+    hk_proxies = [i for i in final["proxies"] if "香港" in i["name"]]
+    final["proxy-groups"].append(
+        create_proxy_group(name="AutoUS", proxy_configs=us_proxies, type="url-test")
+    )
+    final["proxy-groups"].append(
+        create_proxy_group(name="AutoJP", proxy_configs=jp_proxies, type="url-test")
+    )
+    final["proxy-groups"].append(
+        create_proxy_group(name="AutoHK", proxy_configs=hk_proxies, type="url-test")
+    )
     final["secret"] = "canyoukissme"
     return final
 
