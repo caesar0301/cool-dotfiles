@@ -1,11 +1,4 @@
-#!/bin/bash
-#----------------------------------------------
-# bash_utils.sh
-#
 # Simple functionality wrapper to speed up daily dev.
-#
-# Author: xiaming.chen
-#
 
 # colored messages
 function warn {
@@ -26,6 +19,38 @@ function error {
     printf "${RED}[%s] %s${NC}\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
 }
 
+# Open file window
+function openw {
+    KNAME=$(uname -s)
+    KREL=$(uname -r)
+    EXE='nautilus'
+    if [[ $KNAME == "Linux" ]]; then
+        if [[ $KREL =~ "microsoft-standard" ]]; then
+            EXE='explorer.exe'
+        fi
+    elif [[ $KNAME == "Darwin" ]]; then
+        EXE='open'
+    fi
+    $EXE $@
+}
+
+# Grep and replace
+function greprp {
+    if [ $# -eq 2 ]; then
+        spath='.'
+        oldstr=$1
+        newstr=$2
+    elif [ $# -eq 3 ]; then
+        spath=$1
+        oldstr=$2
+        newstr=$3
+    else
+        echo "Invalid param number. Usage: greprp [spath] oldstr newstr"
+        exit 1
+    fi
+    grep -r "$oldstr" $spath | awk -F: '{print $1}' | uniq | xargs -i sed -i -E "s|$oldstr|$newstr|g" {}
+}
+
 # check command existence
 function checkcmd {
     command -v $1 1>/dev/null 2>&1
@@ -41,12 +66,12 @@ function mkdir_nowarn {
 function check_sudo_access {
     prompt=$(sudo -nv 2>&1)
     if [ $? -eq 0 ]; then
-        info "has_sudo__pass_set"
+        info "sudo access has been set"
     elif echo $prompt | grep -q '^sudo:'; then
-        warn "has_sudo__needs_pass"
+        warn "sudo access required:"
         sudo -v
     else
-        error "no_sudo" && exit 1
+        error "sudo access not granted" && exit 1
     fi
 }
 

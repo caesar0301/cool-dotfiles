@@ -211,7 +211,7 @@ function handle_ctags {
     local ctags_home=$HOME/.ctags.d
     mkdir_nowarn $ctags_home
     if [ -e ${ctags_home} ]; then
-        for i in $(find $THISDIR/ctags -maxdepth 1 -type f -name "*.ctags"); do
+        for i in $(find $THISDIR/../ctags -maxdepth 1 -type f -name "*.ctags"); do
             if [ x$SOFTLINK == "x1" ]; then
                 ln -sf $i $ctags_home/
             else
