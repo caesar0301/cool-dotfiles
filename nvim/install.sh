@@ -85,7 +85,7 @@ function install_formatter_utils {
     fi
 
     # npm
-    npmlibs=()
+    npmlibs=(neovim)
     if ! checkcmd js-beautify; then
         npmlibs+=(js-beautify)
     fi

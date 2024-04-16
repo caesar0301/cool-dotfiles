@@ -93,7 +93,6 @@ function handle_zsh {
     fi
     $CMD $THISDIR/init.zsh $XDG_CONFIG_HOME/zsh/init.zsh
     $CMD $THISDIR/bundles $XDG_CONFIG_HOME/zsh/
-    $CMD $THISDIR/caesardev $XDG_CONFIG_HOME/zsh/
 
     # Install extra plugins
     mkdir_nowarn $XDG_CONFIG_HOME/zsh/plugins

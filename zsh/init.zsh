@@ -19,7 +19,6 @@ ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 ZSH_CONFIG_DIR="${HOME}/.config/zsh"
 ZSH_BUNDLES="${ZSH_CONFIG_DIR}/bundles/"
 ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
-ZSH_DEVTOOLS="${ZSH_CONFIG_DIR}/caesardev/"
 
 # extra envs
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
@@ -94,11 +93,6 @@ _load_custom_extensions
 
 # Load custom bundles
 for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
-    zinit ice wait lucid; zinit snippet $i;
-done
-
-# Personal devtools
-for i in `find ${ZSH_DEVTOOLS} -maxdepth 1 -type f -name "*.zsh"`; do
     zinit ice wait lucid; zinit snippet $i;
 done
 
