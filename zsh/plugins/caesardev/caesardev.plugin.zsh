@@ -1,4 +1,7 @@
 #!/usr/bin/bash
+0="${ZERO:-${${0:#$ZSH_ARGZERO}:-${(%):-%N}}}"
+0="${${(M)0:#/*}:-$PWD/$0}"
+PLUGHOME=$(dirname $0)
 
 # Perf
 alias psmem="ps -o pid,user,%mem,command ax | sort -b -k3 -r"
@@ -35,9 +38,13 @@ alias gll="git log | less"
 alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
 alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
-
 alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push"
 alias git-submodule-latest="git submodule foreach git pull origin master"
+
+# Ag searching
+alias ag_scons='ag --ignore-dir="build" -G "(SConscript|SConstruct)"'
+alias ag_cmake='ag --ignore-dir="build" -G "(ODPSBuild.txt|CMakeLists.txt|.\.cmake)"'
+alias ag_bazel='ag --ignore-dir="build" -G "(BUILD|.\.cmake)"'
 
 #+++++++++++++++++++++++++++++++++++++++
 # functions
