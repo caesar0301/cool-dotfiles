@@ -170,9 +170,7 @@ function _initJavaEnv {
     # .jenv
     export PATH="$HOME/.jenv/bin:$PATH"
     eval "$(jenv init -)"
-    if ! checkcmd jenv plugins | grep export; then
-        jenv enable-plugin export > /dev/null
-    fi
+    # jenv enable-plugin export > /dev/null
     # Java decompiler
     alias java_decompile="java -jar $HOME/.local/bin/cfr-0.152.jar"
 }
