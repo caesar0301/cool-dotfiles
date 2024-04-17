@@ -1,3 +1,3 @@
-require("caesardev.globals")
-require("caesardev.autocmds")
-require("caesardev.keymaps")
+require("base.globals")
+require("base.autocmds")
+require("base.keymaps")

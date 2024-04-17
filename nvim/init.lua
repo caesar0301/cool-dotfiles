@@ -12,7 +12,7 @@
 require("packerman")
 
 -- Setup globals that I expect to be always available.
-require("caesardev")
+require("base")
 
 -- Preferred settings
 require("preference")
