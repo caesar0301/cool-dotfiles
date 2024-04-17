@@ -1,2 +1,3 @@
-vim.opt_local.textwidth = 80
-vim.opt_local.foldenable = false
+vim.opt.wrap = true
+vim.opt.textwidth = 80
+vim.opt.foldenable = false
