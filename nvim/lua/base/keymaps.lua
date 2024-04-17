@@ -8,11 +8,6 @@ api.nvim_create_user_command("Wq", "waq", {})
 api.nvim_create_user_command("WQ", "waqa", {})
 api.nvim_create_user_command("Qa", "qa", {})
 
--- Save with Ctrl + s
-keymap.set("n", "<C-s>", ":w<CR>")
-keymap.set("i", "<C-s>", "<ESC>:w<CR>a")
-keymap.set("v", "<C-s>", "<ESC>:w<CR>")
-
 -- MLE: disable Join to avoid accidental trigger
 keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "disable [J]oin action"})
 
@@ -189,6 +184,11 @@ keymap.set("n", "<leader>gi", require("gitignore").generate, {desc = "Add gitign
 -- Write and quit all buffers
 keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers (:wa)"})
 keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quite all buffers (:qa)"})
+
+-- Save with Ctrl + s
+keymap.set("n", "<C-s>", ":w<CR>")
+keymap.set("i", "<C-s>", "<ESC>:w<CR>l")
+keymap.set("v", "<C-s>", "<ESC>:w<CR>")
 
 -- Smart insert in blank line (auto indent)
 keymap.set(
