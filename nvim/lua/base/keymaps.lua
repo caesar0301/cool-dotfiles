@@ -123,7 +123,7 @@ keymap.set(
     "<leader>fb",
     function()
         require("telescope").extensions.file_browser.file_browser()
-   end
+    end
 )
 
 -- Use Telescope to search the provided path
@@ -168,7 +168,7 @@ keymap.set(
 )
 
 -- Format with plugin formatter.nvim
-keymap.set("n", "<leader>af", ":Format<CR>")
+keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>")
 
 -- Zen mode with plugin Goyo
 keymap.set("n", "<leader>Z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN mode"})
