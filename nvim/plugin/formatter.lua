@@ -94,7 +94,6 @@ formatter.setup {
                     exe = "remark",
                     args = {
                         "--no-color",
-                        "-"
                     },
                     stdin = true
                 }
