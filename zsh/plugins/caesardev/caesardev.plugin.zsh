@@ -40,6 +40,7 @@ alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
 alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push"
 alias git-submodule-latest="git submodule foreach git pull origin master"
+alias gcmm="git commit -m"
 
 # Ag searching
 alias ag_scons='ag --ignore-dir="build" -G "(SConscript|SConstruct)"'
