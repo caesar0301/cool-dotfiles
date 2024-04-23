@@ -209,15 +209,25 @@ keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- Mapping for dd that doesn't yank an empty line into your default register:
+-- keymap.set(
+--     "n",
+--     "dd",
+--     function()
+--         if api.nvim_get_current_line():match("^%s*$") then
+--             return '"_dd'
+--         else
+--             return "dd"
+--         end
+--     end,
+--     {expr = true}
+-- )
+
+-- Mapping for dd that doesn't yank into your default register:
 keymap.set(
     "n",
     "dd",
     function()
-        if api.nvim_get_current_line():match("^%s*$") then
-            return '"_dd'
-        else
-            return "dd"
-        end
+        return '"_dd'
     end,
     {expr = true}
 )
