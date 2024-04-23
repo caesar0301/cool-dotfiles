@@ -46,8 +46,7 @@ function zshup {
 
 # update nvim plugins
 function nvimup {
-    nvim -c "PackerInstall" -c "PackerSync" \
-        -c "TSInstall lua python java go scala"
+    nvim --headless -c "PackerClean" -c "PackerUpdate" -c "TSUpdate" -c 'qall'
 }
 
 # Overhead configrator for apps
