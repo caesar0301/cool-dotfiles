@@ -222,16 +222,6 @@ keymap.set(
     {expr = true}
 )
 
--- Mapping for dd that doesn't yank into your default register:
-keymap.set(
-    "n",
-    "ddd",
-    function()
-        return '"_dd'
-    end,
-    {expr = true}
-)
-
 -- Delete a word using Ctrl+Backspace
 keymap.set("i", "<C-BS>", "<C-w>")
 keymap.set("c", "<C-BS>", "<C-w>")
