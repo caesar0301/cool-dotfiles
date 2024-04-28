@@ -25,6 +25,10 @@ function install_jdt_language_server {
 }
 
 function install_hack_nerd_font {
+    if ! checkcmd fc-list; then
+        error "fontconfig tools (fc-list, fc-cache) not found."
+        exit 1
+    fi
     FONTDIR=$HOME/.local/share/fonts
     if [ "$(uname)" == "Darwin" ]; then
         FONTDIR=$HOME/Library/Fonts
