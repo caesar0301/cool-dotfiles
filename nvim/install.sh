@@ -160,6 +160,13 @@ function install_lsp_deps {
             R -e "install.packages('languageserver', repos='https://mirrors.nju.edu.cn/CRAN/')"
         fi
     fi
+
+    info "Install gopls"
+    if checkcmd go; then
+        go install golang.org/x/tools/gopls@latest
+    else
+        warn "Go not found in PATH, skip to install gotags"
+    fi
 }
 
 function install_fzf {
