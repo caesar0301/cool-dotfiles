@@ -3,13 +3,15 @@ Description=Kickoff Minikube Cluster
 After=docker.service
 
 [Service]
+Type=idle
 Type=oneshot
-ExecStart=/usr/local/bin/minikube start
+WorkingDirectory=/home/chenxm
+ExecStart=/usr/bin/minikube start
 RemainAfterExit=true
-ExecStop=/usr/local/bin/minikube stop
+ExecStop=/usr/bin/minikube stop
 StandardOutput=journal
-User=jon
-Group=jon
+User=chenxm
+Group=chenxm
 
 [Install]
 WantedBy=multi-user.target
