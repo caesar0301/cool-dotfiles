@@ -73,7 +73,7 @@ function install_yamlfmt {
 
 # Formatting dependencies
 function install_formatter_utils {
-    info "Installing vim-autoformat dependencies..."
+    info "Installing file format dependencies..."
 
     install_google_java_format
 
