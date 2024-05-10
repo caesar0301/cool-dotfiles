@@ -4,6 +4,7 @@ from yaml import Loader, Dumper
 import copy
 import urllib.request
 import os
+import time
 
 
 # Remote configs
@@ -79,36 +80,32 @@ def finalize(trojan, v2ss):
     final["secret"] = "canyoukissme"
     final["proxy-groups"] = list()
 
+    selected_proxies = []
+    selected_countries = ["美国", "日本", "香港", "澳大利亚"]
+    for cname in selected_countries:
+        selected_proxies += [i for i in final["proxies"] if cname in i["name"]]
+    final["proxies"] = selected_proxies
+
     # unified group, required by client
     auto_group = create_proxy_group(
         name="Auto", proxy_configs=final["proxies"], type="url-test"
     )
     add_group(final, auto_group)
 
-    # country groups
-    us_proxies = [i for i in final["proxies"] if "美国" in i["name"]]
-    us_group = create_proxy_group(
-        name="AutoUS", proxy_configs=us_proxies, type="url-test"
-    )
-    add_group(final, us_group)
-
-    jp_proxies = [i for i in final["proxies"] if "日本" in i["name"]]
-    jp_group = create_proxy_group(
-        name="AutoJP", proxy_configs=jp_proxies, type="url-test"
-    )
-    add_group(final, jp_group)
-
-    hk_proxies = [i for i in final["proxies"] if "香港" in i["name"]]
-    hk_group = create_proxy_group(
-        name="AutoHK", proxy_configs=hk_proxies, type="url-test"
-    )
-    add_group(final, hk_group)
+    # selected country groups
+    country_groups = {"美国": "AutoUS", "日本": "AutoJP"}
+    for cname in country_groups:
+        cproxies = [i for i in final["proxies"] if cname in i["name"]]
+        cgroup = create_proxy_group(
+            name=country_groups[cname], proxy_configs=cproxies, type="url-test"
+        )
+        add_group(final, cgroup)
 
     manual_group = create_proxy_group(
         name="Proxy",
         proxy_configs=final["proxies"],
         type="select",
-        extra_names=["Auto", "AutoUS", "AutoJP", "AutoHK"],
+        extra_names=["Auto"] + list(country_groups.values()),
     )
     add_group(final, manual_group)
 
@@ -133,5 +130,6 @@ if __name__ == "__main__":
         raise RuntimeError(
             "At least one of V2SS_LINK and TROJAN_LINK env should be set"
         )
-    with open("config.merged", "w") as ofile:
+    ofile = "config.%s" % time.strftime("%Y%m%d")
+    with open(ofile, "w") as ofile:
         dump(final, ofile)
