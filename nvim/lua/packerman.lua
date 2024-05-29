@@ -286,9 +286,6 @@ return require("packer").startup(
         -- Show git diff markers in the sign column
         use "airblade/vim-gitgutter"
 
-        -- Git command wrapper
-        use "tpope/vim-fugitive"
-
         -- A vimscript for creating gists
         use "mattn/vim-gist"
 

@@ -47,7 +47,10 @@ require("nvim-tree").setup {
         width = 35
     },
     renderer = {
-        group_empty = true
+        group_empty = true,
+        icons = {
+            git_placement = "after"
+        }
     },
     update_focused_file = {
         enable = true,
