@@ -47,6 +47,16 @@ def rule_key(rule):
         return (parts[0], parts[2])
 
 
+def gfwrules():
+    rules = list()
+    with open("gfwrules.txt") as ifile:
+        for line in ifile:
+            if line.startswith("#"):
+                continue
+            rules.append(line.strip("\r\n "))
+    return rules
+
+
 def add_group(target, new_group):
     groups = target.get("proxy-groups", [])
     group_name = new_group["name"]
@@ -79,6 +89,8 @@ def finalize(trojan, v2ss):
 
     final["secret"] = "canyoukissme"
     final["proxy-groups"] = list()
+    gfwr = gfwrules()
+    final["rules"] = sorted(list(set(final["rules"] + gfwr)))
 
     selected_proxies = []
     selected_countries = ["美国", "日本", "香港", "澳大利亚"]

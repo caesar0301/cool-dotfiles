@@ -94,7 +94,7 @@ end
 -- Set extra options when running in GUI mode
 if vim.fn.has("gui_running") then
     vim.opt.termguicolors = true
-    vim.opt.guitablabel = "%M %t"
+    -- vim.opt.guitablabel = "%M %t"
 end
 
 if vim.fn.exists("$TMUX") then
