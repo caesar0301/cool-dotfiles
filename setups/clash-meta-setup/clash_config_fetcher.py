@@ -57,6 +57,14 @@ def gfwrules():
     return rules
 
 
+def finalize_rules(rules):
+    gfwr = gfwrules()
+    allrules = set(rules + gfwr)
+    res = sorted([i for i in set(allrules) if not i.startswith("MATCH,")])
+    res.append("MATCH,DIRECT")
+    return res
+
+
 def add_group(target, new_group):
     groups = target.get("proxy-groups", [])
     group_name = new_group["name"]
@@ -89,8 +97,7 @@ def finalize(trojan, v2ss):
 
     final["secret"] = "canyoukissme"
     final["proxy-groups"] = list()
-    gfwr = gfwrules()
-    final["rules"] = sorted(list(set(final["rules"] + gfwr)))
+    final["rules"] = finalize_rules(final["rules"])
 
     selected_proxies = []
     selected_countries = ["美国", "日本", "香港", "澳大利亚"]

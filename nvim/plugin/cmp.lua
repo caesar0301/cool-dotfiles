@@ -101,28 +101,28 @@ cmp.setup(
                     winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None"
                 }
             )
-        },
-        formatting = {
-            fields = {"kind", "abbr", "menu"},
-            format = lspkind.cmp_format(
-                {
-                    mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-                    maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                    ellipsis_char = "...",
-                    show_labelDetails = true,
-                    before = function(entry, vim_item)
-                        vim_item.menu = "(" .. vim_item.kind .. ")"
-                        vim_item.dup =
-                            ({
-                            nvim_lsp = 0,
-                            path = 0
-                        })[entry.source.name] or 0
-                        vim_item = formatForTailwindCSS(entry, vim_item) -- for tailwind css autocomplete
-                        return vim_item
-                    end
-                }
-            )
         }
+        -- formatting = {
+        --     fields = {"kind", "abbr", "menu"},
+        --     format = lspkind.cmp_format(
+        --         {
+        --             mode = "symbol_text", -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+        --             maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+        --             ellipsis_char = "...",
+        --             show_labelDetails = true,
+        --             before = function(entry, vim_item)
+        --                 vim_item.menu = "(" .. vim_item.kind .. ")"
+        --                 vim_item.dup =
+        --                     ({
+        --                     nvim_lsp = 0,
+        --                     path = 0
+        --                 })[entry.source.name] or 0
+        --                 vim_item = formatForTailwindCSS(entry, vim_item) -- for tailwind css autocomplete
+        --                 return vim_item
+        --             end
+        --         }
+        --     )
+        -- }
     }
 )
 
