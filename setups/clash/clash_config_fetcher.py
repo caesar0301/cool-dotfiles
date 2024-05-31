@@ -49,7 +49,7 @@ def rule_key(rule):
 
 def gfwrules():
     rules = list()
-    with open("gfwrules.txt") as ifile:
+    with open("rules/gfwrules.txt") as ifile:
         for line in ifile:
             if line.startswith("#"):
                 continue
