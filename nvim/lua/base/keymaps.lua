@@ -226,10 +226,5 @@ keymap.set(
 keymap.set("i", "<C-BS>", "<C-w>")
 keymap.set("c", "<C-BS>", "<C-w>")
 
--- Yank in terminal ssh
-keymap.set("n", "<leader>Y", "y:Oscyank<cr>")
-keymap.set("v", "<leader>Y", "y:Oscyank<cr>")
-keymap.set("x", "<F7>", "y:Oscyank<cr>")
-
 -- Pressing ,ss will toggle and untoggle spell checking
 keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>")

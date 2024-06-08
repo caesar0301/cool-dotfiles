@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-* Nvim v0.9+
+* Nvim v0.9+ (for better experience with remote copy/paste, upgrade 0.10.0+)
 * Python 3.7.10+
 
 ## Installation
@@ -66,7 +66,7 @@ To see all shortcuts via
 ## Formatters
 
 `formatter.nvim` depends on local installation of linter tools. Part of them are
-installed by the `install.sh` script. The left should be installed manully:
+installed by the `install.sh` script. The left should be installed manually:
 
 ```
 brew install bufbuild/buf/buf  # for proto
