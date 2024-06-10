@@ -1,9 +1,9 @@
 #!/bin/bash
-###################################################
+#############################################
 # Install script for
 # https://github.com/caesar0301/cool-dotfiles
 # Maintainer: xiaming.chen
-###################################################
+#############################################
 THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
@@ -56,6 +56,21 @@ function handle_rlwrap {
     fi
 }
 
+function handle_kitty {
+    mkdir_nowarn $XDG_CONFIG_HOME/kitty
+    if [ x$SOFTLINK == "x1" ]; then
+        CMD="ln -sf"
+    else
+        CMD="cp -r"
+    fi
+    $CMD $THISDIR/kitty/kitty.conf $XDG_CONFIG_HOME/kitty/kitty.conf
+}
+
+function cleanse_kitty {
+    rm -rf $XDG_CONFIG_HOME/kitty/kitty.conf
+    info "kitty cleansed!"
+}
+
 function cleanse_all {
     for i in $(ls $THISDIR/bin/); do
         bname=$(basename $i)
@@ -64,8 +79,11 @@ function cleanse_all {
         fi
     done
     rm -rf $HOME/.sbcl_completions
+    cleanse_kitty
     info "All cleansed!"
 }
+
+####################################################
 
 # Change to 0 to install a copy instead of soft link
 SOFTLINK=1
@@ -83,6 +101,7 @@ done
 install_local_bins
 install_ossutil
 handle_rlwrap
+handle_kitty
 
 sh $THISDIR/emacs/install.sh $@
 sh $THISDIR/zsh/install.sh $@
