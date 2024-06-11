@@ -1,0 +1,19 @@
+rule-providers:
+  ChatGPT:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/caesar0301/cool-dotfiles/main/setups/clash/ruleset/ChatGPT.yaml"
+    path: ./ruleset/ChatGPT.yaml
+    interval: 86400
+  CDN:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/caesar0301/cool-dotfiles/main/setups/clash/ruleset/cdn.yaml"
+    path: ./ruleset/cdn.yaml
+    interval: 86400
+  News:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/caesar0301/cool-dotfiles/main/setups/clash/ruleset/news.yaml"
+    path: ./ruleset/news.yaml
+    interval: 86400

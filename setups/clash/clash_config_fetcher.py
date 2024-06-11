@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from yaml import load, dump
+from yaml import load, dump, safe_load
 from yaml import Loader, Dumper
 import copy
 import urllib.request
@@ -57,6 +57,16 @@ def gfwrules():
     return rules
 
 
+def read_rule_providers():
+    filename = "rule_providers.yaml"
+    with open(filename) as ifile:
+        try:
+            return safe_load(ifile)
+        except yaml.YAMLError as ex:
+            print(ex)
+            return dict()
+
+
 def finalize_rules(rules):
     gfwr = gfwrules()
     allrules = set(rules + gfwr)
@@ -96,6 +106,8 @@ def finalize(trojan, v2ss):
         )
 
     final["secret"] = "canyoukissme"
+    providers = read_rule_providers()
+    final["rule-providers"] = providers.get("rule-providers", [])
     final["proxy-groups"] = list()
     final["rules"] = finalize_rules(final["rules"])
 
