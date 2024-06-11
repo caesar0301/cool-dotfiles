@@ -57,14 +57,20 @@ def gfwrules():
     return rules
 
 
-def read_rule_providers():
+def read_rule_providers(conf):
     filename = "rule_providers.yaml"
+    ruleset = dict()
     with open(filename) as ifile:
         try:
-            return safe_load(ifile)
+            ruleset = safe_load(ifile)
         except yaml.YAMLError as ex:
             print(ex)
-            return dict()
+    providers = ruleset.get("rule-providers", [])
+    conf["rule-providers"] = providers
+    print(providers)
+    for provider in providers:
+        conf["rules"].append("RULE-SET,%s,Proxy" % provider)
+    return conf
 
 
 def finalize_rules(rules):
@@ -106,9 +112,8 @@ def finalize(trojan, v2ss):
         )
 
     final["secret"] = "canyoukissme"
-    providers = read_rule_providers()
-    final["rule-providers"] = providers.get("rule-providers", [])
     final["proxy-groups"] = list()
+    read_rule_providers(final)
     final["rules"] = finalize_rules(final["rules"])
 
     selected_proxies = []
