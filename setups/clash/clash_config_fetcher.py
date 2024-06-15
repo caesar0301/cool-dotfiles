@@ -57,7 +57,7 @@ def gfwrules():
     return rules
 
 
-def read_rule_providers(conf):
+def read_ruleset_as_providers(result):
     filename = "rule_providers.yaml"
     ruleset = dict()
     with open(filename) as ifile:
@@ -66,19 +66,29 @@ def read_rule_providers(conf):
         except yaml.YAMLError as ex:
             print(ex)
     providers = ruleset.get("rule-providers", [])
-    conf["rule-providers"] = providers
+    result["rule-providers"] = providers
     print(providers)
     for provider in providers:
-        conf["rules"].append("RULE-SET,%s,Proxy" % provider)
-    return conf
+        result["rules"].append("RULE-SET,%s,Proxy" % provider)
+    return result
 
 
-def finalize_rules(rules):
-    gfwr = gfwrules()
-    allrules = set(rules + gfwr)
-    res = sorted([i for i in set(allrules) if not i.startswith("MATCH,")])
-    res.append("MATCH,DIRECT")
-    return res
+def read_ruleset_as_rules(result):
+    onlyfiles = ["ChatGPT.yaml", "cdn.yaml", "news.yaml", "oracle.yaml"]
+    for fname in onlyfiles:
+        extra_rules = dict()
+        with open("ruleset/" + fname) as ifile:
+            try:
+                extra_rules = safe_load(ifile)
+            except yaml.YAMLError as ex:
+                print(ex)
+        if "payload" not in extra_rules:
+            continue
+        for rule in extra_rules["payload"]:
+            if "IP-CIDR" in rule:
+                continue
+            result["rules"].append("%s,Proxy" % rule)
+    return result
 
 
 def add_group(target, new_group):
@@ -93,6 +103,47 @@ def add_group(target, new_group):
     if not found:
         groups.append(new_group)
     target["proxy-groups"] = groups
+
+
+def finalize_rules(rules):
+    gfwr = gfwrules()
+    allrules = set(rules + gfwr)
+    res = sorted([i for i in set(allrules) if not i.startswith("MATCH,")])
+    res.append("MATCH,DIRECT")
+    return res
+
+
+def finalize_groups(result):
+    # selected proxies
+    selected_proxies = []
+    selected_countries = ["美国", "日本"]
+    for cname in selected_countries:
+        selected_proxies += [i for i in result["proxies"] if cname in i["name"]]
+    result["proxies"] = selected_proxies
+
+    # unified group, required by client
+    auto_group = create_proxy_group(
+        name="Auto", proxy_configs=result["proxies"], type="url-test"
+    )
+    add_group(result, auto_group)
+
+    # selected country groups
+    country_groups = {"美国": "AutoUS", "日本": "AutoJP"}
+    for cname in country_groups:
+        cproxies = [i for i in result["proxies"] if cname in i["name"]]
+        cgroup = create_proxy_group(
+            name=country_groups[cname], proxy_configs=cproxies, type="url-test"
+        )
+        add_group(result, cgroup)
+
+    manual_group = create_proxy_group(
+        name="Proxy",
+        proxy_configs=result["proxies"],
+        type="select",
+        extra_names=["Auto"] + list(country_groups.values()),
+    )
+    add_group(result, manual_group)
+    return result
 
 
 def finalize(trojan, v2ss):
@@ -110,41 +161,12 @@ def finalize(trojan, v2ss):
             list(set(trojan["rules"]).union(set(v2ss["rules"]))),
             key=lambda x: rule_key(x),
         )
-
     final["secret"] = "canyoukissme"
     final["proxy-groups"] = list()
-    read_rule_providers(final)
+    # read_ruleset_as_providers(final)
+    read_ruleset_as_rules(final)
     final["rules"] = finalize_rules(final["rules"])
-
-    selected_proxies = []
-    selected_countries = ["美国", "日本", "香港", "澳大利亚"]
-    for cname in selected_countries:
-        selected_proxies += [i for i in final["proxies"] if cname in i["name"]]
-    final["proxies"] = selected_proxies
-
-    # unified group, required by client
-    auto_group = create_proxy_group(
-        name="Auto", proxy_configs=final["proxies"], type="url-test"
-    )
-    add_group(final, auto_group)
-
-    # selected country groups
-    country_groups = {"美国": "AutoUS", "日本": "AutoJP"}
-    for cname in country_groups:
-        cproxies = [i for i in final["proxies"] if cname in i["name"]]
-        cgroup = create_proxy_group(
-            name=country_groups[cname], proxy_configs=cproxies, type="url-test"
-        )
-        add_group(final, cgroup)
-
-    manual_group = create_proxy_group(
-        name="Proxy",
-        proxy_configs=final["proxies"],
-        type="select",
-        extra_names=["Auto"] + list(country_groups.values()),
-    )
-    add_group(final, manual_group)
-
+    finalize_groups(final)
     return final
 
 
@@ -153,10 +175,10 @@ if __name__ == "__main__":
     trojan_link = os.getenv("TROJAN_LINK", "").strip()
 
     if not v2ss_link:
-        print("WARNNING: emptry V2SS_LINK env")
+        print("WARNNING: empty V2SS_LINK env")
 
     if not trojan_link:
-        print("WARNNING: emptry TROJAN_LINK env")
+        print("WARNNING: empty TROJAN_LINK env")
 
     trojan = read_remote_config(trojan_link)
     v2ss = read_remote_config(v2ss_link)
