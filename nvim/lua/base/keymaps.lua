@@ -31,45 +31,14 @@ keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
 -- Switch CWD to the directory of the open buffer
 keymap.set("", "<leader>cd", "<cmd>cd %:p:h<cr>:pwd<cr>")
 
--- Useful mappings for managing tabs
-keymap.set("n", "<leader>tn", ":tabnew<CR>")
-keymap.set("n", "<leader>te", ":tabedit " .. vim.fn.expand("%:p:h") .. "<CR>")
-keymap.set("n", "<leader>to", ":tabonly<CR>")
-keymap.set("n", "<leader>tc", ":tabclose<CR>")
-keymap.set("n", "<leader>tm", ":tabmove")
-keymap.set("n", "<leader>t<leader>", ":tabnext<CR>")
-
 -- Move to previous/next, with plugin barbar
 keymap.set("n", "<A-,>", "<cmd>BufferPrevious<CR>", {silent = true})
 keymap.set("n", "<A-.>", "<cmd>BufferNext<CR>", {silent = true})
 
--- Re-order to previous/next, with plugin barbar
-keymap.set("n", "<A-<>", "<cmd>BufferMovePrevious<CR>", {silent = true})
-keymap.set("n", "<A->>", "<cmd>BufferMoveNext<CR>", {silent = true})
-
--- Goto buffer in position..., with plugin barbar
-keymap.set("n", "<leader><A-1>", "<cmd>BufferGoto 1<CR>", {silent = true})
-keymap.set("n", "<leader><A-2>", "<cmd>BufferGoto 2<CR>", {silent = true})
-keymap.set("n", "<leader><A-3>", "<cmd>BufferGoto 3<CR>", {silent = true})
-keymap.set("n", "<leader><A-4>", "<cmd>BufferGoto 4<CR>", {silent = true})
-keymap.set("n", "<leader><A-5>", "<cmd>BufferGoto 5<CR>", {silent = true})
-keymap.set("n", "<leader><A-6>", "<cmd>BufferGoto 6<CR>", {silent = true})
-keymap.set("n", "<leader><A-7>", "<cmd>BufferGoto 7<CR>", {silent = true})
-keymap.set("n", "<leader><A-8>", "<cmd>BufferGoto 8<CR>", {silent = true})
-keymap.set("n", "<leader><A-9>", "<cmd>BufferGoto 9<CR>", {silent = true})
-keymap.set("n", "<leader><A-0>", "<cmd>BufferLast<CR>", {silent = true})
-
--- Pin/unpin buffer, with plugin barbar
-keymap.set("n", "<leader><A-p>", "<cmd>BufferPin<CR>", {silent = true})
-
--- Close buffer, with plugin barbar
-keymap.set("n", "<leader><A-x>", "<cmd>BufferClose<CR>", {silent = true})
-
--- Restore buffer, with plugin barbar
+-- Close/Restore buffer, with plugin barbar
+keymap.set("n", "<leader><A-c>", "<cmd>BufferClose<CR>", {silent = true})
+keymap.set("n", "<leader><A-C>", "<cmd>BufferCloseAllButCurrent<CR>", {silent = true})
 keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {silent = true})
-
--- Close all but current, with plugin barbar
-keymap.set("n", "<leader><A-c>", "<cmd>BufferCloseAllButCurrent<CR>", {silent = true})
 
 -- Tagbar mappings, with plugin tagbar
 keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {silent = true})
@@ -95,48 +64,16 @@ keymap.set("n", "<space>", "/", {noremap = true})
 keymap.set("n", "<C-space>", "?", {noremap = true})
 
 -- Search with plugin Telescope
-local builtin = require("telescope.builtin")
-
 -- Lists files in your current working directory, respects .gitignore
-keymap.set("n", "<leader>ff", builtin.find_files)
+keymap.set("n", "<leader>ff", require("telescope.builtin").find_files)
 
 -- Searches for the string under your cursor or selection in your current working directory
-keymap.set("n", "<leader>fw", builtin.grep_string)
+keymap.set("n", "<leader>fw", require("telescope.builtin").grep_string)
 
 -- Search for a string in your current working directory and get results live as you type, respects .gitignore
-keymap.set("n", "<leader>fg", builtin.live_grep)
+keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep)
 
--- Find and replace with cdo
-vim.api.nvim_create_user_command(
-    "FindAndReplace",
-    function(opts)
-        vim.api.nvim_command(string.format("cdo s/%s/%s", opts.fargs[1], opts.fargs[2]))
-        vim.api.nvim_command("cfdo update")
-    end,
-    {nargs = "*"}
-)
-keymap.set("n", "<leader>fr", ":FindAndReplace ", {noremap = true})
-
--- Open file_browser with the path of the current buffer
-keymap.set(
-    "n",
-    "<leader>fb",
-    function()
-        require("telescope").extensions.file_browser.file_browser()
-    end
-)
-
--- Use Telescope to search the provided path
-api.nvim_create_user_command(
-    "FindDir",
-    function(opts)
-        local builtin = require("telescope.builtin")
-        builtin.live_grep({prompt_title = "Search in " .. opts.fargs[1], cwd = opts.fargs[1]})
-    end,
-    {nargs = 1}
-)
-
--- Search and replace in current word (case sensitive)
+-- Find and replace current word under cursor (case sensitive)
 keymap.set(
     "n",
     "<leader>rw",
@@ -150,6 +87,36 @@ keymap.set(
     {desc = "Replace current word (case sensitive)"}
 )
 keymap.set({"n", "v"}, "<leader>R", "<leader>rw", {remap = true})
+
+-- Find and replace with cdo
+vim.api.nvim_create_user_command(
+    "FindAndReplace",
+    function(opts)
+        vim.api.nvim_command(string.format("cdo s/%s/%s", opts.fargs[1], opts.fargs[2]))
+        vim.api.nvim_command("cfdo update")
+    end,
+    {nargs = "*"}
+)
+keymap.set("n", "<leader>fr", ":FindAndReplace ", {noremap = true})
+
+-- Use Telescope to search the provided path
+api.nvim_create_user_command(
+    "FindDir",
+    function(opts)
+        local builtin = require("telescope.builtin")
+        builtin.live_grep({prompt_title = "Search in " .. opts.fargs[1], cwd = opts.fargs[1]})
+    end,
+    {nargs = 1}
+)
+
+-- Open file_browser with the path of the current buffer
+keymap.set(
+    "n",
+    "<leader>fb",
+    function()
+        require("telescope").extensions.file_browser.file_browser()
+    end
+)
 
 -- clear highlight of search, messages, floating windows
 keymap.set(
