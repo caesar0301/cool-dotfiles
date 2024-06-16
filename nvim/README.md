@@ -4,8 +4,8 @@
 
 ## Prerequisites
 
-* Nvim v0.9+ (for better experience with remote copy/paste, upgrade 0.10.0+)
-* Python 3.7.10+
+*   Nvim v0.9+ (for better experience with remote copy/paste, upgrade 0.10.0+)
+*   Python 3.7.10+
 
 ## Installation
 
@@ -25,9 +25,16 @@ By default, soft links would be created for future convenient update. You can ch
 
 Sudo permissions are required to install necessaries dependencies used by nvim plugins.
 
-## Configure Plugins
+The installed configuration structure:
 
-After nvim configs installation, manually installation of plugins is performed by running command in vim:
+*   `~/.config/nvim`: Nvim runtime directory
+*   `~/.config/nvim/lua/packerman`: All Packer.nvim plugins declaration
+*   `~/.config/nvim/plugin/`: Plugins setup
+*   `~/.config/nvim/after/plugin`: User plugin preferences
+
+### Post-installation
+
+Afterwards, manually installation of plugins is performed by running command in vim:
 
 ```vim
 :PackerInstall
@@ -39,42 +46,31 @@ Specifically, it is also required to configure `nvim-treesitter` language module
 :TSInstall lua python go java vim vimdoc
 ```
 
-### Plugins for IDE experience
-
-* LanguageServers management: `nvim-lspconfig`
-* Auto completion: code completion with `nvim-cmp`, grammar parsing with `nvim-treesitter`
-* Auto code format: `formatter.nvim`
-* Folder structure: `nvim-tree` and `barbar.nvim` for tabline
-* Code structure: `tagbar` (depends on external `universal-ctags`/`gotags` etc.)
-* Searching: general fuzzy finder with `nvim-telescope`
-* Git indicators: `vim-gitgutter`
-
-## Configuration Structures
-
-* `~/.config/nvim`: Nvim runtime directory
-* `~/.config/nvim/lua/packerman`: All Packer.nvim plugins declaration
-* `~/.config/nvim/plugin/`: Plugins setup
-* `~/.config/nvim/after/plugin`: User plugin preferences
-
-## Shortcuts
-
-To see all shortcuts via
-```vim
-:map
-```
-
-## Formatters
-
-`formatter.nvim` depends on local installation of linter tools. Part of them are
+Also, `formatter.nvim` depends on local installation of linter tools. Part of them are
 installed by the `install.sh` script. The left should be installed manually:
 
-```
-brew install bufbuild/buf/buf  # for proto
-```
+    brew install bufbuild/buf/buf  # for proto
 
-## Configurable ENV vars
+Several env arguments are optional to be configured to use Java language server and google formatter:
 
-* `JAVA_HOME_4JDTLS`: JAVA_HOME for jdt-language-server, default empty, use JAVA_HOME instead.
-* `JDTLS_INSTALL_HOME`: Installed home path for jdt-language-server, default `~/.local/share/jdt-language-server`.
-* `JAVA_HOME_4GJF`: JAVA_HOME for google-java-formatter, default empty, use JAVA_HOME instead.
-* `GJF_JAR_FILE`: jar path for google-java-formatter, default `~/.local/share/google-java-format/google-java-format-all-deps.jar`.
+**jdt-language-server**
+
+*   `JAVA_HOME_4JDTLS`: Java executable for `jdt-language-server`, default to use `JAVA_HOME`.
+*   `JDTLS_INSTALL_HOME`: Installed home for `jdt-language-server`, default `~/.local/share/jdt-language-server`.
+
+**google-java-formatter**
+
+*   `JAVA_HOME_4GJF`: Java executable for `google-java-formatter`, default to use `JAVA_HOME`.
+*   `GJF_JAR_FILE`: Installed jar path for `google-java-formatter`, default `~/.local/share/google-java-format/google-java-format-all-deps.jar`.
+
+## Under the hood
+
+Integrated plugins for fluent IDE:
+
+*   LanguageServers management: `nvim-lspconfig`
+*   Auto completion: code completion with `nvim-cmp`, grammar parsing with `nvim-treesitter`
+*   Auto code format: `formatter.nvim`
+*   Folder structure: `nvim-tree` and `barbar.nvim` for tabline
+*   Code structure: `tagbar` (depends on external `universal-ctags`/`gotags` etc.)
+*   Searching: general fuzzy finder with `nvim-telescope`
+*   Git indicators: `vim-gitgutter`
