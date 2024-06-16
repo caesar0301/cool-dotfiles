@@ -101,9 +101,19 @@ vim.keymap.set("n", "<A-,>", "<cmd>BufferPrevious<CR>", {silent = true})
 vim.keymap.set("n", "<A-.>", "<cmd>BufferNext<CR>", {silent = true})
 
 -- Close/Restore buffer, with plugin barbar
-vim.keymap.set("n", "<leader><A-c>", "<cmd>BufferClose<CR>", {silent = true})
-vim.keymap.set("n", "<leader><A-C>", "<cmd>BufferCloseAllButCurrent<CR>", {silent = true})
-vim.keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {silent = true})
+vim.keymap.set("n", "<A-c>", "<cmd>BufferClose<CR>", {silent = true})
+vim.keymap.set("n", "<A-C>", "<cmd>BufferCloseAllButCurrent<CR>", {silent = true})
+vim.keymap.set("n", "<A-r>", "<cmd>BufferRestore<CR>", {silent = true})
+
+-- Magic buffer-picking mode, with barbar
+vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>", {silent = true})
+
+-- Sort automatically by..., with barbar
+vim.keymap.set("n", "<Space>bb", "<cmd>BufferOrderByBufferNumber<CR>", {silent = true})
+vim.keymap.set("n", "<Space>bn", "<cmd>BufferOrderByName<CR>", {silent = true})
+vim.keymap.set("n", "<Space>bd", "<cmd>BufferOrderByDirectory<CR>", {silent = true})
+vim.keymap.set("n", "<Space>bl", "<cmd>BufferOrderByLanguage<CR>", {silent = true})
+vim.keymap.set("n", "<Space>bw", "<cmd>BufferOrderByWindowNumber<CR>", {silent = true})
 
 -- Tagbar mappings, with plugin tagbar
 vim.keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {silent = true})
