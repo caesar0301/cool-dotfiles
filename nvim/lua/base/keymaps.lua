@@ -1,18 +1,86 @@
--- Avoid accidental case changing
+--********
+-- Editing
+--********
+
+-- MLE: avoid accidental case changing
 vim.api.nvim_create_user_command("W", "wa", {})
 vim.api.nvim_create_user_command("Q", "qa", {})
 vim.api.nvim_create_user_command("Wq", "waq", {})
 vim.api.nvim_create_user_command("WQ", "waqa", {})
 vim.api.nvim_create_user_command("Qa", "qa", {})
 
+-- Write and quit all buffers
+vim.keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers (:wa)"})
+vim.keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quite all buffers (:qa)"})
+
+-- Save with Ctrl + s
+vim.keymap.set("n", "<C-s>", ":w<CR>")
+vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>l")
+vim.keymap.set("v", "<C-s>", "<ESC>:w<CR>")
+
 -- MLE: disable Join to avoid accidental trigger
 vim.keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "disable [J]oin action"})
 
--- Quickly quit terminal mode: <C-\><C-n>
-vim.keymap.set("t", "<leader>kt", [[<C-\><C-n>]])
+-- MLE: remap VIM 0 to first non-blank character
+vim.keymap.set("", "0", "^", {noremap = true})
 
--- Toggle plugin gitgutter
-vim.keymap.set("n", "<leader>gu", "<cmd>GitGutterToggle<cr>", {silent = true})
+-- Goto line head and tail
+vim.keymap.set("n", "<C-a>", "<ESC>^", {noremap = true})
+vim.keymap.set("i", "<C-a>", "<ESC>I", {noremap = true})
+vim.keymap.set("n", "<C-e>", "<ESC>$", {noremap = true})
+vim.keymap.set("i", "<C-e>", "<ESC>A", {noremap = true})
+
+-- Goto code, with plugin AnyJump
+vim.keymap.set("n", "<leader>aj", ":AnyJump<CR>", {silent = true})
+vim.keymap.set("x", "<leader>aj", ":AnyJumpVisual<CR>", {silent = true})
+vim.keymap.set("n", "<leader>ab", ":AnyJumpBack<CR>", {silent = true})
+vim.keymap.set("n", "<leader>al", ":AnyJumpLastResults<CR>", {silent = true})
+
+-- Format with plugin formatter.nvim
+vim.keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>")
+
+-- Smart insert in blank line (auto indent)
+vim.keymap.set(
+    "n",
+    "i",
+    function()
+        if #vim.fn.getline(".") == 0 then
+            return [["_cc]]
+        else
+            return "i"
+        end
+    end,
+    {expr = true}
+)
+
+-- Move line in visual mode
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- Mapping for dd that doesn't yank an empty line into your default register:
+vim.keymap.set(
+    "n",
+    "dd",
+    function()
+        if vim.api.nvim_get_current_line():match("^%s*$") then
+            return '"_dd'
+        else
+            return "dd"
+        end
+    end,
+    {expr = true}
+)
+
+-- Delete a word using Ctrl+Backspace
+vim.keymap.set("i", "<C-BS>", "<C-w>")
+vim.keymap.set("c", "<C-BS>", "<C-w>")
+
+-- Pressing ,ss will toggle and untoggle spell checking
+vim.keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>")
+
+--**********************
+-- View, Window and Tabs
+--**********************
 
 -- Smart way to move between windows
 vim.keymap.set("", "<C-j>", "<C-W>j")
@@ -41,20 +109,9 @@ vim.keymap.set("n", "<leader><A-r>", "<cmd>BufferRestore<CR>", {silent = true})
 vim.keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {silent = true})
 vim.keymap.set("n", "<F9>", ":TagbarToggle<CR>", {silent = true})
 
--- Goto code, with plugin AnyJump
-vim.keymap.set("n", "<leader>aj", ":AnyJump<CR>", {silent = true})
-vim.keymap.set("x", "<leader>aj", ":AnyJumpVisual<CR>", {silent = true})
-vim.keymap.set("n", "<leader>ab", ":AnyJumpBack<CR>", {silent = true})
-vim.keymap.set("n", "<leader>al", ":AnyJumpLastResults<CR>", {silent = true})
-
--- Remap VIM 0 to first non-blank character
-vim.keymap.set("", "0", "^", {noremap = true})
-
--- Goto line head and tail
-vim.keymap.set("n", "<C-a>", "<ESC>^", {noremap = true})
-vim.keymap.set("i", "<C-a>", "<ESC>I", {noremap = true})
-vim.keymap.set("n", "<C-e>", "<ESC>$", {noremap = true})
-vim.keymap.set("i", "<C-e>", "<ESC>A", {noremap = true})
+--*******************
+-- Search and Replace
+--*******************
 
 -- Map <leader> to / (search) and Ctrl-<leader> to ? (backwards search)
 vim.keymap.set("n", "<space>", "/", {noremap = true})
@@ -131,8 +188,36 @@ vim.keymap.set(
     {desc = "Clear highlight of search, messages, floating windows"}
 )
 
--- Format with plugin formatter.nvim
-vim.keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>")
+--*********
+-- Terminal
+--*********
+
+-- Quickly quit terminal mode: <C-\><C-n>
+vim.keymap.set("t", "<leader>kt", [[<C-\><C-n>]])
+
+-- moving in and out of a terminal easier once toggled, whilst still keeping it open.
+function _G.set_terminal_keymaps()
+    local opts = {buffer = 0}
+    vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+    vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+    vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+    vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+    vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+    vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+    vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
+end
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+
+--**************
+-- Miscellaneous
+--**************
+
+-- Toggle plugin gitgutter
+vim.keymap.set("n", "<leader>gu", "<cmd>GitGutterToggle<cr>", {silent = true})
+
+-- Trigger gitignore interactive
+vim.keymap.set("n", "<leader>gi", require("gitignore").generate, {desc = "Add gitignore"})
 
 -- Zen mode with plugin Goyo
 vim.keymap.set("n", "<leader>Z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN mode"})
@@ -141,54 +226,3 @@ vim.keymap.set("n", "<leader>Z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN
 vim.keymap.set("n", "<F5>", "<cmd>call CompileRun()<CR>")
 vim.keymap.set("i", "<F5>", "<Esc><cmd>call CompileRun()<CR>")
 vim.keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>")
-
--- Trigger gitignore interactive
-vim.keymap.set("n", "<leader>gi", require("gitignore").generate, {desc = "Add gitignore"})
-
--- Write and quit all buffers
-vim.keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers (:wa)"})
-vim.keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quite all buffers (:qa)"})
-
--- Save with Ctrl + s
-vim.keymap.set("n", "<C-s>", ":w<CR>")
-vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>l")
-vim.keymap.set("v", "<C-s>", "<ESC>:w<CR>")
-
--- Smart insert in blank line (auto indent)
-vim.keymap.set(
-    "n",
-    "i",
-    function()
-        if #vim.fn.getline(".") == 0 then
-            return [["_cc]]
-        else
-            return "i"
-        end
-    end,
-    {expr = true}
-)
-
--- Move line in visual mode
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
--- Mapping for dd that doesn't yank an empty line into your default register:
-vim.keymap.set(
-    "n",
-    "dd",
-    function()
-        if vim.api.nvim_get_current_line():match("^%s*$") then
-            return '"_dd'
-        else
-            return "dd"
-        end
-    end,
-    {expr = true}
-)
-
--- Delete a word using Ctrl+Backspace
-vim.keymap.set("i", "<C-BS>", "<C-w>")
-vim.keymap.set("c", "<C-BS>", "<C-w>")
-
--- Pressing ,ss will toggle and untoggle spell checking
-vim.keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>")
