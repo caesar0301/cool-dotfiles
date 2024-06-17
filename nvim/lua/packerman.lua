@@ -120,10 +120,9 @@ return require("packer").startup(
             }
         }
 
-        -- winbar/statusline plugin that shows current code context
+        -- shows the context of the currently visible buffer contents
         use {
-            "SmiteshP/nvim-navic",
-            requires = "neovim/nvim-lspconfig"
+            "wellle/context.vim"
         }
 
         -- Finding defs/refs/impls using regexp engines like ripgrep/ag.

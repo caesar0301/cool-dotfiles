@@ -1,5 +1,4 @@
 local lspconfig = require("lspconfig")
-local navic = require("nvim-navic")
 local nvim_cmp = require("cmp_nvim_lsp")
 
 local lsp_status = require("lsp-status")
@@ -62,10 +61,6 @@ local common_on_attach = function(client, bufnr)
     lsp_keymaps(client, bufnr)
     -- lsp-status.nvim
     lsp_status.on_attach(client)
-    -- nvim-navic
-    if client.server_capabilities.documentSymbolProvider then
-        navic.attach(client, bufnr)
-    end
 end
 
 -- General language servers
