@@ -301,6 +301,15 @@ return require("packer").startup(
         -- Wrapper of some vim/neovim's :terminal functions
         use "kassio/neoterm"
 
+        -- easily manage multiple terminal windows
+        use {
+            "akinsho/toggleterm.nvim",
+            tag = "*",
+            config = function()
+                require("toggleterm").setup()
+            end
+        }
+
         -- Debug Adapter Protocol client implementation for Neovim
         use "mfussenegger/nvim-dap"
     end
