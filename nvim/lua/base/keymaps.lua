@@ -192,8 +192,8 @@ vim.keymap.set(
 -- Terminal
 --*********
 
--- Quickly quit terminal mode: <C-\><C-n>
-vim.keymap.set("t", "<leader>kt", [[<C-\><C-n>]])
+-- open term with toggleterm.nvim
+vim.keymap.set("n", "<leader>T", "<cmd>:ToggleTerm<cr>", {})
 
 -- moving in and out of a terminal easier once toggled, whilst still keeping it open.
 function _G.set_terminal_keymaps()

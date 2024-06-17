@@ -298,6 +298,9 @@ return require("packer").startup(
             }
         )
 
+        -- easily cycling through git diffs for all modified files
+        use "sindrets/diffview.nvim"
+
         -- Wrapper of some vim/neovim's :terminal functions
         use "kassio/neoterm"
 
@@ -312,5 +315,15 @@ return require("packer").startup(
 
         -- Debug Adapter Protocol client implementation for Neovim
         use "mfussenegger/nvim-dap"
+
+        -- displays a popup with possible keybindings of the command you started typing
+        use {
+            "folke/which-key.nvim",
+            config = function()
+                vim.o.timeout = true
+                vim.o.timeoutlen = 300
+                require("which-key").setup {}
+            end
+        }
     end
 )
