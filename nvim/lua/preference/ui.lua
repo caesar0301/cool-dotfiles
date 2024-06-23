@@ -106,12 +106,3 @@ vim.opt.encoding = "utf8"
 
 -- Use Unix as the standard file type
 vim.opt.fileformats = {"unix", "dos", "mac"}
-
--- Set font according to system
-if vim.fn.has("mac") or vim.fn.has("macunix") then
-    vim.opt.guifont = "IBM Plex Mono:h14,Hack:h14,Source Code Pro:h15,Menlo:h15"
-elseif vim.fn.has("win16") or vim.fn.has("win32") then
-    vim.opt.guifont = "IBM Plex Mono:h14,Source Code Pro:h12,Bitstream Vera Sans Mono:h11"
-elseif vim.fn.has("gui_gtk2") or vim.fn.has("linux") or vim.fn.has("unix") then
-    vim.opt.guifont = "IBM Plex Mono 14,:Hack 14,Source Code Pro 12,Bitstream Vera Sans Mono 11"
-end
