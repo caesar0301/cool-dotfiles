@@ -93,7 +93,7 @@ lspconfig.clangd.setup {
             silent = true,
             buffer = bufnr
         }
-        vim.keymap.set("n", "<A-O>", ":ClangdSwitchSourceHeader<CR>", bufopts)
+        vim.keymap.set("n", "<leader>S", ":ClangdSwitchSourceHeader<CR>", bufopts)
         common_on_attach(client, bufnr)
     end
 }
