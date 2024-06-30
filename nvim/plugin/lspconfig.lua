@@ -19,27 +19,32 @@ local lsp_keymaps = function(client, bufnr)
     local print_wf = function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bopt_s("[lsp] goto declaration"))
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, bopt_s("[lsp] goto definition"))
-    vim.keymap.set("n", "gpd", goto_preview.goto_preview_definition, bopt_s("[lsp] preview definition"))
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bopt_s("[lsp] goto implementation"))
-    vim.keymap.set("n", "gpi", goto_preview.goto_preview_implementation, bopt_s("[lsp] preview implementation"))
-    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, bopt_s("[lsp] type definition"))
-    vim.keymap.set("n", "gpt", goto_preview.goto_preview_type_definition, bopt_s("[lsp] preview type definition"))
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, bopt_s("[lsp] references"))
-    vim.keymap.set("n", "gpr", goto_preview.goto_preview_references, bopt_s("[lsp] preview references"))
-    vim.keymap.set("n", "gP", goto_preview.close_all_win, bopt_s("[lsp] close all windows"))
-    vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, bopt_s("[lsp] show signature help"))
-    vim.keymap.set("n", "rn", vim.lsp.buf.rename, bopt_s("[lsp] rename"))
-    -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bopt_s("[lsp] code action"))
-    vim.keymap.set("n", "ca", ":CodeActionMenu<CR>", bopt_s("[lsp] code action"))
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, bopt_s("[lsp] buffer hover"))
-    vim.keymap.set("n", "<leader>=", vim.lsp.buf.format, bopt_s("[lsp] format code"))
-    vim.keymap.set("n", "<leader>ai", vim.lsp.buf.incoming_calls, bopt_s("[lsp] incoming calls"))
-    vim.keymap.set("n", "<leader>ao", vim.lsp.buf.outgoing_calls, bopt_s("[lsp] outgoting calls"))
-    vim.keymap.set("n", "<leader>gw", vim.lsp.buf.document_symbol, bopt_s("[lsp] document symbol"))
-    vim.keymap.set("n", "<leader>gW", vim.lsp.buf.workspace_symbol, bopt_s("[lsp] workspace symbol"))
-    vim.keymap.set("n", "<leader>gl", print_wf, bopt_s("[lsp] list workspace folders"))
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bopt_s(bufnr, "[lsp] goto declaration"))
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, bopt_s(bufnr, "[lsp] goto definition"))
+    vim.keymap.set("n", "gpd", goto_preview.goto_preview_definition, bopt_s(bufnr, "[lsp] preview definition"))
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bopt_s(bufnr, "[lsp] goto implementation"))
+    vim.keymap.set("n", "gpi", goto_preview.goto_preview_implementation, bopt_s(bufnr, "[lsp] preview implementation"))
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, bopt_s(bufnr, "[lsp] type definition"))
+    vim.keymap.set(
+        "n",
+        "gpt",
+        goto_preview.goto_preview_type_definition,
+        bopt_s(bufnr, "[lsp] preview type definition")
+    )
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, bopt_s(bufnr, "[lsp] references"))
+    vim.keymap.set("n", "gpr", goto_preview.goto_preview_references, bopt_s(bufnr, "[lsp] preview references"))
+    vim.keymap.set("n", "gP", goto_preview.close_all_win, bopt_s(bufnr, "[lsp] close all windows"))
+    vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, bopt_s(bufnr, "[lsp] show signature help"))
+    vim.keymap.set("n", "rn", vim.lsp.buf.rename, bopt_s(bufnr, "[lsp] rename"))
+    -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bopt_s(bufnr,"[lsp] code action"))
+    vim.keymap.set("n", "ca", ":CodeActionMenu<CR>", bopt_s(bufnr, "[lsp] code action"))
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, bopt_s(bufnr, "[lsp] buffer hover"))
+    vim.keymap.set("n", "<leader>=", vim.lsp.buf.format, bopt_s(bufnr, "[lsp] format code"))
+    vim.keymap.set("n", "<leader>ai", vim.lsp.buf.incoming_calls, bopt_s(bufnr, "[lsp] incoming calls"))
+    vim.keymap.set("n", "<leader>ao", vim.lsp.buf.outgoing_calls, bopt_s(bufnr, "[lsp] outgoting calls"))
+    vim.keymap.set("n", "<leader>gw", vim.lsp.buf.document_symbol, bopt_s(bufnr, "[lsp] document symbol"))
+    vim.keymap.set("n", "<leader>gW", vim.lsp.buf.workspace_symbol, bopt_s(bufnr, "[lsp] workspace symbol"))
+    vim.keymap.set("n", "<leader>gl", print_wf, bopt_s(bufnr, "[lsp] list workspace folders"))
     vim.keymap.set("n", "<leader>eq", vim.diagnostic.setloclist, opt_s("[lsp] diagnostic setloclist"))
     vim.keymap.set("n", "<leader>ee", vim.diagnostic.open_float, opt_s("[lsp] diagnostic open float"))
     vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opt_s("[lsp] diagnostic goto previous"))
@@ -79,7 +84,12 @@ lspconfig.clangd.setup {
     cmd = {"clangd", "--background-index=false"},
     capabilities = common_caps,
     on_attach = function(client, bufnr)
-        vim.keymap.set("n", "<leader>sh", ":ClangdSwitchSourceHeader<CR>", bopt_s("[clangd] switch source and header"))
+        vim.keymap.set(
+            "n",
+            "<leader>sh",
+            ":ClangdSwitchSourceHeader<CR>",
+            bopt_s(bufnr, "[clangd] switch source and header")
+        )
         common_on_attach(client, bufnr)
     end
 }
