@@ -42,3 +42,23 @@ function CompileRun()
         vim.cmd("!time octave %")
     end
 end
+
+-- option and bufopt with desc
+opt_s = function(description)
+    local o = {
+        noremap = true,
+        silent = true
+    }
+    o["desc"] = description
+    return o
+end
+
+bopt_s = function(description)
+    local o = {
+        noremap = true,
+        silent = true,
+        buffer = bufnr
+    }
+    o["desc"] = description
+    return o
+end

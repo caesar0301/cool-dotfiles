@@ -3,41 +3,37 @@
 --********
 
 -- MLE: avoid accidental case changing
-vim.api.nvim_create_user_command("W", "wa", {})
-vim.api.nvim_create_user_command("Q", "qa", {})
-vim.api.nvim_create_user_command("Wq", "waq", {})
-vim.api.nvim_create_user_command("WQ", "waqa", {})
-vim.api.nvim_create_user_command("Qa", "qa", {})
-
--- Write and quit all buffers
-vim.keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers (:wa)"})
-vim.keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quite all buffers (:qa)"})
-
--- Save with Ctrl + s
-vim.keymap.set("n", "<C-s>", ":w<CR>")
-vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>l")
-vim.keymap.set("v", "<C-s>", "<ESC>:w<CR>")
+vim.api.nvim_create_user_command("W", "wa", {desc = "Save all buffers"})
+vim.api.nvim_create_user_command("Q", "qa", {desc = "Quit all buffers"})
+vim.api.nvim_create_user_command("Wq", "waq", {desc = "Save all buffers and quit current"})
+vim.api.nvim_create_user_command("WQ", "waqa", {desc = "Save and quit all buffers"})
+vim.api.nvim_create_user_command("Qa", "qa", {desc = "Quit all buffers"})
+vim.keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers"})
+vim.keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quit all buffers"})
+vim.keymap.set("n", "<C-s>", ":w<CR>", {desc = "Save current buffer"})
+vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>l", {desc = "Save current buffer"})
+vim.keymap.set("v", "<C-s>", "<ESC>:w<CR>", {desc = "Save current buffer"})
 
 -- MLE: disable Join to avoid accidental trigger
-vim.keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "disable [J]oin action"})
+vim.keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "Disable [J]oin action"})
 
 -- MLE: remap VIM 0 to first non-blank character
-vim.keymap.set("", "0", "^", {noremap = true})
+vim.keymap.set("", "0", "^", opt_s("Goto first non-blank char"))
 
 -- Goto line head and tail
-vim.keymap.set("n", "<C-a>", "<ESC>^", {noremap = true})
-vim.keymap.set("i", "<C-a>", "<ESC>I", {noremap = true})
-vim.keymap.set("n", "<C-e>", "<ESC>$", {noremap = true})
-vim.keymap.set("i", "<C-e>", "<ESC>A", {noremap = true})
+vim.keymap.set("n", "<C-a>", "<ESC>^", opt_s("Goto line head"))
+vim.keymap.set("i", "<C-a>", "<ESC>I", opt_s("Goto line head"))
+vim.keymap.set("n", "<C-e>", "<ESC>$", opt_s("Goto line tail"))
+vim.keymap.set("i", "<C-e>", "<ESC>A", opt_s("Goto line tail"))
 
 -- Goto code, with plugin AnyJump
-vim.keymap.set("n", "<leader>aj", ":AnyJump<CR>", {silent = true})
-vim.keymap.set("x", "<leader>aj", ":AnyJumpVisual<CR>", {silent = true})
-vim.keymap.set("n", "<leader>ab", ":AnyJumpBack<CR>", {silent = true})
-vim.keymap.set("n", "<leader>al", ":AnyJumpLastResults<CR>", {silent = true})
+vim.keymap.set("n", "<leader>aj", ":AnyJump<CR>", opt_s("[AnyJump] jump to symbol"))
+vim.keymap.set("x", "<leader>aj", ":AnyJumpVisual<CR>", opt_s("[AnyJump] jump to symbol visual"))
+vim.keymap.set("n", "<leader>ab", ":AnyJumpBack<CR>", opt_s("[AnyJump] jump back"))
+vim.keymap.set("n", "<leader>al", ":AnyJumpLastResults<CR>", opt_s("[AnyJump] jump to last results"))
 
 -- Format with plugin formatter.nvim
-vim.keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>")
+vim.keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>", opt_s("Format current buffer"))
 
 -- Smart insert in blank line (auto indent)
 vim.keymap.set(
@@ -54,8 +50,8 @@ vim.keymap.set(
 )
 
 -- Move line in visual mode
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", {desc = "Move selected downwards"})
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", {desc = "Move selected upwards"})
 
 -- Mapping for dd that doesn't yank an empty line into your default register:
 vim.keymap.set(
@@ -76,7 +72,7 @@ vim.keymap.set("i", "<C-BS>", "<C-w>")
 vim.keymap.set("c", "<C-BS>", "<C-w>")
 
 -- Pressing ,ss will toggle and untoggle spell checking
-vim.keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>")
+vim.keymap.set("", "<leader>ss", "<cmd>setlocal spell!<cr>", opt_s("Toggle spell checking"))
 
 --**********************
 -- View, Window and Tabs
@@ -89,66 +85,81 @@ vim.keymap.set("", "<C-h>", "<C-W>h")
 vim.keymap.set("", "<C-l>", "<C-W>l")
 
 -- Toggle plugin nvim-tree
-vim.keymap.set("n", "<F8>", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
-vim.keymap.set("n", "<leader>N", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
-vim.keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFileToggle!<cr>", {})
+vim.keymap.set("n", "<F8>", "<cmd>:NvimTreeFindFileToggle!<cr>", opt_s("[nvim-tree] Toggle find file"))
+vim.keymap.set("n", "<leader>N", "<cmd>:NvimTreeFindFileToggle!<cr>", opt_s("[nvim-tree] Toggle find file"))
+vim.keymap.set("n", "<leader>nn", "<cmd>:NvimTreeFindFileToggle!<cr>", opt_s("[nvim-tree] Toggle find file"))
 
 -- Switch CWD to the directory of the open buffer
-vim.keymap.set("", "<leader>cd", "<cmd>cd %:p:h<cr>:pwd<cr>")
+vim.keymap.set("", "<leader>cd", "<cmd>cd %:p:h<cr>:pwd<cr>", opt_s("CWD to dir of current buffer"))
 
 -- Move to previous/next, with plugin barbar
-vim.keymap.set("n", "<A-,>", "<cmd>BufferPrevious<CR>", {silent = true})
-vim.keymap.set("n", "<A-.>", "<cmd>BufferNext<CR>", {silent = true})
-
--- Close/Restore buffer, with plugin barbar
-vim.keymap.set("n", "<A-c>", "<cmd>BufferClose<CR>", {silent = true})
-vim.keymap.set("n", "<A-C>", "<cmd>BufferCloseAllButCurrent<CR>", {silent = true})
-vim.keymap.set("n", "<A-r>", "<cmd>BufferRestore<CR>", {silent = true})
-
--- Magic buffer-picking mode, with barbar
-vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>", {silent = true})
-
--- Sort automatically by..., with barbar
-vim.keymap.set("n", "<Space>bb", "<cmd>BufferOrderByBufferNumber<CR>", {silent = true})
-vim.keymap.set("n", "<Space>bn", "<cmd>BufferOrderByName<CR>", {silent = true})
-vim.keymap.set("n", "<Space>bd", "<cmd>BufferOrderByDirectory<CR>", {silent = true})
-vim.keymap.set("n", "<Space>bl", "<cmd>BufferOrderByLanguage<CR>", {silent = true})
-vim.keymap.set("n", "<Space>bw", "<cmd>BufferOrderByWindowNumber<CR>", {silent = true})
+vim.keymap.set("n", "<A-,>", "<cmd>BufferPrevious<CR>", opt_s("[barbar] Previous buffer"))
+vim.keymap.set("n", "<A-.>", "<cmd>BufferNext<CR>", opt_s("[barbar] Next buffer"))
+vim.keymap.set("n", "<A-c>", "<cmd>BufferClose<CR>", opt_s("[barbar] Close current buffer"))
+vim.keymap.set("n", "<A-C>", "<cmd>BufferCloseAllButCurrent<CR>", opt_s("[barbar] Close all but current"))
+vim.keymap.set("n", "<A-r>", "<cmd>BufferRestore<CR>", opt_s("[[barbar] Restore last closed]"))
+vim.keymap.set("n", "<C-p>", "<cmd>BufferPick<CR>", opt_s("[barbar] Magic buffer picker"))
+vim.keymap.set("n", "<Space>bb", "<cmd>BufferOrderByBufferNumber<CR>", opt_s("[barbar] Order buffers by number"))
+vim.keymap.set("n", "<Space>bn", "<cmd>BufferOrderByName<CR>", opt_s("[barbar] Order buffers by name"))
+vim.keymap.set("n", "<Space>bd", "<cmd>BufferOrderByDirectory<CR>", opt_s("[barbar] Order buffers by dir"))
+vim.keymap.set("n", "<Space>bl", "<cmd>BufferOrderByLanguage<CR>", opt_s("[barbar] Order buffers by lang"))
+vim.keymap.set("n", "<Space>bw", "<cmd>BufferOrderByWindowNumber<CR>", opt_s("[barbar] Order buffers by window number"))
 
 -- Tagbar mappings, with plugin tagbar
-vim.keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", {silent = true})
-vim.keymap.set("n", "<F9>", ":TagbarToggle<CR>", {silent = true})
+vim.keymap.set("n", "<leader>tt", ":TagbarToggle<CR>", opt_s("[tagbar] Toggle tagbar"))
+vim.keymap.set("n", "<F9>", ":TagbarToggle<CR>", opt_s("[tagbar] Toggle tagbar"))
 
 --*******************
 -- Search and Replace
 --*******************
 
 -- Map <leader> to / (search) and Ctrl-<leader> to ? (backwards search)
-vim.keymap.set("n", "<space>", "/", {noremap = true})
-vim.keymap.set("n", "<C-space>", "?", {noremap = true})
+vim.keymap.set("n", "<space>", "/", opt_s("Search"))
+vim.keymap.set("n", "<C-space>", "?", opt_s("Backwards search"))
 
 -- Search with plugin Telescope
--- Lists files in your current working directory, respects .gitignore
-vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files)
+-- Lists files in current working directory, respecting .gitignore
+vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, opt_s("[telescope] Find files"))
 
--- Searches for the string under your cursor or selection in your current working directory
-vim.keymap.set("n", "<leader>fw", require("telescope.builtin").grep_string)
+-- Searches for the string under cursor or selection in current working directory
+vim.keymap.set("n", "<leader>fw", require("telescope.builtin").grep_string, opt_s("[telescope] Search current word"))
 
--- Search for a string in your current working directory and get results live as you type, respects .gitignore
-vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep)
+-- Search for a string in your current working directory lively, respecting .gitignore
+vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, opt_s("[telescope] Search everywhere"))
+
+-- Use Telescope to search the provided path
+vim.api.nvim_create_user_command(
+    "FindDir",
+    function(opts)
+        local builtin = require("telescope.builtin")
+        builtin.live_grep({prompt_title = "Search in " .. opts.fargs[1], cwd = opts.fargs[1]})
+    end,
+    {nargs = 1}
+)
+vim.keymap.set("n", "<leader>fd", ":FindDir ", opt_s("[telescope] Find in given dir"))
+
+-- Open file_browser with the path of the current buffer
+vim.keymap.set(
+    "n",
+    "<leader>fb",
+    function()
+        require("telescope").extensions.file_browser.file_browser()
+    end,
+    opt_s("[telescope] File browser")
+)
 
 -- Find and replace current word under cursor (case sensitive)
 vim.keymap.set(
     "n",
     "<leader>rw",
     ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
-    {desc = "Replace current word (case sensitive)"}
+    opt_s("Replace current word (case sensitive)")
 )
 vim.keymap.set(
     "v",
     "<leader>rw",
     ":s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
-    {desc = "Replace current word (case sensitive)"}
+    opt_s("Replace current word (case sensitive)")
 )
 vim.keymap.set({"n", "v"}, "<leader>R", "<leader>rw", {remap = true})
 
@@ -161,26 +172,7 @@ vim.api.nvim_create_user_command(
     end,
     {nargs = "*"}
 )
-vim.keymap.set("n", "<leader>fr", ":FindAndReplace ", {noremap = true})
-
--- Use Telescope to search the provided path
-vim.api.nvim_create_user_command(
-    "FindDir",
-    function(opts)
-        local builtin = require("telescope.builtin")
-        builtin.live_grep({prompt_title = "Search in " .. opts.fargs[1], cwd = opts.fargs[1]})
-    end,
-    {nargs = 1}
-)
-
--- Open file_browser with the path of the current buffer
-vim.keymap.set(
-    "n",
-    "<leader>fb",
-    function()
-        require("telescope").extensions.file_browser.file_browser()
-    end
-)
+vim.keymap.set("n", "<leader>fr", ":FindAndReplace ", opt_s("[QuickFix] Find and replace"))
 
 -- clear highlight of search, messages, floating windows
 vim.keymap.set(
@@ -195,7 +187,7 @@ vim.keymap.set(
             end
         end
     end,
-    {desc = "Clear highlight of search, messages, floating windows"}
+    opt_s("Clear highlight of search, messages, floating windows")
 )
 
 --*********
@@ -203,7 +195,7 @@ vim.keymap.set(
 --*********
 
 -- open term with toggleterm.nvim
-vim.keymap.set("n", "<leader>T", "<cmd>:ToggleTerm<cr>", {})
+vim.keymap.set("n", "<leader>T", "<cmd>:ToggleTerm<cr>", opt_s("ToggleTerm"))
 
 -- moving in and out of a terminal easier once toggled, whilst still keeping it open.
 function _G.set_terminal_keymaps()
@@ -224,15 +216,15 @@ vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 --**************
 
 -- Toggle plugin gitgutter
-vim.keymap.set("n", "<leader>gu", "<cmd>GitGutterToggle<cr>", {silent = true})
+vim.keymap.set("n", "<leader>gu", "<cmd>GitGutterToggle<cr>", opt_s("Toggle GitGutter"))
 
 -- Trigger gitignore interactive
-vim.keymap.set("n", "<leader>gi", require("gitignore").generate, {desc = "Add gitignore"})
+vim.keymap.set("n", "<leader>gi", require("gitignore").generate, opt_s("Add gitignore"))
 
 -- Zen mode with plugin Goyo
-vim.keymap.set("n", "<leader>Z", ":Goyo<CR>", {silent = true, desc = "Toggle ZEN mode"})
+vim.keymap.set("n", "<leader>Z", ":Goyo<CR>", opt_s("Toggle ZEN mode"))
 
 -- Compile run
-vim.keymap.set("n", "<F5>", "<cmd>call CompileRun()<CR>")
-vim.keymap.set("i", "<F5>", "<Esc><cmd>call CompileRun()<CR>")
-vim.keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>")
+vim.keymap.set("n", "<F5>", "<cmd>call CompileRun()<CR>", opt_s("Compile and Run"))
+vim.keymap.set("i", "<F5>", "<Esc><cmd>call CompileRun()<CR>", opt_s("Compile and Run"))
+vim.keymap.set("v", "<F5>", "<Esc><cmd>call CompileRun()<CR>", opt_s("Compile and Run"))
