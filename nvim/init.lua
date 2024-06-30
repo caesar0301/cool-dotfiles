@@ -17,6 +17,11 @@ require("base")
 -- Preferred settings
 require("preference")
 
+-- neovide client: https://neovide.dev/
+if vim.g.neovide then
+    require("neovide")
+end
+
 -- Load all user preferences
 local paths = vim.split(vim.fn.glob("~/.config/nvim/vimscripts/**/*.vim"), "\n")
 for i, file in pairs(paths) do
