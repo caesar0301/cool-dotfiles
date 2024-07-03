@@ -81,7 +81,7 @@ lspconfig.clangd.setup {
     init_options = {
         clangdFileStatus = true
     },
-    cmd = {"clangd", "--background-index=false"},
+    cmd = {"clangd", "--background-index=true"},
     capabilities = common_caps,
     on_attach = function(client, bufnr)
         vim.keymap.set(
