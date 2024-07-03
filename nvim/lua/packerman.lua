@@ -206,7 +206,10 @@ return require("packer").startup(
             "Civitasv/cmake-tools.nvim",
             requires = {
                 {"nvim-lua/plenary.nvim"}
-            }
+            },
+            config = function()
+                require("cmake-tools").setup {}
+            end
         }
 
         -- Syntax highlighting for Nginx
