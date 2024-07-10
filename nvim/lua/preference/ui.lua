@@ -9,8 +9,10 @@ vim.opt.expandtab = true
 vim.opt.smarttab = true
 
 -- 1 tab == 4 spaces
-vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+
+-- fine-grained shifting = 2 spaces
+vim.opt.shiftwidth = 2
 
 -- Linebreak on 500 characters
 vim.opt.linebreak = true
