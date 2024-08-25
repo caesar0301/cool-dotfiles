@@ -5,6 +5,12 @@ import copy
 import urllib.request
 import os
 import time
+import argparse
+
+add_bundled_ruleset = False
+add_ruleset_provider = False
+default_match_direct = False
+add_country_groups = False
 
 
 # Remote configs
@@ -109,7 +115,10 @@ def finalize_rules(rules):
     gfwr = gfwrules()
     allrules = set(rules + gfwr)
     res = sorted([i for i in set(allrules) if not i.startswith("MATCH,")])
-    res.append("MATCH,DIRECT")
+    if default_match_direct:
+        res.append("MATCH,DIRECT")
+    else:
+        res.append("MATCH,Proxy")
     return res
 
 
@@ -127,22 +136,26 @@ def finalize_groups(result):
     )
     add_group(result, auto_group)
 
-    # selected country groups
-    country_groups = {"美国": "AutoUS", "日本": "AutoJP"}
-    for cname in country_groups:
-        cproxies = [i for i in result["proxies"] if cname in i["name"]]
-        cgroup = create_proxy_group(
-            name=country_groups[cname], proxy_configs=cproxies, type="url-test"
-        )
-        add_group(result, cgroup)
+    group_names = ["Auto"]
 
-    manual_group = create_proxy_group(
+    # selected country groups
+    if add_country_groups:
+        country_groups = {"美国": "AutoUS", "日本": "AutoJP"}
+        for cname in country_groups:
+            cproxies = [i for i in result["proxies"] if cname in i["name"]]
+            cgroup = create_proxy_group(
+                name=country_groups[cname], proxy_configs=cproxies, type="url-test"
+            )
+            add_group(result, cgroup)
+        group_names += list(country_groups.values())
+
+    merged_group = create_proxy_group(
         name="Proxy",
         proxy_configs=result["proxies"],
         type="select",
-        extra_names=["Auto"] + list(country_groups.values()),
+        extra_names=group_names,
     )
-    add_group(result, manual_group)
+    add_group(result, merged_group)
     return result
 
 
@@ -163,25 +176,48 @@ def finalize(trojan, v2ss):
         )
     final["secret"] = "canyoukissme"
     final["proxy-groups"] = list()
-    # read_ruleset_as_providers(final)
-    read_ruleset_as_rules(final)
+
+    if add_ruleset_provider:
+        read_ruleset_as_providers(final)
+    if add_bundled_ruleset:
+        read_ruleset_as_rules(final)
+
     final["rules"] = finalize_rules(final["rules"])
     finalize_groups(final)
     return final
 
 
 if __name__ == "__main__":
-    v2ss_link = os.getenv("V2SS_LINK", "").strip()
-    trojan_link = os.getenv("TROJAN_LINK", "").strip()
+    parser = argparse.ArgumentParser(prog="ClashConfigFetcher")
+    parser.add_argument("-s", "--v2ss", type=str, help="V2SS registration link")
+    parser.add_argument("-t", "--trojan", type=str, help="Trojan registration link")
+    parser.add_argument("-r", "--rulesets", action="store_true", help="Add ruleset")
+    parser.add_argument(
+        "-p", "--providers", action="store_true", help="Add ruleset as providers"
+    )
+    parser.add_argument(
+        "-d",
+        "--default-direct",
+        action="store_true",
+        help="Add default MATCH as DIRECT",
+    )
+    parser.add_argument(
+        "-g", "--groups", action="store_true", help="Add country wise groups"
+    )
+    args = parser.parse_args()
 
-    if not v2ss_link:
-        print("WARNNING: empty V2SS_LINK env")
+    add_bundled_ruleset = args.rulesets
+    add_ruleset_provider = args.providers
+    default_match_direct = args.default_direct
+    add_country_groups = args.groups
 
-    if not trojan_link:
-        print("WARNNING: empty TROJAN_LINK env")
-
-    trojan = read_remote_config(trojan_link)
-    v2ss = read_remote_config(v2ss_link)
+    # load remote policies
+    if not args.v2ss:
+        print("WARNNING: empty v2ss registration link")
+    if not args.trojan:
+        print("WARNNING: empty trojan registration link")
+    trojan = read_remote_config(args.trojan)
+    v2ss = read_remote_config(args.v2ss)
 
     final = finalize(trojan, v2ss)
     if not final:
