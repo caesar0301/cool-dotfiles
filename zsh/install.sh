@@ -15,7 +15,7 @@ source $THISDIR/../lib/bash_utils.sh
 function install_pyenv {
   if [ ! -e $HOME/.pyenv ]; then
     info "Installing pyenv to $HOME/.pyenv..."
-    curl https://pyenv.run | bash
+    curl -k https://pyenv.run | bash
   fi
 }
 
@@ -39,7 +39,7 @@ function install_zsh {
   info "Installing zsh..."
   mkdir_nowarn $HOME/.local/bin
   mkdir_nowarn /tmp/build-zsh
-  curl -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
+  curl -k -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
   cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
 }
 
@@ -48,7 +48,7 @@ function install_java_decompiler {
   mkdir_nowarn $HOME/.local/bin
   target="$HOME/.local/bin/cfr-0.152.jar"
   if [ ! -e $target ]; then
-    curl -L --progress-bar https://www.benf.org/other/cfr/cfr-0.152.jar --output $target
+    curl -k -L --progress-bar https://www.benf.org/other/cfr/cfr-0.152.jar --output $target
   fi
 }
 
