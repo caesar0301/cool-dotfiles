@@ -28,6 +28,8 @@ function install_tmux {
     link="https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz"
     curl -k -L --progress-bar $link | tar xvz -C /tmp/build-tmux/
     cd /tmp/build-tmux/tmux-${TMUX_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
+  else
+    warn "tmux binary already installed"
   fi
 }
 

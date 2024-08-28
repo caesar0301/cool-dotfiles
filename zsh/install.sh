@@ -12,6 +12,18 @@ ZSH_VERSION="5.8"
 
 source $THISDIR/../lib/bash_utils.sh
 
+function install_zsh {
+  info "Installing zsh..."
+  if ! checkcmd zsh; then
+    mkdir_nowarn $HOME/.local/bin
+    mkdir_nowarn /tmp/build-zsh
+    curl -k -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
+    cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
+  else
+    warn "zsh binary already exists"
+  fi
+}
+
 function install_pyenv {
   if [ ! -e $HOME/.pyenv ]; then
     info "Installing pyenv to $HOME/.pyenv..."
@@ -35,14 +47,6 @@ function install_rbenv {
   fi
 }
 
-function install_zsh {
-  info "Installing zsh..."
-  mkdir_nowarn $HOME/.local/bin
-  mkdir_nowarn /tmp/build-zsh
-  curl -k -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
-  cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
-}
-
 function install_java_decompiler {
   info "Installing CFR - another java decompiler"
   mkdir_nowarn $HOME/.local/bin
@@ -53,13 +57,11 @@ function install_java_decompiler {
 }
 
 function install_all_deps {
+  install_zsh
   install_pyenv # or use conda instead
   install_jenv
   install_java_decompiler
   install_rbenv
-  if ! checkcmd zsh; then
-    install_zsh
-  fi
 }
 
 ############################################################################

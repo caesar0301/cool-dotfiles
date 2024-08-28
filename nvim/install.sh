@@ -13,18 +13,32 @@ SHFMT_VERSION="v3.7.0"
 # load common utils
 source $THISDIR/../lib/bash_utils.sh
 
+function install_neovim {
+  info "Installing neovim..."
+  if ! checkcmd nvim; then
+    mkdir_nowarn $HOME/.local
+    link="https://github.com/neovim/neovim-releases/releases/latest/download/nvim-linux64.tar.gz"
+    curl -k -L --progress-bar $link | tar xvz --strip-components=1 -C $HOME/.local
+  else
+    warn "neovim binary already installed"
+  fi
+}
+
 # Required by nvim-jdtls
 function install_jdt_language_server {
+  info "Installing jdt-language-server to $dpath..."
   jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
   dpath=$HOME/.local/share/jdt-language-server
   if [ ! -e $dpath/bin/jdtls ]; then
-    info "Installing jdt-language-server to $dpath..."
     mkdir_nowarn $dpath >/dev/null
     curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
+  else
+    warn "$dpath/bin/jdtls already exists"
   fi
 }
 
 function install_hack_nerd_font {
+  info "Install Hack nerd font and update font cache..."
   if ! checkcmd fc-list; then
     error "fontconfig tools (fc-list, fc-cache) not found."
     exit 1
@@ -35,19 +49,22 @@ function install_hack_nerd_font {
   fi
   # install nerd patched font Hack, required by nvim-web-devicons
   if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
-    info "Install Hack nerd font and update font cache..."
     mkdir_nowarn $FONTDIR
     curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
     fc-cache -f
+  else
+    warn "Hack Nerd Font already installed"
   fi
 }
 
 function install_google_java_format {
+  info "Installing google-java-format to $dpath..."
   rfile="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
   dpath=$HOME/.local/share/google-java-format
   if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
-    info "Installing google-java-format to $dpath..."
     curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
+  else
+    warn "$dpath/google-java-format-all-deps.jar already installed"
   fi
 }
 
@@ -111,6 +128,7 @@ function install_formatter_utils {
   if checkcmd npm; then
     if [[ ${#npmlibs[@]} > 0 ]]; then
       info "Installing npm deps: $npmlibs"
+      check_sudo_access
       sudo npm install --quiet --force -g ${npmlibs[@]}
     fi
   else
@@ -125,6 +143,7 @@ function install_formatter_utils {
   if command -v gem; then
     if [[ ${#gemlibs[@]} > 0 ]]; then
       info "Installing gem deps: $gemlibs"
+      check_sudo_access
       sudo gem install --quiet $gemlibs
     fi
   else
@@ -276,7 +295,7 @@ while getopts fsech opt; do
 done
 
 if [ "x$WITHDEPS" == "x1" ]; then
-  check_sudo_access
+  install_neovim
   install_all_deps
 fi
 
