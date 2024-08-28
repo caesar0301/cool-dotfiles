@@ -203,6 +203,12 @@ function install_fzf {
   fi
 }
 
+function check_ripgrep {
+  if ! checkcmd rg; then
+    warn "ripgrep not found, as required by telescope.nvim"
+  fi
+}
+
 function install_ctags_and_deps {
   if ! checkcmd ctags; then
     warn "Command ctags not found in PATH. Please install universal-ctags from https://github.com/universal-ctags/ctags"
@@ -222,6 +228,7 @@ function install_all_deps {
   install_formatter_utils
   install_fzf
   install_ctags_and_deps
+  check_ripgrep
 }
 
 function _load_custom_extensions {
