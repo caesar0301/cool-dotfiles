@@ -20,7 +20,7 @@ function install_zsh {
     curl -k -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
     cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
   else
-    warn "zsh binary already exists"
+    info "zsh binary already exists"
   fi
 }
 

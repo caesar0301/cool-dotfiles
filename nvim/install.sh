@@ -20,7 +20,7 @@ function install_neovim {
     link="https://github.com/neovim/neovim-releases/releases/latest/download/nvim-linux64.tar.gz"
     curl -k -L --progress-bar $link | tar xvz --strip-components=1 -C $HOME/.local
   else
-    warn "neovim binary already installed"
+    info "neovim binary already installed"
   fi
 }
 
@@ -33,7 +33,7 @@ function install_jdt_language_server {
     mkdir_nowarn $dpath >/dev/null
     curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
   else
-    warn "$dpath/bin/jdtls already exists"
+    info "$dpath/bin/jdtls already exists"
   fi
 }
 
@@ -53,7 +53,7 @@ function install_hack_nerd_font {
     curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
     fc-cache -f
   else
-    warn "Hack Nerd Font already installed"
+    info "Hack Nerd Font already installed"
   fi
 }
 
@@ -64,7 +64,7 @@ function install_google_java_format {
   if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
     curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
   else
-    warn "$dpath/google-java-format-all-deps.jar already installed"
+    info "$dpath/google-java-format-all-deps.jar already installed"
   fi
 }
 
