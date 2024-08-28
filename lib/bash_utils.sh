@@ -19,6 +19,18 @@ function error {
   printf "${RED}[%s] %s${NC}\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
 }
 
+function start_install_msg {
+  info "********************************************************"
+  info "START INSTALLING $1"
+  info "********************************************************"
+}
+
+function finish_install_msg {
+  info "********************************************************"
+  info "FINISH INSTALLING $1"
+  info "********************************************************"
+}
+
 # Open file window
 function openw {
   KNAME=$(uname -s)
