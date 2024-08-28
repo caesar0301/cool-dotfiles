@@ -135,21 +135,6 @@ function install_formatter_utils {
     warn "Command npm not found, install and try again."
   fi
 
-  # gem
-  gemlibs=()
-  if ! checkcmd ruby-beautify; then
-    gemlibs+=(ruby-beautify)
-  fi
-  if command -v gem; then
-    if [[ ${#gemlibs[@]} > 0 ]]; then
-      info "Installing gem deps: $gemlibs"
-      check_sudo_access
-      sudo gem install --quiet $gemlibs
-    fi
-  else
-    warn "Command gem not found, install and try again."
-  fi
-
   # shfmt
   if ! checkcmd shfmt; then
     install_shfmt
@@ -167,7 +152,7 @@ function install_lsp_deps {
   if checkcmd pip; then
     if [[ ${#piplibs[@]} > 0 ]]; then
       info "Installing pip deps: $piplibs"
-      pip install -U ${piplibs[@]}
+      pip install -q ${piplibs[@]}
     fi
   else
     warn "Command pip not found, install and try again."
