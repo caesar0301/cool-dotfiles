@@ -55,6 +55,7 @@ function handle_tmux {
 function cleanse_tmux {
   rm -rf $XDG_CONFIG_HOME/tmux/tmux.conf.local
   rm -rf $XDG_CONFIG_HOME/tmux/tmux.conf
+  rm -rf $XDG_CONFIG_HOME/tmux/plugins/tpm
   info "All tmux cleansed!"
 }
 
