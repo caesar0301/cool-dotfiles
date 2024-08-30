@@ -25,7 +25,7 @@ export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
 export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
 
 # add local bin
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$HOME/.local/bin:$PATH
 
 #<<<<<<<<<<<<<<<< ZI manager <<<<<<<<<<<<<<<<<<<<<<
 autoload -Uz _zi && (( ${+_comps} )) && _comps[zi]=_zi

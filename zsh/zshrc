@@ -5,9 +5,6 @@
 # Init cool-dotfiles versioned zsh runtime
 [ -s "$HOME/.config/zsh/init.zsh" ] && source "$HOME/.config/zsh/init.zsh"
 
-export PATH=$HOME/.local/bin:$PATH
-
 #+++++++++++++++++++++++++++++++++++++++
 # USER-DEFINED Afterwards
 #+++++++++++++++++++++++++++++++++++++++
-
