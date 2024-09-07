@@ -222,7 +222,7 @@ if __name__ == "__main__":
     final = finalize(trojan, v2ss)
     if not final:
         raise RuntimeError(
-            "At least one of V2SS_LINK and TROJAN_LINK env should be set"
+            "At least one of --v2ss or --trojan argument should be set"
         )
     ofile = "config.%s" % time.strftime("%Y%m%d")
     with open(ofile, "w") as ofile:
