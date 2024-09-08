@@ -29,6 +29,10 @@ Run `sh nvim/install.sh` and refer to [nvim/README.md](nvim/README.md)
 
 Run `sh zsh/install.sh` and refer to [zsh/README.md](zsh/README.md)
 
+Plugins:
+
+* [caesardev](https://github.com/caesar0301/zsh-plugin-caesardev): my personal daily dev plugins
+
 ### Tmux
 
 Run `sh tmux/install.sh`
