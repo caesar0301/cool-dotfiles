@@ -103,14 +103,6 @@ return require("packer").startup(
             end
         }
 
-        -- vscode-like lightbulb in the sign column
-        use {
-            "kosayoda/nvim-lightbulb",
-            config = function()
-                require("nvim-lightbulb").setup({autocmd = {enabled = true}})
-            end
-        }
-
         -- Configure neovim statusline
         use {
             "nvim-lualine/lualine.nvim",
