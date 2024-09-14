@@ -4,12 +4,6 @@
 -- vim copy to clipboard and via ssh
 -- for nvim 0.10.0+, enable auto osc52. see :help clipboard-osc52
 -- vim.opt.clipboard:append {"unnamed", "unnamedplus"}
-function my_paste(reg)
-    return function(lines)
-        local content = vim.fn.getreg('"')
-        return vim.split(content, "\n")
-    end
-end
 if (os.getenv("SSH_TTY") == nil) then
     vim.opt.clipboard:append("unnamedplus")
 else
@@ -21,8 +15,8 @@ else
             ["*"] = require("vim.ui.clipboard.osc52").copy("*")
         },
         paste = {
-            ["+"] = my_paste("+"),
-            ["*"] = my_paste("*")
+            ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+            ["*"] = require("vim.ui.clipboard.osc52").paste("*")
         }
     }
 end
