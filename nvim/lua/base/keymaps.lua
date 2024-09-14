@@ -10,9 +10,9 @@ vim.api.nvim_create_user_command("WQ", "waqa", {desc = "Save and quit all buffer
 vim.api.nvim_create_user_command("Qa", "qa", {desc = "Quit all buffers"})
 vim.keymap.set({"n", "v"}, "<leader>W", "<cmd>wa<cr>", {desc = "Save all buffers"})
 vim.keymap.set({"n", "v"}, "<leader>Q", "<cmd>qa<cr>", {desc = "Quit all buffers"})
-vim.keymap.set("n", "<C-s>", ":w<CR>", {desc = "Save current buffer"})
-vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>l", {desc = "Save current buffer"})
-vim.keymap.set("v", "<C-s>", "<ESC>:w<CR>", {desc = "Save current buffer"})
+-- vim.keymap.set("n", "<C-s>", ":w<CR>", {desc = "Save current buffer"})
+-- vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>l", {desc = "Save current buffer"})
+-- vim.keymap.set("v", "<C-s>", "<ESC>:w<CR>", {desc = "Save current buffer"})
 
 -- MLE: disable Join to avoid accidental trigger
 vim.keymap.set({"n", "v"}, "J", "<Nop>", {silent = true, desc = "Disable [J]oin action"})
