@@ -34,19 +34,7 @@ The installed configuration structure:
 
 ### Post-installation
 
-Afterwards, manually installation of plugins is performed by running command in vim:
-
-```vim
-:PackerInstall
-```
-
-Specifically, it is also required to configure `nvim-treesitter` language modules to suppress some warnings.
-
-```vim
-:TSInstall lua python go java vim vimdoc luadoc markdown
-```
-
-Also, `formatter.nvim` depends on local installation of linter tools. Part of them are
+Afterwards, `formatter.nvim` depends on local installation of linter tools. Part of them are
 installed by the `install.sh` script. The left should be installed manually:
 
     brew install bufbuild/buf/buf  # for proto

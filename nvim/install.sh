@@ -107,20 +107,11 @@ function install_formatter_utils {
 
   # npm
   npmlibs=(neovim)
-  if ! checkcmd js-beautify; then
-    npmlibs+=(js-beautify)
-  fi
   if ! checkcmd remark; then
     npmlibs+=(remark-cli)
   fi
-  if ! checkcmd html-beautify; then
-    npmlibs+=(html-beautify)
-  fi
   if ! checkcmd luafmt; then
     npmlibs+=(lua-fmt)
-  fi
-  if ! checkcmd scmindent; then
-    npmlibs+=(scmindent)
   fi
   if ! checkcmd yaml-language-server; then
     npmlibs+=(yaml-language-server)
@@ -258,6 +249,13 @@ function handle_neovim {
   fi
 }
 
+function post_install {
+  info "Post installation"
+  nvim --headless -c "PackerInstall" \
+    -c "TSUpdate lua python go java vim vimdoc luadoc markdown" \
+    -c "qall"
+}
+
 function cleanse_all {
   rm -rf $HOME/.ctags
   rm -rf $XDG_CONFIG_HOME/nvim
@@ -293,5 +291,6 @@ fi
 
 handle_ctags
 handle_neovim
+post_install
 
 info "Successed! Run :PackerInstall to install nvim plugins"

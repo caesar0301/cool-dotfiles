@@ -185,13 +185,16 @@ return require("packer").startup(
         )
 
         -- nvim-cmp source for conjure
-        use "PaterJason/cmp-conjure"
+        -- use "PaterJason/cmp-conjure"
 
         -- Indent clojure and lisp code using parinfer
-        use "bhurlow/vim-parinfer"
+        -- use "bhurlow/vim-parinfer"
 
         -- Interactive evaluation Conjure and lisp code
-        use "Olical/conjure"
+        -- use "Olical/conjure"
+
+        -- Common Lisp dev environment for Vim
+        -- use {"vlime/vlime", rtp = "vim/"}
 
         -- CMake integration comparable to vscode-cmake-tools
         use {
@@ -204,23 +207,8 @@ return require("packer").startup(
             end
         }
 
-        -- Syntax highlighting for Nginx
-        use "chr4/nginx.vim"
-
-        -- Syntax highlighting for Pug (formerly Jade) templates
-        use "digitaltoad/vim-pug"
-
         -- Synatx highlighting for EditorConfig
         use "editorconfig/editorconfig-vim"
-
-        -- Synatx highlighting for LESS
-        use "groenewege/vim-less"
-
-        -- CoffeeScript support for vim, syntax/indenting/compiling
-        use "kchmck/vim-coffee-script"
-
-        -- Synatx highlighting for TypeScript
-        use "leafgarland/typescript-vim"
 
         -- Javascript indentation and syntax support
         use "pangloss/vim-javascript"
@@ -245,20 +233,11 @@ return require("packer").startup(
         -- Synatx highlighting for Haskell
         use "neovimhaskell/haskell-vim"
 
-        -- Python indentation style to comply with PEP8
-        use "Vimjas/vim-python-pep8-indent"
-
         -- Python static syntax and style checker using Flake8
         use "nvie/vim-flake8"
 
-        -- Synatx highlighting for Mako
-        use "sophacles/vim-bundle-mako"
-
         -- Synatx highlighting for Ruby
         use "vim-ruby/vim-ruby"
-
-        -- Common Lisp dev environment for Vim
-        use {"vlime/vlime", rtp = "vim/"}
 
         -- CSV filetype integration
         use "chrisbra/csv.vim"
@@ -279,9 +258,6 @@ return require("packer").startup(
 
         -- Show git diff markers in the sign column
         use "airblade/vim-gitgutter"
-
-        -- A vimscript for creating gists
-        use "mattn/vim-gist"
 
         -- Generating .gitignore files
         use(
