@@ -43,7 +43,7 @@ Afterwards, manually installation of plugins is performed by running command in 
 Specifically, it is also required to configure `nvim-treesitter` language modules to suppress some warnings.
 
 ```vim
-:TSInstall lua python go java vim vimdoc
+:TSInstall lua python go java vim vimdoc luadoc markdown
 ```
 
 Also, `formatter.nvim` depends on local installation of linter tools. Part of them are
