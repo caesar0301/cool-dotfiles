@@ -12,7 +12,8 @@
 require("packerman")
 
 -- Setup globals that I expect to be always available.
-require("base")
+require("autocmds")
+require("globals")
 
 -- Preferred settings
 require("preference")
