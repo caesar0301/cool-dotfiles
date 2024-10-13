@@ -117,9 +117,6 @@ return require("packer").startup(
             "wellle/context.vim"
         }
 
-        -- Finding defs/refs/impls using regexp engines like ripgrep/ag.
-        use "pechorin/any-jump.vim"
-
         -- Code completion for Nvim LSP
         use {
             "hrsh7th/nvim-cmp",
