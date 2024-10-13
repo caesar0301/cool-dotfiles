@@ -8,7 +8,7 @@ THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
-TMUX_VERSION=3.4
+TMUX_VERSION=3.5a
 
 source $THISDIR/../lib/bash_utils.sh
 
