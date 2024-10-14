@@ -15,7 +15,7 @@ function usage {
   echo "  -c cleanse install"
 }
 
-components=(tmux zsh nvim emacs misc)
+components=(tmux zsh nvim vifm emacs misc)
 for key in "${components[@]}"; do
   start_install_msg $key
   sh $THISDIR/$key/install.sh $@

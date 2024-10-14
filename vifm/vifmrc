@@ -1,5 +1,4 @@
 " vim: filetype=vifm :
-" Sample configuration file for vifm (last updated: 29 August, 2024)
 " You can edit this file by hand.
 " The " character at the beginning of a line comments out the line.
 " Blank lines are ignored.
@@ -12,14 +11,10 @@
 " Command used to edit files in various contexts.  The default is vim.
 " If you would like to use another vi clone such as Elvis or Vile
 " you will need to change this setting.
-if executable('vim')
-    set vicmd=vim
-elseif executable('nvim')
+if executable('nvim')
     set vicmd=nvim
-elseif executable('elvis')
-    set vicmd=elvis\ -G\ termcap
-elseif executable('vile')
-    set vicmd=vile
+elseif executable('vim')
+    set vicmd=vim
 elseif $EDITOR != ''
     echo 'Note: using `'.$EDITOR.'` as an editor'
     let &vicmd = $EDITOR
@@ -47,7 +42,7 @@ set vifminfo=dhistory,savedirs,chistory,state,tui,tabs,shistory,ehistory,
 " This is size of all of the many kinds of histories, in particular it's the
 " number of last visited directories (not necessarily distinct ones) stored in
 " the directory history.
-set history=100
+set history=1000
 
 " Automatically resolve symbolic links on l or Enter.
 set nofollowlinks
@@ -117,15 +112,13 @@ set grepprg="grep -n -H -I -r -s %i %a %s"
 
 " List of color schemes to try (picks the first one supported by the terminal)
 colorscheme Default-256 Default
+"colorscheme minimal
 
 " ------------------------------------------------------------------------------
 " Bookmarks
 " ------------------------------------------------------------------------------
 
 " :mark mark /full/directory/path [filename]
-
-mark b ~/bin/
-mark h ~/
 
 " ------------------------------------------------------------------------------
 " Commands
@@ -155,6 +148,8 @@ command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
 command! reload :write | restart full
+command! extract extract %a %f %n
+command! extract! extract -f %a %f %n
 
 " ------------------------------------------------------------------------------
 " File types association
@@ -583,6 +578,3 @@ nnoremap <a-o> :sync %c<cr>
 " ------------------------------------------------------------------------------
 
 " https://github.com/cirala/vifm_devicons
-
-"command! extract extract %a %f %n
-"command! extract! extract -f %a %f %n
