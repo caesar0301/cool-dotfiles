@@ -14,6 +14,34 @@ return require("packer").startup(
         -- Code style formatter
         use "mhartington/formatter.nvim"
 
+        ---------------
+        -- UI Interface
+        ---------------
+
+        -- Themes
+        use "dracula/vim"
+        use "morhetz/gruvbox"
+        use "tomasiser/vim-code-dark"
+        use "Mofiqul/vscode.nvim"
+
+        -- Tabline with auto-sizing, clickable tabs, icons, highlighting etc.
+        use {
+            "romgrk/barbar.nvim",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"},
+                {"lewis6991/gitsigns.nvim"}
+            }
+        }
+
+        -- Configure neovim statusline
+        use {
+            "nvim-lualine/lualine.nvim",
+            requires = {
+                {"nvim-tree/nvim-web-devicons"},
+                {"nvim-lua/lsp-status.nvim"}
+            }
+        }
+
         -- Folder and file tree view
         use {
             "nvim-tree/nvim-tree.lua",
@@ -34,63 +62,42 @@ return require("packer").startup(
         -- Multiple selection and edit
         use {"mg979/vim-visual-multi", branch = "master"}
 
+        -- shows the context of the currently visible buffer contents
+        use {
+            "wellle/context.vim"
+        }
+
         -- Zen coding
         use {
             "amix/vim-zenroom2",
             requires = {{"junegunn/goyo.vim"}}
         }
 
-        -- Tabline with auto-sizing, clickable tabs, icons, highlighting etc.
+        -- displays a popup with possible keybindings of the command you started typing
         use {
-            "romgrk/barbar.nvim",
-            requires = {
-                {"nvim-tree/nvim-web-devicons"},
-                {"lewis6991/gitsigns.nvim"}
-            }
+            "folke/which-key.nvim",
+            config = function()
+                vim.o.timeout = true
+                vim.o.timeoutlen = 300
+                require("which-key").setup {}
+            end
         }
 
-        -- Improved fzf.vim written in lua
+        -- Wrapper of some vim/neovim's :terminal functions
+        use "kassio/neoterm"
+
+        -- easily manage multiple terminal windows
         use {
-            "ibhagwan/fzf-lua",
-            requires = {
-                {"nvim-tree/nvim-web-devicons"},
-                {"junegunn/fzf", run = ":call fzf#install()"}
-            }
+            "akinsho/toggleterm.nvim",
+            tag = "*",
+            config = function()
+                require("toggleterm").setup()
+            end
         }
 
-        -- Highly extendable fuzzy finder over file and symbols
-        use {
-            "nvim-telescope/telescope.nvim",
-            tag = "0.1.6",
-            requires = {
-                {"nvim-lua/plenary.nvim"},
-                {"BurntSushi/ripgrep"},
-                {"nvim-telescope/telescope-fzf-native.nvim"},
-                {"sharkdp/fd"},
-                {"nvim-treesitter/nvim-treesitter"},
-                {"nvim-tree/nvim-web-devicons"}
-            }
-        }
-
-        -- File Browser extension for telescope.nvim
-        use {
-            "nvim-telescope/telescope-file-browser.nvim",
-            requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"}
-        }
-
-        -- Better quickfix window in Neovim, polish old quickfix window
-        use {
-            "kevinhwang91/nvim-bqf",
-            requires = {
-                {"nvim-treesitter/nvim-treesitter"}
-            }
-        }
-
-        -- Themes
-        use "dracula/vim"
-        use "morhetz/gruvbox"
-        use "tomasiser/vim-code-dark"
-        use "Mofiqul/vscode.nvim"
+        -------------------
+        -- Language Servers
+        -------------------
 
         -- Quickstart configs for Nvim LSP
         use "neovim/nvim-lspconfig"
@@ -101,20 +108,6 @@ return require("packer").startup(
             config = function()
                 require("goto-preview").setup()
             end
-        }
-
-        -- Configure neovim statusline
-        use {
-            "nvim-lualine/lualine.nvim",
-            requires = {
-                {"nvim-tree/nvim-web-devicons"},
-                {"nvim-lua/lsp-status.nvim"}
-            }
-        }
-
-        -- shows the context of the currently visible buffer contents
-        use {
-            "wellle/context.vim"
         }
 
         -- Code completion for Nvim LSP
@@ -144,114 +137,56 @@ return require("packer").startup(
             end
         }
 
-        -- Nvim interface to configure tree-sitter and syntax highlighting
-        use "nvim-treesitter/nvim-treesitter"
-        use "nvim-treesitter/nvim-treesitter-refactor"
+        -- Debug Adapter Protocol client implementation for Neovim
+        use "mfussenegger/nvim-dap"
 
-        -- Highlight arguments' definitions and usages, using Treesitter
+        ---------------------
+        -- Search Enhancement
+        ---------------------
+
+        -- Improved fzf.vim written in lua
         use {
-            "m-demare/hlargs.nvim",
-            config = function()
-                require("hlargs").setup()
-            end,
+            "ibhagwan/fzf-lua",
             requires = {
-                {"nvim-treesitter/nvim-treesitter"}
+                {"nvim-tree/nvim-web-devicons"},
+                {"junegunn/fzf", run = ":call fzf#install()"}
             }
         }
 
-        -- Autopairs supporting multiple characters
-        use "windwp/nvim-autopairs"
-
-        -- Rainbow delimiters for Neovim with Tree-sitter
+        -- Highly extendable fuzzy finder over file and symbols
         use {
-            "HiPhish/rainbow-delimiters.nvim",
+            "nvim-telescope/telescope.nvim",
+            tag = "0.1.6",
             requires = {
-                {"nvim-treesitter/nvim-treesitter"}
+                {"nvim-lua/plenary.nvim"},
+                {"BurntSushi/ripgrep"},
+                {"nvim-telescope/telescope-fzf-native.nvim"},
+                {"sharkdp/fd"},
+                {"nvim-treesitter/nvim-treesitter"},
+                {"nvim-tree/nvim-web-devicons"}
             }
         }
 
-        -- Add/change/delete surrounding delimiter pairs with ease
-        use(
-            {
-                "kylechui/nvim-surround",
-                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-                config = function()
-                    require("nvim-surround").setup({})
-                end
-            }
-        )
-
-        -- nvim-cmp source for conjure
-        -- use "PaterJason/cmp-conjure"
-
-        -- Indent clojure and lisp code using parinfer
-        -- use "bhurlow/vim-parinfer"
-
-        -- Interactive evaluation Conjure and lisp code
-        -- use "Olical/conjure"
-
-        -- Common Lisp dev environment for Vim
-        -- use {"vlime/vlime", rtp = "vim/"}
-
-        -- CMake integration comparable to vscode-cmake-tools
+        -- File Browser extension for telescope.nvim
         use {
-            "Civitasv/cmake-tools.nvim",
+            "nvim-telescope/telescope-file-browser.nvim",
             requires = {
+                {"nvim-telescope/telescope.nvim"},
                 {"nvim-lua/plenary.nvim"}
-            },
-            config = function()
-                require("cmake-tools").setup {}
-            end
+            }
         }
 
-        -- Synatx highlighting for EditorConfig
-        use "editorconfig/editorconfig-vim"
-
-        -- Javascript indentation and syntax support
-        use "pangloss/vim-javascript"
-
-        -- Rlang support for vim
+        -- Better quickfix window in Neovim, polish old quickfix window
         use {
-            "jalvesaq/Nvim-R",
+            "kevinhwang91/nvim-bqf",
             requires = {
-                {"jalvesaq/cmp-nvim-r"},
-                {"jalvesaq/colorout"}
-                -- {"jalvesaq/zotcite"},
-                -- {"jalvesaq/cmp-zotcite"}
+                {"nvim-treesitter/nvim-treesitter"}
             }
         }
 
-        -- Synatx highlighting for LaTeX
-        use "lervag/vimtex"
-
-        -- Rust support for vim
-        use "rust-lang/rust.vim"
-
-        -- Synatx highlighting for Haskell
-        use "neovimhaskell/haskell-vim"
-
-        -- Python static syntax and style checker using Flake8
-        use "nvie/vim-flake8"
-
-        -- Synatx highlighting for Ruby
-        use "vim-ruby/vim-ruby"
-
-        -- CSV filetype integration
-        use "chrisbra/csv.vim"
-
-        -- Markdown support in vim
-        use "godlygeek/tabular"
-        use "plasticboy/vim-markdown"
-
-        -- Preview Markdown in modern browser
-        use(
-            {
-                "iamcco/markdown-preview.nvim",
-                run = function()
-                    vim.fn["mkdp#util#install"]()
-                end
-            }
-        )
+        ------------------
+        -- Git Integration
+        ------------------
 
         -- Show git diff markers in the sign column
         use "airblade/vim-gitgutter"
@@ -269,29 +204,121 @@ return require("packer").startup(
         -- easily cycling through git diffs for all modified files
         use "sindrets/diffview.nvim"
 
-        -- Wrapper of some vim/neovim's :terminal functions
-        use "kassio/neoterm"
+        -----------------------------
+        -- Syntax Highlight (General)
+        -----------------------------
 
-        -- easily manage multiple terminal windows
+        -- Nvim interface to configure tree-sitter and syntax highlighting
+        use "nvim-treesitter/nvim-treesitter"
+        use "nvim-treesitter/nvim-treesitter-refactor"
+
+        -- Rainbow delimiters for Neovim with Tree-sitter
         use {
-            "akinsho/toggleterm.nvim",
-            tag = "*",
+            "HiPhish/rainbow-delimiters.nvim",
+            requires = {
+                {"nvim-treesitter/nvim-treesitter"}
+            }
+        }
+
+        -- Highlight arguments' definitions and usages, using Treesitter
+        use {
+            "m-demare/hlargs.nvim",
             config = function()
-                require("toggleterm").setup()
+                require("hlargs").setup()
+            end,
+            requires = {
+                {"nvim-treesitter/nvim-treesitter"}
+            }
+        }
+
+        -- Autopairs supporting multiple characters
+        use "windwp/nvim-autopairs"
+
+        -- Add/change/delete surrounding delimiter pairs with ease
+        use(
+            {
+                "kylechui/nvim-surround",
+                tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+                config = function()
+                    require("nvim-surround").setup({})
+                end
+            }
+        )
+
+        -------------------
+        -- Language Support
+        -------------------
+
+        -- CMake integration comparable to vscode-cmake-tools
+        use {
+            "Civitasv/cmake-tools.nvim",
+            requires = {
+                {"nvim-lua/plenary.nvim"}
+            },
+            config = function()
+                require("cmake-tools").setup {}
             end
         }
 
-        -- Debug Adapter Protocol client implementation for Neovim
-        use "mfussenegger/nvim-dap"
+        -- Markdown support
+        use "plasticboy/vim-markdown"
 
-        -- displays a popup with possible keybindings of the command you started typing
+        -- Markdown preview in modern browser
+        use(
+            {
+                "iamcco/markdown-preview.nvim",
+                run = function()
+                    vim.fn["mkdp#util#install"]()
+                end
+            }
+        )
+
+        -- EditorConfig synatx highlighting
+        use "editorconfig/editorconfig-vim"
+
+        -- Javascript indentation and syntax support
+        use "pangloss/vim-javascript"
+
+        -- Rlang support for vim
         use {
-            "folke/which-key.nvim",
-            config = function()
-                vim.o.timeout = true
-                vim.o.timeoutlen = 300
-                require("which-key").setup {}
-            end
+            "jalvesaq/Nvim-R",
+            requires = {
+                {"jalvesaq/cmp-nvim-r"},
+                {"jalvesaq/colorout"}
+                -- {"jalvesaq/zotcite"},
+                -- {"jalvesaq/cmp-zotcite"}
+            }
         }
+
+        -- LaTeX synatx highlighting
+        use "lervag/vimtex"
+
+        -- Rust support
+        use "rust-lang/rust.vim"
+
+        -- Haskell synatx highlighting
+        use "neovimhaskell/haskell-vim"
+
+        -- Python static syntax and style checker using Flake8
+        use "nvie/vim-flake8"
+
+        -- Ruby synatx highlighting
+        use "vim-ruby/vim-ruby"
+
+        -- CSV filetype integration
+        use "chrisbra/csv.vim"
+        use "godlygeek/tabular"
+
+        -- Conjure for nvim-cmp
+        use "PaterJason/cmp-conjure"
+
+        -- Clojure and lisp code indentation using parinfer
+        use "bhurlow/vim-parinfer"
+
+        -- Interactive evaluation Conjure and lisp code
+        use "Olical/conjure"
+
+        -- Common Lisp dev environment for Vim
+        use {"vlime/vlime", rtp = "vim/"}
     end
 )
