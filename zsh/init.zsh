@@ -123,3 +123,10 @@ function zshld {
     source $HOME/.zshrc
     echo "zsh config reloaded!"
 }
+
+function _initJenv {
+    export PATH="$HOME/.jenv/bin:$PATH"
+    eval "$(jenv init -)"
+    # jenv enable-plugin export > /dev/null
+}
+_initJenv
