@@ -38,26 +38,6 @@
 (when enable-yasnippet
   (package-install 'yasnippet))
 
-;;; java
-(when enable-java
-  (package-install 'java-snippets))
-
-;;; emacs-lisp
-(when enable-yasnippet
-  (package-install 'el-autoyas))
-
-;;; web development
-(when enable-web-dev 
-  (package-install 'ulti-web-mode)
-  (package-install 'angular-snippets)
-  (package-install 'django-snippets)
-  (when enable-yasnippet
-    (package-install 'php-auto-yasnippets)))
-
-;;; SCSS
-(when enable-scss
-  (package-install 'scss-mode))
-
 ;;; rlang
 (when enable-rstat
   (package-install 'ess)

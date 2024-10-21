@@ -9,11 +9,10 @@
 (setq enable-helm t)
 (setq enable-ide t)
 (setq enable-ido t)
-(setq enable-java t)
-(setq enable-latex nil)
+(setq enable-latex t)
 (setq enable-lisp t)
 (setq enable-markdown t)
-(setq enable-matlab nil)
+(setq enable-matlab t)
 (setq enable-neotree t)
 (setq enable-pig nil)
 (setq enable-python t)
@@ -24,13 +23,19 @@
 (setq enable-yasnippet t)
 (setq enable-zotero nil)
 
-;; path where settings files are kept
-(add-to-list 'load-path "~/.emacs.d/settings")
+;; melpa package manager
+(add-to-list 'load-path "~/.emacs.d/melpa")
 (require 'melpa-settings)
+
+;; basic common utilities
+(add-to-list 'load-path "~/.emacs.d/base")
 (require 'custom-functions)
 (require 'basic-settings)
 (setq custom-file "~/.emacs.d/settings/custom.el")
 (load custom-file)
+
+;; plugins
+(add-to-list 'load-path "~/.emacs.d/plugins")
 
 ;; plugin settings
 (when enable-all-the-icons (require 'all-the-icons-settings))
