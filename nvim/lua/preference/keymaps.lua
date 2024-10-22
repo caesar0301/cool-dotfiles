@@ -138,16 +138,6 @@ vim.api.nvim_create_user_command(
 )
 vim.keymap.set("n", "<leader>fd", ":FindDir ", opt_s("[telescope] Find in given dir"))
 
--- Open file_browser with the path of the current buffer
-vim.keymap.set(
-    "n",
-    "<leader>fb",
-    function()
-        require("telescope").extensions.file_browser.file_browser()
-    end,
-    opt_s("[telescope] File browser")
-)
-
 -- Find and replace current word under cursor (case sensitive)
 vim.keymap.set(
     "n",
