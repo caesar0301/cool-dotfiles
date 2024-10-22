@@ -167,15 +167,6 @@ return require("packer").startup(
             }
         }
 
-        -- File Browser extension for telescope.nvim
-        use {
-            "nvim-telescope/telescope-file-browser.nvim",
-            requires = {
-                {"nvim-telescope/telescope.nvim"},
-                {"nvim-lua/plenary.nvim"}
-            }
-        }
-
         -- Better quickfix window in Neovim, polish old quickfix window
         use {
             "kevinhwang91/nvim-bqf",
