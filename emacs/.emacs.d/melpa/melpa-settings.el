@@ -21,72 +21,71 @@
 (require 'use-package)
 
 ;;; themes
-(package-install 'solarized-theme)
-(package-install 'darcula-theme)
+(when enable-theme-pack
+  (package-install 'solarized-theme)
+  (package-install 'darcula-theme)
+  (package-install 'all-the-icons)
+  ;;; settings
+  (require 'all-the-icons-settings))
 
-(when enable-all-the-icons
-  (package-install 'all-the-icons))
+;;; IDE
+(when enable-ide-pack
+  (package-install 'projectile)
+  (package-install 'neotree)
+  ;;; settings
+  (require 'neotree-settings)
+  (require 'ide-settings))
 
 ;;; autocomple
-(when enable-auto-complete
+(when enable-autocomplete-pack
   (package-install 'auto-complete)
   (package-install 'flycheck)
   (package-install 'helm)
-  (package-install 'helm-descbinds))
+  (package-install 'helm-descbinds)
+  (package-install 'yasnippet)
+  ;;; settings
+  (require 'yasnippet) (yas-global-mode 1)
+  (require 'auto-complete-settings)
+  (require 'helm-settings))
 
-;;; yasnippet
-(when enable-yasnippet
-  (package-install 'yasnippet))
-
-;;; rlang
-(when enable-rstat
+;;; statistics
+(when enable-statistics-pack
   (package-install 'ess)
-  (package-install 'r-autoyas))
+  (package-install 'r-autoyas)
+  (package-install 'matlab-mode)
+  ;;; settings
+  (require 'matlab-settings)
+  (require 'r-settings))
 
-;;; matlab
-(when enable-matlab
-  (package-install 'matlab-mode))
+(when enable-marklang-pack
+  (package-install 'markdown-mode)
+  (package-install 'yaml-mode)
+  ;;; settings
+  (require 'markdown-settings)
+  (require 'yaml-settings))
 
-;;; markdown
-(when enable-markdown
-  (package-install 'markdown-mode))
-
-;;; yaml
-(when enable-yaml
-  (package-install 'yaml-mode))
-
-;;; latex
-(when enable-latex
+;;; academic writings
+(when enable-academic-pack
   (package-install 'auctex)
   (package-install 'auto-complete-auctex)
   (package-install 'latex-preview-pane)
-  (package-install 'latex-math-preview))
-
-;;; pig
-(when enable-pig
-  (package-install 'pig-mode)
-  (package-install 'pig-snippets))
+  (package-install 'latex-math-preview)
+  (package-install 'zotelo)
+  ;;; settings
+  (require 'latex-settings)
+  (require 'zotero))
 
 ;;; python
-(when enable-python
-  (package-install 'jedi))
+(when enable-lang-python
+  (package-install 'jedi)
+  ;;; settings
+  (require 'python-settings))
 
 ;;; lisp
-(when enable-lisp
+(when enable-lang-lisp
   (package-install 'slime)
-  (package-install 'lispy))
-
-;;; projectile and neotree
-(when enable-ide
-  (package-install 'projectile)
-  (package-install 'neotree))
-
-;;; zotero
-(when enable-zotero
-  (package-install 'zotelo))
-
-;;; neotree and theme
-(when enable-neotree
-  (package-install 'neotree))
+  (package-install 'lispy)
+  ;;; settings
+  (require 'lisp-settings))
 
 (provide 'melpa-settings)

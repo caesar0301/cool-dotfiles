@@ -1,6 +1,5 @@
 ;; R mode with ESS mode configuration
 (require 'ess-site)
-(require 'ess-eldoc)
 
 ;;ESS will not print the evaluated commands, also speeds
 ;;up the evaluation

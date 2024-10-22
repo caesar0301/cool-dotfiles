@@ -58,8 +58,6 @@
 (mouse-wheel-mode 1)
 
 ;; show line and colume number
-(require 'linum)
-(global-linum-mode 1)
 (setq linum-format "%d ")
 (column-number-mode 1)
 
