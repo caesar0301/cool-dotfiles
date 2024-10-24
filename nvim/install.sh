@@ -143,7 +143,7 @@ function install_lsp_deps {
   if checkcmd pip; then
     if [[ ${#piplibs[@]} > 0 ]]; then
       info "Installing pip deps: $piplibs"
-      pip install -q ${piplibs[@]}
+      pip install -q -i http://mirrors.aliyun.com/pypi/simple/ ${piplibs[@]}
     fi
   else
     warn "Command pip not found, install and try again."
@@ -158,7 +158,7 @@ function install_lsp_deps {
 
   info "Install gopls"
   if checkcmd go; then
-    go install golang.org/x/tools/gopls@latest
+    GOPROXY="https://mirrors.aliyun.com/goproxy/,direct" go install golang.org/x/tools/gopls@latest
   else
     warn "Go not found in PATH, skip to install gotags"
   fi
@@ -251,7 +251,10 @@ function handle_neovim {
 
 function post_install {
   info "Post installation"
-  nvim --headless -c "PackerInstall" \
+  nvim --headless \
+    # install plugins managed by packer
+    -c "PackerInstall" \
+    # install treesitter plugins
     -c "TSUpdate lua python go java vim vimdoc luadoc markdown" \
     -c "qall"
   echo ""
