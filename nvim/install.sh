@@ -99,7 +99,7 @@ function install_formatter_utils {
   if checkcmd pip; then
     if [[ ${#piplibs[@]} > 0 ]]; then
       info "Installing pip deps: $piplibs"
-      pip install -U ${piplibs[@]}
+      pip install -q -U -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com ${piplibs[@]}
     fi
   else
     warn "Command pip not found, install and try again."
@@ -143,7 +143,7 @@ function install_lsp_deps {
   if checkcmd pip; then
     if [[ ${#piplibs[@]} > 0 ]]; then
       info "Installing pip deps: $piplibs"
-      pip install -q -i http://mirrors.aliyun.com/pypi/simple/ ${piplibs[@]}
+      pip install -q -U -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com ${piplibs[@]}
     fi
   else
     warn "Command pip not found, install and try again."
@@ -252,9 +252,7 @@ function handle_neovim {
 function post_install {
   info "Post installation"
   nvim --headless \
-    # install plugins managed by packer
     -c "PackerInstall" \
-    # install treesitter plugins
     -c "TSUpdate lua python go java vim vimdoc luadoc markdown" \
     -c "qall"
   echo ""
