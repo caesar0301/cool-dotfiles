@@ -119,8 +119,8 @@ function install_formatter_utils {
   if checkcmd npm; then
     if [[ ${#npmlibs[@]} > 0 ]]; then
       info "Installing npm deps: $npmlibs"
-      check_sudo_access
-      sudo npm install --quiet -g ${npmlibs[@]}
+      npm config set registry https://registry.npmmirror.com
+      check_sudo_access && sudo npm install -g --quiet ${npmlibs[@]}
     fi
   else
     warn "Command npm not found, install and try again."
@@ -254,6 +254,7 @@ function post_install {
   nvim --headless -c "PackerInstall" \
     -c "TSUpdate lua python go java vim vimdoc luadoc markdown" \
     -c "qall"
+  echo ""
 }
 
 function cleanse_all {
