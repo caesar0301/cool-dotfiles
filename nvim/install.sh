@@ -120,7 +120,7 @@ function install_formatter_utils {
     if [[ ${#npmlibs[@]} > 0 ]]; then
       info "Installing npm deps: $npmlibs"
       check_sudo_access
-      sudo npm install --quiet --force -g ${npmlibs[@]}
+      sudo npm install --quiet -g ${npmlibs[@]}
     fi
   else
     warn "Command npm not found, install and try again."
