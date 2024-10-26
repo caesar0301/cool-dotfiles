@@ -12,13 +12,12 @@
 (setq enable-lang-python t)
 (setq enable-lang-lisp t)
 
-;; melpa managed plugins
-(add-to-list 'load-path "~/.emacs.d/plugins")
-(require 'melpa-settings)
-
-;; basic common utilities
 (add-to-list 'load-path "~/.emacs.d/base")
+(add-to-list 'load-path "~/.emacs.d/plugins")
+
 (require 'custom-functions)
 (setq custom-file "~/.emacs.d/base/custom.el")
 (load custom-file)
+
+(require 'melpa-settings)
 (require 'basic-settings)
