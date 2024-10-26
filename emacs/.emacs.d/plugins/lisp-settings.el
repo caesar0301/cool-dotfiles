@@ -6,7 +6,9 @@
 ;; slime
 ;;-------
 (require 'slime)
-(setq inferior-lisp-program "sbcl")
+;(setq inferior-lisp-program "sbcl")
+;; Allegro CL in modern mode
+(setq inferior-lisp-program "mlisp")
 
 (slime-setup '(slime-fancy slime-quicklisp slime-asdf))
 
