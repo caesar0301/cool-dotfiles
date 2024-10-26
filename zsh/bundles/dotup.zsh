@@ -71,11 +71,13 @@ function occ {
         ;;
         conan) cf=$HOME/.conan2/profiles/default
         ;;
+        kitty) cf=$HOME/.config/kitty/kitty.conf
+        ;;
         * ) # Invalid subcommand
             if [ ! -z $subcommand ]; then  # Don't show if no subcommand provided
                 echo "Invalid subcommand: $subcommand"
             fi
-            echo "Usage: occ <emacs|em|vim|vi|zsh|ssh|tmux|clash|pc|yum|apt|conan>"
+            echo "Usage: occ <emacs|em|vim|vi|zsh|ssh|tmux|clash|pc|yum|apt|conan|kitty>"
             return
         ;;
     esac
