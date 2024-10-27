@@ -8,6 +8,14 @@
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
+;; Configure use-package
+(if (not (package-installed-p 'use-package))
+  (progn
+    (when (not package-archive-contents)
+      (package-refresh-contents))
+    (package-install 'use-package)))
+(require 'use-package)
+
 ;;; themes
 (when enable-theme-pack
   (package-install 'solarized-theme)
@@ -21,7 +29,6 @@
   (package-install 'projectile)
   (package-install 'neotree)
   ;;; settings
-  (require 'neotree-settings)
   (require 'ide-settings))
 
 ;;; autocomple

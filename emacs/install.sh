@@ -19,26 +19,15 @@ function usage {
 }
 
 function handle_emacs {
-  mkdir_nowarn ~/.emacs.d
-  cleanse_emacs
   if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/.emacs.d/base $HOME/.emacs.d/base
-    ln -sf $THISDIR/.emacs.d/melpa $HOME/.emacs.d/melpa
-    ln -sf $THISDIR/.emacs.d/plugins $HOME/.emacs.d/plugins
-    ln -sf $THISDIR/.emacs.d/init.el $HOME/.emacs.d/init.el
+    ln -sf $THISDIR $XDG_CONFIG_HOME/
   else
-    cp -r $THISDIR/.emacs.d/base $HOME/.emacs.d/
-    cp -r $THISDIR/.emacs.d/melpa $HOME/.emacs.d/
-    cp -r $THISDIR/.emacs.d/plugins $HOME/.emacs.d/
-    cp $THISDIR/.emacs.d/init.el $HOME/.emacs.d/
+    cp -r $THISDIR $XDG_CONFIG_HOME/
   fi
 }
 
 function cleanse_emacs {
-  rm -rf $HOME/.emacs.d/base
-  rm -rf $HOME/.emacs.d/melpa
-  rm -rf $HOME/.emacs.d/plugins
-  rm -rf $HOME/.emacs.d/init.el
+  rm -rf $XDG_CONFIG_HOME/emacs
   info "All emacs cleansed!"
 }
 
