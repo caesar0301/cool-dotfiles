@@ -12,16 +12,14 @@
 (setq enable-lang-python t)
 (setq enable-lang-lisp t)
 
+;; Loading paths
 (add-to-list 'load-path "~/.config/emacs/base")
 (add-to-list 'load-path "~/.config/emacs/plugins")
 
+;; Basic settings
+(require 'melpa-settings)
 (require 'custom-functions)
 (setq custom-file "~/.config/emacs/base/custom.el")
 (load custom-file)
-
-(require 'melpa-settings)
 (require 'basic-settings)
 
-(use-package 'neotree
-             :config 
-             (require 'neotree-settings))

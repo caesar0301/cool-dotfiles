@@ -4,8 +4,8 @@
 
 ;; Install melpa per se.
 (require 'package)
-;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
 ;; Configure use-package
@@ -20,9 +20,7 @@
 (when enable-theme-pack
   (package-install 'solarized-theme)
   (package-install 'darcula-theme)
-  (package-install 'all-the-icons)
-  ;;; settings
-  (require 'all-the-icons-settings))
+  (package-install 'all-the-icons))
 
 ;;; IDE
 (when enable-ide-pack
@@ -47,9 +45,7 @@
 (when enable-statistics-pack
   (package-install 'ess)
   (package-install 'r-autoyas)
-  (package-install 'matlab-mode)
   ;;; settings
-  (require 'matlab-settings)
   (require 'r-settings))
 
 (when enable-marklang-pack
@@ -67,14 +63,7 @@
   (package-install 'latex-math-preview)
   (package-install 'zotelo)
   ;;; settings
-  (require 'latex-settings)
-  (require 'zotero))
-
-;;; python
-(when enable-lang-python
-  (package-install 'jedi)
-  ;;; settings
-  (require 'python-settings))
+  (require 'latex-settings))
 
 ;;; lisp
 (when enable-lang-lisp
