@@ -108,7 +108,8 @@
 ;;---------
 ;; Theme
 ;;---------
-(load-theme 'solarized-dark t)
+(load-theme 'darcula t)
+;(load-theme 'solarized-dark t)
 
 ;;---------
 ;; Windows
