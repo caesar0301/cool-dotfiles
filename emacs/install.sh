@@ -7,6 +7,7 @@
 THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+EM_CONFIG=${XDG_CONFIG_HOME}/emacs
 
 source $THISDIR/../lib/bash_utils.sh
 
@@ -19,15 +20,22 @@ function usage {
 }
 
 function handle_emacs {
+  mkdir_nowarn $EM_CONFIG
   if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR $XDG_CONFIG_HOME/
+    ln -sf $THISDIR/base $EM_CONFIG/base
+    ln -sf $THISDIR/plugins $EM_CONFIG/plugins
+    ln -sf $THISDIR/init.el $EM_CONFIG/init.el
   else
-    cp -r $THISDIR $XDG_CONFIG_HOME/
+    cp -r $THISDIR/base $EM_CONFIG/
+    cp -r $THISDIR/plugins $EM_CONFIG/
+    cp $THISDIR/init.el $EM_CONFIG/
   fi
 }
 
 function cleanse_emacs {
-  rm -rf $XDG_CONFIG_HOME/emacs
+  rm -rf $EM_CONFIG/base
+  rm -rf $EM_CONFIG/plugins
+  rm -rf $EM_CONFIG/init.el
   info "All emacs cleansed!"
 }
 

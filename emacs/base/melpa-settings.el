@@ -68,7 +68,6 @@
 ;;; lisp
 (when enable-lang-lisp
   (package-install 'slime)
-  (package-install 'lispy)
   ;;; settings
   (require 'lisp-settings))
 
