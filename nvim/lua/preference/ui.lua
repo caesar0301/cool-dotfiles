@@ -104,6 +104,7 @@ if vim.fn.exists("$TMUX") then
 end
 
 -- Set utf8 as standard encoding and en_US as the standard language
+vim.cmd("language en_US.UTF-8")
 vim.opt.encoding = "utf8"
 
 -- Use Unix as the standard file type
