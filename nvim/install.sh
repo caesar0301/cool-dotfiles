@@ -116,6 +116,9 @@ function install_formatter_utils {
   if ! checkcmd yaml-language-server; then
     npmlibs+=(yaml-language-server)
   fi
+  if ! checkcmd js-beautify; then
+    npmlibs+=(js-beautify)
+  fi
   if checkcmd npm; then
     if [[ ${#npmlibs[@]} > 0 ]]; then
       info "Installing npm deps: $npmlibs"
