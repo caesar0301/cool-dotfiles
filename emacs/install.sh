@@ -22,9 +22,9 @@ function usage {
 function handle_emacs {
   mkdir_nowarn $EM_CONFIG
   if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/base $EM_CONFIG/base
-    ln -sf $THISDIR/plugins $EM_CONFIG/plugins
-    ln -sf $THISDIR/init.el $EM_CONFIG/init.el
+    ln -sf $THISDIR/base $EM_CONFIG/
+    ln -sf $THISDIR/plugins $EM_CONFIG/
+    ln -sf $THISDIR/init.el $EM_CONFIG/
   else
     cp -r $THISDIR/base $EM_CONFIG/
     cp -r $THISDIR/plugins $EM_CONFIG/
