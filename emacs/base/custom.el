@@ -6,7 +6,8 @@
  '(package-selected-packages
    '(projectile all-the-icons darcula-theme solarized-theme helm ess yasnippet auto-complete cmake-mode zotelo yaml-mode use-package slime scss-mode r-autoyas neotree matlab-mode markdown-mode lispy jedi java-snippets helm-descbinds flycheck el-autoyas auto-complete-auctex auctex))
  '(safe-local-variable-values
-   '((base . 10)
+   '((package . asdf)
+     (base . 10)
      (package . gx)
      (syntax . common-lisp)
      (c-file-offsets)

@@ -8,11 +8,6 @@ THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
-## Uncomment to respect XDG config. Here we use
-## .emacs.d to be compatible with ACL emacs-lisp interface.
-#EM_CONFIG=${XDG_CONFIG_HOME}/emacs
-EM_CONFIG=${HOME}/.emacs.d
-
 source $THISDIR/../lib/bash_utils.sh
 
 function usage {
@@ -23,24 +18,17 @@ function usage {
   echo "  -c cleanse install"
 }
 
-function handle_emacs {
-  mkdir_nowarn $EM_CONFIG
+function handle_lisp {
   if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/base $EM_CONFIG/
-    ln -sf $THISDIR/plugins $EM_CONFIG/
-    ln -sf $THISDIR/init.el $EM_CONFIG/
+    ln -sf $THISDIR/dot-clinit.cl $HOME/.clinit.cl
   else
-    cp -r $THISDIR/base $EM_CONFIG/
-    cp -r $THISDIR/plugins $EM_CONFIG/
-    cp $THISDIR/init.el $EM_CONFIG/
+    cp -r $THISDIR/dot-clinit.cl $HOME
   fi
 }
 
-function cleanse_emacs {
-  rm -rf $EM_CONFIG/base
-  rm -rf $EM_CONFIG/plugins
-  rm -rf $EM_CONFIG/init.el
-  info "All emacs cleansed!"
+function cleanse_lisp {
+  rm -rf $HOME/.clinit.cl
+  info "All lisp cleansed!"
 }
 
 # Change to 0 to install a copy instead of soft link
@@ -51,10 +39,10 @@ while getopts fsech opt; do
   f) SOFTLINK=0 ;;
   s) SOFTLINK=1 ;;
   e) WITHDEPS=1 ;;
-  c) cleanse_emacs && exit 0 ;;
+  c) cleanse_lisp && exit 0 ;;
   h | ?) usage && exit 0 ;;
   esac
 done
 
-handle_emacs
-info "Emacs installed successfully!"
+handle_lisp
+info "lisp installed successfully!"
