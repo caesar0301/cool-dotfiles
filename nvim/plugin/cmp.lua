@@ -295,3 +295,12 @@ cmp.setup.cmdline(
         }
     }
 )
+
+cmp.setup.filetype(
+    {"lisp"},
+    {
+        sources = {
+            {name = "vlime"}
+        }
+    }
+)

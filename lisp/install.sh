@@ -21,13 +21,16 @@ function usage {
 function handle_lisp {
   if [ x$SOFTLINK == "x1" ]; then
     ln -sf $THISDIR/dot-clinit.cl $HOME/.clinit.cl
+    ln -sf $THISDIR/dot-sbclrc $HOME/.sbclrc
   else
-    cp -r $THISDIR/dot-clinit.cl $HOME
+    cp $THISDIR/dot-clinit.cl $HOME
+    cp $THISDIR/dot-sbclrc $HOME/.sbclrc
   fi
 }
 
 function cleanse_lisp {
   rm -rf $HOME/.clinit.cl
+  rm -rf $HOME/.sbclrc
   info "All lisp cleansed!"
 }
 

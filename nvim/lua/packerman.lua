@@ -303,13 +303,20 @@ return require("packer").startup(
         -- Conjure for nvim-cmp
         use "PaterJason/cmp-conjure"
 
-        -- Clojure and lisp code indentation using parinfer
-        use "bhurlow/vim-parinfer"
-
         -- Interactive evaluation Conjure and lisp code
         use "Olical/conjure"
 
+        -- Clojure and lisp code indentation using parinfer
+        use "bhurlow/vim-parinfer"
+
         -- Common Lisp dev environment for Vim
-        use {"vlime/vlime", rtp = "vim/"}
+        use {
+            "vlime/vlime",
+            rtp = "vim/",
+            requires = {
+                {"HiPhish/nvim-cmp-vlime"},
+                {"bhurlow/vim-parinfer"}
+            }
+        }
     end
 )
