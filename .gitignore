@@ -1,9 +1,3 @@
 .DS_Store
 nvim/plugin/packer_compiled.lua
 nvim/spell/
-
-emacs/ac-comphist.dat
-emacs/eln-cache/
-emacs/elpa/
-emacs/projectile-bookmarks.eld
-emacs/tramp
