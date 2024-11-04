@@ -7,11 +7,13 @@
 THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+QUICKLISP_HOME=${HOME}/quicklisp
 
 ## Uncomment to respect XDG config. Here we use
 ## .emacs.d to be compatible with ACL emacs-lisp interface.
 #EM_CONFIG=${XDG_CONFIG_HOME}/emacs
 EM_CONFIG=${HOME}/.emacs.d
+CLCMD="sbcl --load"
 
 source $THISDIR/../lib/bash_utils.sh
 
@@ -21,6 +23,32 @@ function usage {
   echo "  -s soft linke install"
   echo "  -e install dependencies"
   echo "  -c cleanse install"
+}
+
+function detect_cl_cmd {
+  # SBCL
+  if checkcmd sbcl; then
+    CLCMD="sbcl --load"
+    return
+  fi
+  # Allegro CL
+  if checkcmd alisp; then
+    CLCMD="alisp -L"
+    return
+  fi
+  error "any CL distribution not found"
+  exit 1
+}
+
+function install_quicklisp {
+  info "Install quicklisp..."
+  if [ -e $QUICKLISP_HOME ]; then
+    warn "quicklisp already installed at $QUICKLISP_HOME"
+    return
+  fi
+  detect_cl_cmd
+  curl -o /tmp/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp
+  $CLCMD "$THISDIR/install_quicklisp.lisp"
 }
 
 function handle_emacs {
@@ -56,5 +84,6 @@ while getopts fsech opt; do
   esac
 done
 
+install_quicklisp
 handle_emacs
 info "Emacs installed successfully!"
