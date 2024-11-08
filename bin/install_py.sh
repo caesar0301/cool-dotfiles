@@ -5,22 +5,18 @@
 # Install a specified version of Python.
 # E.g., install_py.sh 3.6.5
 set -ex
-
+THISFILE=$(cd ${0%/*} && echo $PWD/${0##*/})
+THISDIR=$(dirname $THISFILE)
 VERSION=$1
 PYVER=$(echo $VERSION | egrep -o '[0-9]+.[0-9]+')
+PYCMD=python$PYVER
+PIPCMD=pip$PYVER
+EZCMD=easy_install-$PYVER
 PACKAGE=Python-$VERSION
-
-if [ ! -e $PACKAGE ]; then
-  wget https://www.python.org/ftp/python/$VERSION/$PACKAGE.tar.xz
-fi
-xz -d $PACKAGE.tar.xz && tar xvf $PACKAGE.tar
-
-cd Python-$VERSION
-./configure --prefix=/usr/local
-make && sudo make install && echo 'Python installed.'
+PYLINK="https://www.python.org/ftp/python/$VERSION/$PACKAGE.tar.xz"
 
 # wget https://bootstrap.pypa.io/ez_setup.py
-cat <<EOF >>ez_setup.py
+cat <<EOF >> ${THISDIR}/ez_setup.py
 #!/usr/bin/env python
 
 """
@@ -358,13 +354,13 @@ def download_setuptools(
     """
     Download setuptools from a specified location and return its filename.
 
-    $(version) should be a valid setuptools version number that is available
-    as an sdist for download under the $(download_base) URL (which should end
-    with a '/'). $(to_dir) is the directory where the egg will be downloaded.
-    $(delay) is the number of seconds to pause before an actual download
+    `version` should be a valid setuptools version number that is available
+    as an sdist for download under the `download_base` URL (which should end
+    with a '/'). `to_dir` is the directory where the egg will be downloaded.
+    `delay` is the number of seconds to pause before an actual download
     attempt.
 
-    $()downloader_factory$() should be a function taking no arguments and
+    ``downloader_factory`` should be a function taking no arguments and
     returning a function for downloading a URL to a target.
     """
     # making sure we use the absolute path
@@ -437,9 +433,18 @@ if __name__ == '__main__':
     sys.exit(main())
 EOF
 
-python$PYVER ez_setup.py
+download_file="${THISDIR}/$PACKAGE.tar.xz"
+extract_file="${THISDIR}/$PACKAGE.tar"
+extract_dir="${THISDIR}/Python-$VERSION"
+if [ ! -e $PACKAGE ]; then
+  wget $PYLINK -O ${download_file}
+fi
 
-easy_install-$PYVER pip
+cd ${THISDIR} && xz -d ${download_file} && tar xvf ${extract_file}
+cd ${extract_dir} && ./configure --prefix=/usr/local && make && make install && echo 'Python installed.'
+cd ${THISDIR} && $PYCMD ez_setup.py && $EZCMD pip && $PIPCMD install --upgrade pip && echo 'pip installed.'
 
-pip$PYVER install --upgrade pip
-echo 'pip installed.'
+if [ -e ${download_file} ]; then rm -rf ${download_file}; fi
+if [ -e ${extract_file} ]; then rm -rf ${extract_file}; fi
+if [ -e ${extract_dir} ]; then rm -rf ${extract_dir}; fi
+if [ -e ${THISDIR}/ez_setup.py ]; then rm -rf ${THISDIR}/ez_setup.py; fi
