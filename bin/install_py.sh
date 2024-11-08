@@ -16,7 +16,7 @@ PACKAGE=Python-$VERSION
 PYLINK="https://www.python.org/ftp/python/$VERSION/$PACKAGE.tar.xz"
 
 # wget https://bootstrap.pypa.io/ez_setup.py
-cat <<EOF >> ${THISDIR}/ez_setup.py
+cat <<EOF >>${THISDIR}/ez_setup.py
 #!/usr/bin/env python
 
 """
@@ -354,13 +354,13 @@ def download_setuptools(
     """
     Download setuptools from a specified location and return its filename.
 
-    `version` should be a valid setuptools version number that is available
-    as an sdist for download under the `download_base` URL (which should end
-    with a '/'). `to_dir` is the directory where the egg will be downloaded.
-    `delay` is the number of seconds to pause before an actual download
+    $(version) should be a valid setuptools version number that is available
+    as an sdist for download under the $(download_base) URL (which should end
+    with a '/'). $(to_dir) is the directory where the egg will be downloaded.
+    $(delay) is the number of seconds to pause before an actual download
     attempt.
 
-    ``downloader_factory`` should be a function taking no arguments and
+    $()downloader_factory$() should be a function taking no arguments and
     returning a function for downloading a URL to a target.
     """
     # making sure we use the absolute path
@@ -441,7 +441,7 @@ if [ ! -e $PACKAGE ]; then
 fi
 
 cd ${THISDIR} && xz -d ${download_file} && tar xvf ${extract_file}
-cd ${extract_dir} && ./configure --prefix=/usr/local && make && make install && echo 'Python installed.'
+cd ${extract_dir} && ./configure --prefix=/usr/local --enable-optimizations && make && make install && echo 'Python installed.'
 cd ${THISDIR} && $PYCMD ez_setup.py && $EZCMD pip && $PIPCMD install --upgrade pip && echo 'pip installed.'
 
 if [ -e ${download_file} ]; then rm -rf ${download_file}; fi
