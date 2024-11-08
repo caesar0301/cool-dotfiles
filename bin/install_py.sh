@@ -20,7 +20,7 @@ cd Python-$VERSION
 make && sudo make install && echo 'Python installed.'
 
 # wget https://bootstrap.pypa.io/ez_setup.py
-cat <<EOF >> ez_setup.py
+cat <<EOF >>ez_setup.py
 #!/usr/bin/env python
 
 """
@@ -358,13 +358,13 @@ def download_setuptools(
     """
     Download setuptools from a specified location and return its filename.
 
-    `version` should be a valid setuptools version number that is available
-    as an sdist for download under the `download_base` URL (which should end
-    with a '/'). `to_dir` is the directory where the egg will be downloaded.
-    `delay` is the number of seconds to pause before an actual download
+    $(version) should be a valid setuptools version number that is available
+    as an sdist for download under the $(download_base) URL (which should end
+    with a '/'). $(to_dir) is the directory where the egg will be downloaded.
+    $(delay) is the number of seconds to pause before an actual download
     attempt.
 
-    ``downloader_factory`` should be a function taking no arguments and
+    $()downloader_factory$() should be a function taking no arguments and
     returning a function for downloading a URL to a target.
     """
     # making sure we use the absolute path
