@@ -1,5 +1,5 @@
 # emacs
-alias em='emacs'
+alias em='emacs -nw'
 
 # k8s
 alias k="kubectl"
