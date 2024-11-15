@@ -48,12 +48,14 @@ zinit ice wait lucid; zinit snippet OMZP::vi-mode
 zinit ice pick"z.sh" wait lucid; zinit load rupa/z
 
 # Completion & search
+zinit light zsh-users/zsh-completions
+
 zinit ice lucid wait='0' atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
-zinit ice pick"src"; zinit light zsh-users/zsh-completions
-fpath=($ZINIT_WORKDIR/plugins/zsh-users---zsh-completions/src $fpath)
+
 zinit ice pick"zsh-history-substring-search.zsh"
 zinit light zsh-users/zsh-history-substring-search
+
 zinit ice pick "zsh-syntax-highlighting.zsh" wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
 
