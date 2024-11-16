@@ -1,7 +1,3 @@
-(format *terminal-io* "~%; Loading home ~a~@[.~a~] file.~%"
-  (pathname-name *load-pathname*)
-  (pathname-type *load-pathname))
-
 ;;; Set a few top-level variables.
 (tpl:setq-default top-level:*history* 1000)
 (tpl:setq-default top-level:*print-length* 20)

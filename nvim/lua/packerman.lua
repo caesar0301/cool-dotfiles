@@ -300,13 +300,7 @@ return require("packer").startup(
         use "chrisbra/csv.vim"
         use "godlygeek/tabular"
 
-        -- Conjure for nvim-cmp
-        use "PaterJason/cmp-conjure"
-
-        -- Interactive evaluation Conjure and lisp code
-        use "Olical/conjure"
-
-        -- Clojure and lisp code indentation using parinfer
+        -- Lisp code indentation using parinfer
         use "bhurlow/vim-parinfer"
 
         -- Common Lisp dev environment for Vim
@@ -314,8 +308,7 @@ return require("packer").startup(
             "vlime/vlime",
             rtp = "vim/",
             requires = {
-                {"HiPhish/nvim-cmp-vlime"},
-                {"bhurlow/vim-parinfer"}
+                {"HiPhish/nvim-cmp-vlime"}
             }
         }
     end
