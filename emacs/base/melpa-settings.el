@@ -18,7 +18,6 @@
 
 ;;; themes
 (when enable-theme-pack
-  (package-install 'solarized-theme)
   (package-install 'darcula-theme)
   (package-install 'all-the-icons))
 
