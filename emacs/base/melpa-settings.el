@@ -18,7 +18,7 @@
 
 ;;; themes
 (when enable-theme-pack
-  (package-install 'darcula-theme)
+  (package-install 'zenburn-theme)
   (package-install 'all-the-icons))
 
 ;;; IDE

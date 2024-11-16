@@ -108,7 +108,7 @@
 ;;---------
 ;; Theme
 ;;---------
-(load-theme 'darcula t)
+(load-theme 'zenburn t)
 
 ;;---------
 ;; Windows
