@@ -300,14 +300,24 @@ return require("packer").startup(
         use "chrisbra/csv.vim"
         use "godlygeek/tabular"
 
-        -- Common Lisp dev environment for Vim
+        -- Lisp code indentation using parinfer
+        use "bhurlow/vim-parinfer"
+
+        -- Interactive evaluation of lisp and more
         use {
-            "vlime/vlime",
-            rtp = "vim/",
+            "Olical/conjure",
             requires = {
-                {"HiPhish/nvim-cmp-vlime"},
-                {"bhurlow/vim-parinfer"}
+                {"PaterJason/cmp-conjure"}
             }
         }
+
+        -- Common Lisp dev environment for Vim (use Conjure instead)
+        -- use {
+        --     "vlime/vlime",
+        --     rtp = "vim/",
+        --     requires = {
+        --         {"HiPhish/nvim-cmp-vlime"}
+        --     }
+        -- }
     end
 )
