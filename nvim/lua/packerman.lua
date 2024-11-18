@@ -304,20 +304,20 @@ return require("packer").startup(
         use "bhurlow/vim-parinfer"
 
         -- Interactive evaluation of lisp and more
-        use {
-            "Olical/conjure",
-            requires = {
-                {"PaterJason/cmp-conjure"}
-            }
-        }
-
-        -- Common Lisp dev environment for Vim (use Conjure instead)
         -- use {
-        --     "vlime/vlime",
-        --     rtp = "vim/",
+        --     "Olical/conjure",
         --     requires = {
-        --         {"HiPhish/nvim-cmp-vlime"}
+        --         {"PaterJason/cmp-conjure"}
         --     }
         -- }
+
+        -- Common Lisp dev environment for Vim (alternative to Conjure)
+        use {
+            "vlime/vlime",
+            rtp = "vim/",
+            requires = {
+                {"HiPhish/nvim-cmp-vlime"}
+            }
+        }
     end
 )
