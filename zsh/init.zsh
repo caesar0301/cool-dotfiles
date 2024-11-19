@@ -132,3 +132,6 @@ function _initJenv {
     # jenv enable-plugin export > /dev/null
 }
 _initJenv
+
+# RLWRAP configs
+export RLWRAP_HOME=${HOME}/.config/rlwrap
