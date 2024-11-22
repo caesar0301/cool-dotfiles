@@ -24,10 +24,10 @@ ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
 export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
 
-# add local bin
-export PATH=$HOME/.local/bin:$PATH
+###------------------------------------------------
+### ZI MANAGER
+###------------------------------------------------
 
-#<<<<<<<<<<<<<<<< ZI manager <<<<<<<<<<<<<<<<<<<<<<
 autoload -Uz _zi && (( ${+_comps} )) && _comps[zi]=_zi
 
 # Oh-My-Zsh libs
@@ -66,16 +66,6 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit ice wait lucid; zinit snippet OMZP::git
 zinit ice wait lucid; zinit snippet OMZP::colored-man-pages
 
-## Python
-function _setupPyenv {
-    if [ -e "$HOME/.pyenv" ]; then
-        export PYENV_ROOT="$HOME/.pyenv"
-        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-        eval "$(pyenv init -)"
-    fi
-}
-_setupPyenv
-
 # Load custom extensions under $ZSH_PLUGIN_DIR
 function _load_custom_extensions {
     if [ -e ${ZSH_PLUGIN_DIR} ]; then
@@ -101,12 +91,13 @@ autoload -U compinit && compinit
 zinit cdreplay -q
 #zinit cdlist
 
-#>>>>>>>>>>>>>>>> ZI manager >>>>>>>>>>>>>>>>>>>>>>
-
-# Disable Ctrl+D to close session
+###------------------------------------------------
+### ZSH ENHANCEMENT
+###------------------------------------------------
+# disable Ctrl+D to close session
 setopt IGNORE_EOF
 
-# Enable Ctrl+s and Ctrl+q
+# enable Ctrl+s and Ctrl+q
 stty start undef
 stty stop undef
 setopt noflowcontrol
@@ -116,7 +107,7 @@ export HISTFILE=$HOME/.zhistory
 export HISTSIZE=9999
 export SAVEHIST=9999
 
-# Reload zsh configs globally
+# reload zsh configs globally
 function zshld {
     myextdir=$(basename $(echo "${ZSH_PLUGIN_DIR}" | sed -E -n "s|(.*[^/])/?|\1|p"))
     if [ -e $ZINIT_WORKDIR ]; then
@@ -126,6 +117,17 @@ function zshld {
     echo "zsh config reloaded!"
 }
 
+# pyenv management
+function _initPyenv {
+    if [ -e "$HOME/.pyenv" ]; then
+        export PYENV_ROOT="$HOME/.pyenv"
+        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init -)"
+    fi
+}
+_initPyenv
+
+# jenv management
 function _initJenv {
     export PATH="$HOME/.jenv/bin:$PATH"
     eval "$(jenv init -)"
@@ -133,5 +135,12 @@ function _initJenv {
 }
 _initJenv
 
-# RLWRAP configs
+# extra paths
+export PATH=$HOME/.local/bin:$PATH
 export RLWRAP_HOME=${HOME}/.config/rlwrap
+
+# respect p10k theme
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# respect fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
