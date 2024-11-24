@@ -318,5 +318,12 @@ return require("packer").startup(
                 {"kovisoft/paredit"}
             }
         }
+
+        ---------------
+        -- AI Assistant
+        ---------------
+
+        -- Free, ultrafast Copilot alternative
+        use "Exafunction/codeium.vim"
     end
 )
