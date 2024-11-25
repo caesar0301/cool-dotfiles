@@ -17,7 +17,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 ZSH_CONFIG_DIR="${HOME}/.config/zsh"
-ZSH_BUNDLES="${ZSH_CONFIG_DIR}/bundles/"
 ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
 
 # extra envs
@@ -81,11 +80,6 @@ function _load_custom_extensions {
 }
 _load_custom_extensions
 
-# Load custom bundles
-for i in `find ${ZSH_BUNDLES} -maxdepth 1 -type f -name "*.zsh"`; do
-    zinit ice wait lucid; zinit snippet $i;
-done
-
 autoload -U parseopts zargs zcalc zed zmv
 autoload -U compinit && compinit
 zinit cdreplay -q
@@ -116,24 +110,6 @@ function zshld {
     source $HOME/.zshrc
     echo "zsh config reloaded!"
 }
-
-# pyenv management
-function _initPyenv {
-    if [ -e "$HOME/.pyenv" ]; then
-        export PYENV_ROOT="$HOME/.pyenv"
-        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-        eval "$(pyenv init -)"
-    fi
-}
-_initPyenv
-
-# jenv management
-function _initJenv {
-    export PATH="$HOME/.jenv/bin:$PATH"
-    eval "$(jenv init -)"
-    # jenv enable-plugin export > /dev/null
-}
-_initJenv
 
 # extra paths
 export PATH=$HOME/.local/bin:$PATH
