@@ -3,7 +3,7 @@
 # https://github.com/caesar0301/cool-dotfiles/blob/main/lib/shmisc.sh
 #
 # Copyright (c) 2024, Xiaming Chen
-# License: GPLv3
+# License: MIT
 
 # colored messages
 function warn {
