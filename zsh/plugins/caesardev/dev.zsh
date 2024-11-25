@@ -104,9 +104,16 @@ function _initJenv {
     # jenv enable-plugin export > /dev/null
 }
 
+function _initRos {
+  if [ -e "$HOME/.roswell" ]; then
+    export PATH="$HOME/.roswell/bin:$PATH"
+  fi
+}
+
 _initPyenv
 _initJenv
 _initGoenv
 _initRustEnv
 _initCuda
 _initHaskellEnv
+_initRos
