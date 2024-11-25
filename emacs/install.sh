@@ -15,7 +15,7 @@ QUICKLISP_HOME=${HOME}/quicklisp
 EM_CONFIG=${HOME}/.emacs.d
 CLCMD="sbcl --load"
 
-source $THISDIR/../lib/bash_utils.sh
+source $THISDIR/../lib/shmisc.sh
 
 function usage {
   echo "Usage: install.sh [-f] [-s] [-e]"

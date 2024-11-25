@@ -5,7 +5,7 @@
 # Maintainer: xiaming.chen
 #############################################
 THISDIR=$(dirname $(realpath $0))
-source $THISDIR/lib/bash_utils.sh
+source $THISDIR/lib/shmisc.sh
 
 function usage {
   echo "Usage: install_dotfiles.sh [-f] [-s] [-e]"
@@ -13,6 +13,16 @@ function usage {
   echo "  -s soft linke install"
   echo "  -e install dependencies"
   echo "  -c cleanse install"
+}
+
+function start_install_msg {
+  info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+  info "START INSTALLING $1"
+}
+
+function finish_install_msg {
+  info "FINISH INSTALLING $1"
+  info "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 }
 
 components=(tmux zsh nvim vifm emacs lisp rlwrap misc)

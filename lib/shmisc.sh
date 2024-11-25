@@ -1,4 +1,9 @@
-# Simple functionality wrapper to speed up daily dev.
+#!/bin/bash
+# Handy shell utilities to speed up development.
+# https://github.com/caesar0301/cool-dotfiles/blob/main/lib/shmisc.sh
+#
+# Copyright (c) 2024, Xiaming Chen
+# License: GPLv3
 
 # colored messages
 function warn {
@@ -19,46 +24,20 @@ function error {
   printf "${RED}[%s] [ERROR] %s${NC}\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
 }
 
-function start_install_msg {
-  info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-  info "START INSTALLING $1"
+# get absolute path of current file
+function abspath {
+  echo $(dirname $(realpath $0))
 }
 
-function finish_install_msg {
-  info "FINISH INSTALLING $1"
-  info "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+function absfilepath {
+  echo $(cd ${0%/*} && echo $PWD/${0##*/})
 }
 
-# Open file window
-function openw {
-  KNAME=$(uname -s)
-  KREL=$(uname -r)
-  EXE='nautilus'
-  if [[ $KNAME == "Linux" ]]; then
-    if [[ $KREL =~ "microsoft-standard" ]]; then
-      EXE='explorer.exe'
-    fi
-  elif [[ $KNAME == "Darwin" ]]; then
-    EXE='open'
-  fi
-  $EXE $@
-}
-
-# Grep and replace
-function greprp {
-  if [ $# -eq 2 ]; then
-    spath='.'
-    oldstr=$1
-    newstr=$2
-  elif [ $# -eq 3 ]; then
-    spath=$1
-    oldstr=$2
-    newstr=$3
-  else
-    echo "Invalid param number. Usage: greprp [spath] oldstr newstr"
-    exit 1
-  fi
-  grep -r "$oldstr" $spath | awk -F: '{print $1}' | uniq | xargs -i sed -i -E "s|$oldstr|$newstr|g" {}
+# make trapped temp dir
+function get_temp_dir {
+  TEMP_DIR="$(mktemp -d)"
+  trap 'rm -rf ${TEMP_DIR}' EXIT
+  echo ${TEMP_DIR}
 }
 
 # check command existence
@@ -83,21 +62,6 @@ function check_sudo_access {
   else
     error "sudo access not granted" && exit 1
   fi
-}
-
-# get absolute path of current file
-function abspath {
-  echo $(dirname $(realpath $0))
-}
-function absfilepath {
-  echo $(cd ${0%/*} && echo $PWD/${0##*/})
-}
-
-# make trapped temp dir
-function get_temp_dir {
-  TEMP_DIR="$(mktemp -d)"
-  trap 'rm -rf ${TEMP_DIR}' EXIT
-  echo ${TEMP_DIR}
 }
 
 # random uuid
@@ -144,7 +108,7 @@ function current_shell_config {
   echo $shellconfig
 }
 
-function latest_release {
+function latest_github_release {
   local repo=$1
   local proj=$2
   link=$(curl -s https://api.github.com/repos/$repo/$proj/releases/latest | grep browser_download_url | cut -d '"' -f 4)

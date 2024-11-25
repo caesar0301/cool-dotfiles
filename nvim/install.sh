@@ -11,7 +11,7 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 SHFMT_VERSION="v3.7.0"
 
 # load common utils
-source $THISDIR/../lib/bash_utils.sh
+source $THISDIR/../lib/shmisc.sh
 
 function install_neovim {
   info "Installing neovim..."

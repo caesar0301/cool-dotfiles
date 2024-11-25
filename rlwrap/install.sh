@@ -9,7 +9,7 @@ XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 RLWRAP_HOME=${XDG_CONFIG_HOME}/rlwrap
 
-source $THISDIR/../lib/bash_utils.sh
+source $THISDIR/../lib/shmisc.sh
 
 function usage {
   echo "Usage: install.sh [-f] [-s] [-e]"

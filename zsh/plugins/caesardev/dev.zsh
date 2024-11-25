@@ -16,6 +16,37 @@ function local-http-server {
     fi
 }
 
+# Open file window
+function openw {
+  KNAME=$(uname -s)
+  KREL=$(uname -r)
+  EXE='nautilus'
+  if [[ $KNAME == "Linux" ]]; then
+    if [[ $KREL =~ "microsoft-standard" ]]; then
+      EXE='explorer.exe'
+    fi
+  elif [[ $KNAME == "Darwin" ]]; then
+    EXE='open'
+  fi
+  $EXE $@
+}
+
+# Grep and replace
+function greprp {
+  if [ $# -eq 2 ]; then
+    spath='.'
+    oldstr=$1
+    newstr=$2
+  elif [ $# -eq 3 ]; then
+    spath=$1
+    oldstr=$2
+    newstr=$3
+  else
+    echo "Invalid param number. Usage: greprp [spath] oldstr newstr"
+    exit 1
+  fi
+  grep -r "$oldstr" $spath | awk -F: '{print $1}' | uniq | xargs -i sed -i -E "s|$oldstr|$newstr|g" {}
+}
 
 function _initGoenv {
     GOROOT=${GOROOT:-/usr/local/go}

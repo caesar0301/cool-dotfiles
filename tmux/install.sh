@@ -10,7 +10,7 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 TMUX_VERSION=3.5a
 
-source $THISDIR/../lib/bash_utils.sh
+source $THISDIR/../lib/shmisc.sh
 
 function usage {
   echo "Usage: install.sh [-f] [-s] [-e]"

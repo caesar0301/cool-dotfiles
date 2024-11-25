@@ -10,7 +10,7 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 ZSH_VERSION="5.8"
 
-source $THISDIR/../lib/bash_utils.sh
+source $THISDIR/../lib/shmisc.sh
 
 function install_zsh {
   info "Installing zsh..."
