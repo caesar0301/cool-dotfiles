@@ -11,9 +11,8 @@ QUICKLISP_HOME=${HOME}/quicklisp
 
 ## Uncomment to respect XDG config. Here we use
 ## .emacs.d to be compatible with ACL emacs-lisp interface.
-#EM_CONFIG=${XDG_CONFIG_HOME}/emacs
-EM_CONFIG=${HOME}/.emacs.d
-CLCMD="sbcl --load"
+EM_CONFIG=${XDG_CONFIG_HOME}/emacs
+#EM_CONFIG=${HOME}/.emacs.d
 
 source $THISDIR/../lib/shmisc.sh
 
@@ -25,47 +24,21 @@ function usage {
   echo "  -c cleanse install"
 }
 
-function detect_cl_cmd {
-  # SBCL
-  if checkcmd sbcl; then
-    CLCMD="sbcl --load"
-    return
-  fi
-  # Allegro CL
-  if checkcmd alisp; then
-    CLCMD="alisp -L"
-    return
-  fi
-  error "any CL distribution not found"
-  exit 1
-}
-
-function install_quicklisp {
-  info "Install quicklisp..."
-  if [ -e $QUICKLISP_HOME ]; then
-    warn "quicklisp already installed at $QUICKLISP_HOME"
-    return
-  fi
-  detect_cl_cmd
-  curl -o /tmp/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp
-  $CLCMD "$THISDIR/install_quicklisp.lisp"
-}
-
 function handle_emacs {
   mkdir_nowarn $EM_CONFIG
   if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/base $EM_CONFIG/
+    ln -sf $THISDIR/lisp $EM_CONFIG/
     ln -sf $THISDIR/plugins $EM_CONFIG/
     ln -sf $THISDIR/init.el $EM_CONFIG/
   else
-    cp -r $THISDIR/base $EM_CONFIG/
+    cp -r $THISDIR/lisp $EM_CONFIG/
     cp -r $THISDIR/plugins $EM_CONFIG/
     cp $THISDIR/init.el $EM_CONFIG/
   fi
 }
 
 function cleanse_emacs {
-  rm -rf $EM_CONFIG/base
+  rm -rf $EM_CONFIG/lisp
   rm -rf $EM_CONFIG/plugins
   rm -rf $EM_CONFIG/init.el
   info "All emacs cleansed!"
@@ -84,6 +57,5 @@ while getopts fsech opt; do
   esac
 done
 
-install_quicklisp
 handle_emacs
 info "Emacs installed successfully!"
