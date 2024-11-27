@@ -1,3 +1,6 @@
+;;---------
+;; markdown
+;;---------
 (require 'markdown-mode)
 (setq auto-mode-alist
       (append
@@ -7,6 +10,9 @@
 	     )
        auto-mode-alist))
 
+;;-------
+;; yaml
+;;-------
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
