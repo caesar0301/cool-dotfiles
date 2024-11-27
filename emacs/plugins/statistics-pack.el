@@ -4,6 +4,7 @@
 ;;ESS will not print the evaluated commands, also speeds
 ;;up the evaluation
 (setq ess-eval-visibly-p nil)
+
 ;;not prompted each time starting an interactive R session
 (setq ess-ask-for-ess-directory nil)
 
@@ -31,8 +32,4 @@
                       (lambda ()
                         (ess-nuke-trailing-whitespace)))))
 
-;; (setq ess-nuke-trailing-whitespace-p 'ask)
-;; or even
-;; (setq ess-nuke-trailing-whitespace-p t)
-
-(provide 'r-settings)
+(provide 'statistics-pack)

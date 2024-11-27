@@ -1,7 +1,3 @@
-;-----------;
-;;; LaTeX ;;;
-;-----------;
-
 (require 'zotero)
 (require 'auto-complete-auctex)
 (load "auctex.el" nil t t)
@@ -80,4 +76,4 @@
                     (output-pdf "Evince")
                     (output-html "xdg-open"))))))
 
-(provide 'latex-settings)
+(provide 'academic-pack)

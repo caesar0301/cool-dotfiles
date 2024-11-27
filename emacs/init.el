@@ -1,25 +1,92 @@
 ;;; emacs-config -- my emacs configuration
 ;;;
 ;;; By Xiaming Chen <chenxm35@gmail.com>
-(setq emacs-config-dir "~/.config/emacs")
+(setq user-emacs-directory "~/.config/emacs/")
 
 ;; Global options
 (setq enable-theme-pack t)
-(setq enable-ide-pack t)
 (setq enable-autocomplete-pack t)
 (setq enable-statistics-pack t)
 (setq enable-marklang-pack t)
 (setq enable-academic-pack nil)
-(setq enable-lang-python t)
-(setq enable-lang-lisp t)
+(setq enable-lisp-pack t)
 
-;; Loading paths
-(add-to-list 'load-path (concat emacs-config-dir "/plugins"))
-(add-to-list 'load-path (concat emacs-config-dir "/lisp"))
-(setq custom-file (concat emacs-config-dir "/lisp/custom.el"))
-(load custom-file)
+;; Extra load-path
+(dolist (directory '("lisp" "plugins"))
+  (let ((default-directory (expand-file-name directory user-emacs-directory)))
+    (setq load-path
+          (append
+           (let ((load-path (copy-sequence load-path))) ; Shadow
+             (add-to-list 'load-path default-directory)
+             (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+                 (normal-top-level-add-subdirs-to-load-path))
+             load-path)
+           load-path))))
+
+;; Redirect custom-file and custom functions
+(let ((custom-file (expand-file-name "lisp/custom.el" user-emacs-directory)))
+     (when (file-exists-p custom-file)
+       (load custom-file)))
 (require 'custom-functions)
-(require 'melpa-settings)
+
+;;--------------------------------------------
+;;  Configure MELPA
+;;--------------------------------------------
+
+;; Install melpa per se.
+(require 'package)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
+;; Configure use-package
+(if (not (package-installed-p 'use-package))
+  (progn
+    (when (not package-archive-contents)
+      (package-refresh-contents))
+    (package-install 'use-package)))
+(require 'use-package)
+
+;;; theme
+(when enable-theme-pack
+  (package-install 'zenburn-theme)
+  (package-install 'all-the-icons)
+  (package-install 'projectile)
+  (package-install 'neotree)
+  (require 'theme-pack))
+
+;;; autocomple
+(when enable-autocomplete-pack
+  (package-install 'auto-complete)
+  (package-install 'flycheck)
+  (package-install 'helm)
+  (package-install 'helm-descbinds)
+  (package-install 'yasnippet)
+  (require 'autocomplete-pack))
+
+;;; statistics
+(when enable-statistics-pack
+  (package-install 'ess)
+  (package-install 'r-autoyas)
+  (require 'statistics-pack))
+
+(when enable-marklang-pack
+  (package-install 'markdown-mode)
+  (package-install 'yaml-mode)
+  (require 'marklang-pack))
+
+;;; academic writings
+(when enable-academic-pack
+  (package-install 'auctex)
+  (package-install 'auto-complete-auctex)
+  (package-install 'latex-preview-pane)
+  (package-install 'latex-math-preview)
+  (package-install 'zotelo)
+  (require 'acacemic-pack))
+
+;;; lisp
+(when enable-lisp-pack
+  (package-install 'slime)
+  (require 'lisp-pack))
 
 ;;--------------------------------------------
 ;; SYSTEM
@@ -128,14 +195,12 @@
 ;; set default font size
 (set-face-attribute 'default nil :height 120)
 
-;;---------
-;; Theme
-;;---------
-(load-theme 'zenburn t)
-
-;;---------
+;;--------------------------------------------
 ;; Windows
-;;---------
+;;--------------------------------------------
+
+;; theme
+(load-theme 'zenburn t)
 
 ;; don't show the tool bar
 (require 'tool-bar)

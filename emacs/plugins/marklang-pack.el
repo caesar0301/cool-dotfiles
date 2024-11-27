@@ -1,6 +1,11 @@
-;---------------;
-;;; yaml mode ;;;
-;---------------;
+(require 'markdown-mode)
+(setq auto-mode-alist
+      (append
+       (list '("\\.text" . markdown-mode)
+	     '("\\.md" . markdown-mode)
+	     '("\\.markdown" . markdown-mode)
+	     )
+       auto-mode-alist))
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -11,4 +16,4 @@
              (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 (put 'upcase-region 'disabled nil)
 
-(provide 'yaml-settings)
+(provide 'marklang-pack)

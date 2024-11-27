@@ -16,4 +16,4 @@
           (lambda ()
             (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup)))
 
-(provide 'lisp-settings)
+(provide 'lisp-pack)
