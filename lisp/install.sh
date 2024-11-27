@@ -18,6 +18,12 @@ function usage {
   echo "  -c cleanse install"
 }
 
+function install_deps {
+  if ! checkcmd ros; then
+    warn "roswell not installed, visit https://roswell.github.io/Installation.html"
+  fi
+}
+
 function handle_lisp {
   if [ x$SOFTLINK == "x1" ]; then
     ln -sf $THISDIR/dot-clinit.cl $HOME/.clinit.cl
@@ -47,5 +53,6 @@ while getopts fsech opt; do
   esac
 done
 
+install_deps
 handle_lisp
 info "lisp installed successfully!"
