@@ -109,13 +109,15 @@ function _initLispEnv {
   if [ -e "$HOME/.roswell" ]; then
     export PATH="$HOME/.roswell/bin:$PATH"
   fi
-
   # customize quicklisp home
   export QUICKLISP_HOME=${HOME}/quicklisp
-
   # allegro CL
   local ACL_HOME=${HOME}/.local/share/acl
   export PATH=${ACL_HOME}:$PATH
+  # start with rlwrap
+  alias sbcl="rlwrap -f $HOME/.config/rlwrap/lisp_completions --remember sbcl"
+  alias alisp="rlwrap -f $HOME/.config/rlwrap/lisp_completions --remember alisp"
+  alias mlisp="rlwrap -f $HOME/.config/rlwrap/lisp_completions --remember mlisp"
 }
 
 _initPyenv
