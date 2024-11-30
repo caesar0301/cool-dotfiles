@@ -9,6 +9,9 @@ XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 SHFMT_VERSION="v3.7.0"
+GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
+PYPI_OPTIONS="-i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com"
+NPM_OPTIONS="--prefer-offline --no-audit --progress=false"
 
 # load common utils
 source $THISDIR/../lib/shmisc.sh
@@ -21,19 +24,6 @@ function install_neovim {
     curl -k -L --progress-bar $link | tar xvz --strip-components=1 -C $HOME/.local
   else
     info "neovim binary already installed"
-  fi
-}
-
-# Required by nvim-jdtls
-function install_jdt_language_server {
-  info "Installing jdt-language-server to $dpath..."
-  jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
-  dpath=$HOME/.local/share/jdt-language-server
-  if [ ! -e $dpath/bin/jdtls ]; then
-    mkdir_nowarn $dpath >/dev/null
-    curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
-  else
-    info "$dpath/bin/jdtls already exists"
   fi
 }
 
@@ -54,6 +44,19 @@ function install_hack_nerd_font {
     fc-cache -f
   else
     info "Hack Nerd Font already installed"
+  fi
+}
+
+# Required by nvim-jdtls
+function install_jdt_language_server {
+  info "Installing jdt-language-server to $dpath..."
+  jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
+  dpath=$HOME/.local/share/jdt-language-server
+  if [ ! -e $dpath/bin/jdtls ]; then
+    mkdir_nowarn $dpath >/dev/null
+    curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
+  else
+    info "$dpath/bin/jdtls already exists"
   fi
 }
 
@@ -93,61 +96,45 @@ function install_formatter_utils {
   info "Installing file format dependencies..."
 
   install_google_java_format
+  if ! checkcmd shfmt; then install_shfmt; fi
+  if ! checkcmd yamlfmt; then install_yamlfmt; fi
 
-  # pip
+  # formatters on pip
   piplibs=(pynvim black sqlparse cmake_format)
   if checkcmd pip; then
     if [[ ${#piplibs[@]} > 0 ]]; then
       info "Installing pip deps: $piplibs"
-      pip install -q -U -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com ${piplibs[@]}
+      pip install ${PYPI_OPTIONS} -q -U ${piplibs[@]}
     fi
   else
     warn "Command pip not found, install and try again."
   fi
 
-  # npm
+  # formatters on npm
   npmlibs=(neovim)
-  if ! checkcmd remark; then
-    npmlibs+=(remark-cli)
-  fi
-  if ! checkcmd luafmt; then
-    npmlibs+=(lua-fmt)
-  fi
-  if ! checkcmd yaml-language-server; then
-    npmlibs+=(yaml-language-server)
-  fi
-  if ! checkcmd js-beautify; then
-    npmlibs+=(js-beautify)
-  fi
+  if ! checkcmd remark; then npmlibs+=(remark-cli); fi
+  if ! checkcmd luafmt; then npmlibs+=(lua-fmt); fi
+  if ! checkcmd yaml-language-server; then npmlibs+=(yaml-language-server); fi
+  if ! checkcmd js-beautify; then npmlibs+=(js-beautify); fi
   if checkcmd npm; then
     if [[ ${#npmlibs[@]} > 0 ]]; then
       info "Installing npm deps: $npmlibs"
       npm config set registry https://registry.npmmirror.com
-      #npm config set registry http://mirrors.cloud.tencent.com/npm/
-      check_sudo_access && sudo npm install -g ${npmlibs[@]}
+      check_sudo_access && sudo npm install ${NPM_OPTIONS} -g ${npmlibs[@]}
     fi
   else
     warn "Command npm not found, install and try again."
-  fi
-
-  # shfmt
-  if ! checkcmd shfmt; then
-    install_shfmt
-  fi
-
-  # yamlfmt
-  if ! checkcmd yamlfmt; then
-    install_yamlfmt
   fi
 }
 
 function install_lsp_deps {
   info "Install LSP dependencies..."
+
   piplibs=(pyright cmake-language-server)
   if checkcmd pip; then
     if [[ ${#piplibs[@]} > 0 ]]; then
       info "Installing pip deps: $piplibs"
-      pip install -q -U -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com ${piplibs[@]}
+      pip install ${PYPI_OPTIONS} -q -U ${piplibs[@]}
     fi
   else
     warn "Command pip not found, install and try again."
@@ -160,9 +147,9 @@ function install_lsp_deps {
     fi
   fi
 
-  info "Install gopls"
+  info "Install gopls..."
   if checkcmd go; then
-    GOPROXY="https://mirrors.aliyun.com/goproxy/,direct" go install golang.org/x/tools/gopls@latest
+    go install golang.org/x/tools/gopls@latest
   else
     warn "Go not found in PATH, skip to install gotags"
   fi
@@ -201,29 +188,6 @@ function install_ctags_and_deps {
   fi
 }
 
-function install_all_deps {
-  install_lsp_deps
-  install_jdt_language_server
-  install_hack_nerd_font # required by nvim-web-devicons
-  install_formatter_utils
-  install_fzf
-  install_ctags_and_deps
-  check_ripgrep
-}
-
-function _load_custom_extensions {
-  if [ -e ${ZSH_PLUGIN_DIR} ]; then
-    # Load plugins
-    for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
-      zinit load $plugin
-    done
-    # Load plain zsh scripts
-    for i in $(find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"); do
-      zinit snippet $i
-    done
-  fi
-}
-
 function handle_ctags {
   local ctags_home=$HOME/.ctags.d
   mkdir_nowarn $ctags_home
@@ -251,6 +215,16 @@ function handle_neovim {
   else
     cp -r $THISDIR $XDG_CONFIG_HOME/
   fi
+}
+
+function install_all_deps {
+  install_lsp_deps
+  install_jdt_language_server
+  install_hack_nerd_font # required by nvim-web-devicons
+  install_formatter_utils
+  install_fzf
+  install_ctags_and_deps
+  check_ripgrep
 }
 
 function post_install {
