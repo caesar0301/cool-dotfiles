@@ -43,10 +43,7 @@ function install_useful_libs {
 
 function install_allegro_cl {
   info "Installing Allegro CL Express Edition..."
-  if checkcmd alisp; then
-    info "Allegro CL already installed"
-    return 0
-  fi
+
   # FIXME: to support macos
   local DLINK="https://franz.com/ftp/pub/acl11.0express/linuxamd64.64/acl11.0express-linux-x64.tbz2"
   #https://franz.com/ftp/pub/acl11.0express/macarm64.64/acl11.0express-macos-arm64.dmg
@@ -61,6 +58,7 @@ function install_allegro_cl {
     mkdir_nowarn $ACL_HOME
     tar --strip-components=1 -xjf /tmp/$TARNAME -C $ACL_HOME
   fi
+
   warn "You should add ${ACL_HOME} to your PATH for convinience"
 
   # ACL modern mode

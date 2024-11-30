@@ -110,7 +110,10 @@ function _initLispEnv {
     export PATH="$HOME/.roswell/bin:$PATH"
   fi
 
-  # Allegro CL
+  # customize quicklisp home
+  export QUICKLISP_HOME=${HOME}/quicklisp
+
+  # allegro CL
   local ACL_HOME=${HOME}/.local/share/acl
   export PATH=${ACL_HOME}:$PATH
 }
