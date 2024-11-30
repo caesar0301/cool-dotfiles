@@ -38,7 +38,7 @@ function install_quicklisp {
 function install_useful_libs {
   info "Installing lisp libraries via quicklisp..."
   libs=(quicksys alexandria)
-  sbcl --eval "(ql:quickload '(\"alexandria\"))" --quit
+  sbcl --eval "(ql:quickload '(\"quicklisp-slime-helper\" \"alexandria\"))" --quit
 }
 
 function install_allegro_cl {
