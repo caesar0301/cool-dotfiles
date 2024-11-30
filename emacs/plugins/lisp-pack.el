@@ -1,8 +1,11 @@
+;;; lisp-pack --- Configure LISP dev env
+;;; Commentary:
+;;; Code:
 (require 'slime)
 
 ;; configure SBCL as the Lisp program for SLIME.
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
+(setq inferior-lisp-program "mlisp")
 
 (slime-setup '(slime-fancy slime-quicklisp slime-asdf))
 (add-hook 'slime-load-hook

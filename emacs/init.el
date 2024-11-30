@@ -236,6 +236,12 @@
   (concat "/usr/texbin" ":"
     (getenv "PATH")))
 
+;;------------
+;; Keybindings
+;;------------
+
+(global-set-key [f1] 'help-command)
+
 ;;---------
 ;; Spelling
 ;;---------
