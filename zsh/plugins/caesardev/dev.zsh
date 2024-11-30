@@ -104,10 +104,15 @@ function _initJenv {
     # jenv enable-plugin export > /dev/null
 }
 
-function _initRos {
+function _initLispEnv {
+  # roswell
   if [ -e "$HOME/.roswell" ]; then
     export PATH="$HOME/.roswell/bin:$PATH"
   fi
+
+  # Allegro CL
+  local ACL_HOME=${HOME}/.local/share/acl
+  export PATH=${ACL_HOME}:$PATH
 }
 
 _initPyenv
@@ -116,4 +121,4 @@ _initGoenv
 _initRustEnv
 _initCuda
 _initHaskellEnv
-_initRos
+_initLispEnv

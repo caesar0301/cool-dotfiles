@@ -20,7 +20,7 @@
 
 ;;; quicklisp
 #-quicklisp
-(let ((quicklisp-init (merge-pathnames ".roswell/lisp/quicklisp/setup.lisp"
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
                                        (user-homedir-pathname))))
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))

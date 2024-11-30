@@ -7,12 +7,11 @@
 THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-QUICKLISP_HOME=${HOME}/quicklisp
 
 ## Uncomment to respect XDG config. Here we use
 ## .emacs.d to be compatible with ACL emacs-lisp interface.
 EM_CONFIG=${XDG_CONFIG_HOME}/emacs
-#EM_CONFIG=${HOME}/.emacs.d
+QUICKLISP_HOME=${QUICKLISP_HOME:-${HOME}/quicklisp}
 
 source $THISDIR/../lib/shmisc.sh
 
@@ -22,6 +21,12 @@ function usage {
   echo "  -s soft linke install"
   echo "  -e install dependencies"
   echo "  -c cleanse install"
+}
+
+function check_slime_deps {
+  if [ ! -e ${QUICKLISP_HOME}/slime-helper.el ];
+    warn "quicklisp-slime-helper not found"
+  fi
 }
 
 function handle_emacs {
@@ -57,5 +62,6 @@ while getopts fsech opt; do
   esac
 done
 
+check_slime_deps
 handle_emacs
 info "Emacs installed successfully!"

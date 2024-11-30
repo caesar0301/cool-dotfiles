@@ -7,6 +7,8 @@
 THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+QUICKLISP_HOME=${QUICKLISP_HOME:-${HOME}/quicklisp}
+ACL_HOME=${XDG_DATA_HOME}/acl
 
 source $THISDIR/../lib/shmisc.sh
 
@@ -18,9 +20,62 @@ function usage {
   echo "  -c cleanse install"
 }
 
-function install_deps {
-  if ! checkcmd ros; then
-    warn "roswell not installed, visit https://roswell.github.io/Installation.html"
+function install_quicklisp {
+  info "Installing quicklisp..."
+  if ! checkcmd sbcl; then
+    warn "sbcl not found, install and retry"
+    return 1
+  fi
+  if [ -e ${QUICKLISP_HOME}/setup.lisp ]; then
+    warn "quicklisp alreay installed at ${QUICKLISP_HOME}"
+  else
+    curl -s https://beta.quicklisp.org/quicklisp.lisp -o /tmp/quicklisp.lisp
+    sbcl --load /tmp/quicklisp.lisp --eval '(quicklisp-quickstart:install)' --quit
+    rm -rf /tmp/quicklisp.lisp
+  fi
+}
+
+function install_useful_libs {
+  info "Installing lisp libraries via quicklisp..."
+  libs=(quicksys alexandria)
+  sbcl --eval "(ql:quickload '(\"alexandria\"))" --quit
+}
+
+function install_allegro_cl {
+  info "Installing Allegro CL Express Edition..."
+  if checkcmd alisp; then
+    info "Allegro CL already installed"
+    return 0
+  fi
+  # FIXME: to support macos
+  local DLINK="https://franz.com/ftp/pub/acl11.0express/linuxamd64.64/acl11.0express-linux-x64.tbz2"
+  #https://franz.com/ftp/pub/acl11.0express/macarm64.64/acl11.0express-macos-arm64.dmg
+  #https://franz.com/ftp/pub/acl11.0express/macosx86-64.64/acl11.0express-macos-x64.dmg
+  local TARNAME=$(basename $DLINK)
+  if [ -e $ACL_HOME/alisp ]; then
+    warn "ACL already installed at ${ACL_HOME}/alisp"
+  else
+    if [ ! -e /tmp/$TARNAME ]; then
+      curl $DLINK -o /tmp/$TARNAME
+    fi
+    mkdir_nowarn $ACL_HOME
+    tar --strip-components=1 -xjf /tmp/$TARNAME -C $ACL_HOME
+  fi
+  warn "You should add ${ACL_HOME} to your PATH for convinience"
+
+  # ACL modern mode
+  if [ -e $ACL_HOME/mlisp ]; then
+    warn "ACL modern mode executable (mlisp) already exists"
+  else
+    info "Compiling ACL modern mode executable (mlisp)..."
+    $ACL_HOME/alisp <<EOF
+;; mlisp:
+(progn
+  (build-lisp-image "sys:mlisp.dxl" :case-mode :case-sensitive-lower
+                    :include-ide nil :restart-app-function nil)
+  (when (probe-file "sys:mlisp") (delete-file "sys:mlisp"))
+  (sys:copy-file "sys:alisp" "sys:mlisp"))
+EOF
   fi
 }
 
@@ -53,6 +108,8 @@ while getopts fsech opt; do
   esac
 done
 
-install_deps
+install_quicklisp
+install_useful_libs
+install_allegro_cl
 handle_lisp
 info "lisp installed successfully!"

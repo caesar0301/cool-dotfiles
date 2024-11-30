@@ -25,7 +25,7 @@ function finish_install_msg {
   info "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 }
 
-components=(tmux zsh nvim vifm emacs lisp rlwrap misc)
+components=(tmux zsh nvim vifm lisp emacs rlwrap misc)
 for key in "${components[@]}"; do
   start_install_msg $key
   sh $THISDIR/$key/install.sh $@
