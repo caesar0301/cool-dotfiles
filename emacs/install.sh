@@ -24,8 +24,14 @@ function usage {
 }
 
 function check_slime_deps {
-  if [ ! -e ${QUICKLISP_HOME}/slime-helper.el ];
+  if [ ! -e ${QUICKLISP_HOME}/slime-helper.el ]; then
     warn "quicklisp-slime-helper not found"
+  fi
+}
+
+function check_emacs_deps {
+  if ! checkcmd aspell; then
+    warn "aspell not found to enable spell check"
   fi
 }
 
@@ -63,5 +69,6 @@ while getopts fsech opt; do
 done
 
 check_slime_deps
+check_emacs_deps
 handle_emacs
 info "Emacs installed successfully!"
