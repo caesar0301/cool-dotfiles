@@ -10,6 +10,7 @@
 (setq enable-marklang-pack t)
 (setq enable-academic-pack nil)
 (setq enable-lisp-pack t)
+(setq enable-ai-pack t)
 
 ;; Extra load-path
 (dolist (directory '("lisp" "plugins"))
@@ -94,6 +95,11 @@
   (package-install 'paredit)
   (package-install 'rainbow-delimiters)
   (require 'lisp-pack))
+
+;;; AI assistant
+(when enable-ai-pack
+  (package-install 'gptel)
+  (require 'ai-pack))
 
 ;;--------------------------------------------
 ;; Configure EMACS
