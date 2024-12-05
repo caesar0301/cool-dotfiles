@@ -169,7 +169,7 @@
 ;;------
 
 ;; set default font size
-(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :height 140)
 
 ;; text decoration
 (require 'font-lock)
