@@ -25,9 +25,9 @@
            load-path))))
 
 ;; Redirect custom-file and custom functions
-(let ((custom-file (expand-file-name "lisp/custom.el" user-emacs-directory)))
-     (when (file-exists-p custom-file)
-       (load custom-file)))
+(setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 (require 'custom-functions)
 
 ;;--------------------------------------------
@@ -246,6 +246,30 @@
   (concat "/usr/texbin" ":"
     (getenv "PATH")))
 
+
+;; optimize auto backup
+(defvar --backup-directory (concat user-emacs-directory "autosave"))
+(if (not (file-exists-p --backup-directory))
+        (make-directory --backup-directory t))
+(setq backup-directory-alist `(("." . ,--backup-directory)))
+(setq make-backup-files t
+      backup-by-copying t
+      version-control t
+      delete-old-versions t
+      delete-by-moving-to-trash t
+      kept-old-versions 6
+      kept-new-versions 9
+      auto-save-default t
+      auto-save-timeout 20
+      auto-save-interval 200
+      )
+(setq auto-mode-alist
+      (append
+       (list
+        '("\\.\\(vcf\\|gpg\\)$" . sensitive-minor-mode)
+        )
+       auto-mode-alist))
+
 ;;------------
 ;; Keybindings
 ;;------------
@@ -290,37 +314,4 @@
        TeX-mode-hook
        ))
   (add-hook
-   hook (lambda () (flyspell-mode 1))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(zenburn-theme projectile all-the-icons darcula-theme solarized-theme helm ess yasnippet auto-complete cmake-mode zotelo yaml-mode use-package slime scss-mode r-autoyas neotree matlab-mode markdown-mode lispy jedi java-snippets helm-descbinds flycheck el-autoyas auto-complete-auctex auctex))
- '(safe-local-variable-values
-   '((package . asdf)
-     (base . 10)
-     (package . gx)
-     (syntax . common-lisp)
-     (c-file-offsets)
-     (innamespace . 0)
-     (substatement-open . 0)
-     (c . c-lineup-dont-change)
-     (inextern-lang . 0)
-     (comment-intro . c-lineup-dont-change)
-     (arglist-cont-nonempty . c-lineup-arglist)
-     (block-close . 0)
-     (statement-case-intro . ++)
-     (brace-list-intro . ++)
-     (cpp-define-intro . +)
-     (c-auto-align-backslashes)
-     (whitespace-style quote
-                       (face trailing empty tabs))
-     (whitespace-action))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+   hook (lambda () (flyspell-mode 0))))

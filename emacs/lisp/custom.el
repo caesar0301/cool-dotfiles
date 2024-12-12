@@ -23,9 +23,8 @@
      (cpp-define-intro . +)
      (c-auto-align-backslashes)
      (whitespace-style quote
-		       (face trailing empty tabs))
+                       (face trailing empty tabs))
      (whitespace-action))))
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
