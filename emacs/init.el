@@ -53,13 +53,17 @@
 (package-install 'zenburn-theme)
 (package-install 'all-the-icons)
 
+;;; efficiency
+(package-install 'drag-stuff)
+(package-install 'multiple-cursors)
+
 ;;; file manager
 (when enable-filemanager-pack
   (package-install 'projectile)
   (package-install 'neotree)
   (require 'filemanager-pack))
 
-;;; autocomple
+;;; autocomplete
 (when enable-autocomplete-pack
   (package-install 'auto-complete)
   (package-install 'flycheck)
@@ -122,7 +126,7 @@
 ;; don't blink the cursor
 (blink-cursor-mode 0)
 
-;; show line and colume number
+;; show line and column number
 (setq linum-format "%d ")
 (column-number-mode 1)
 
@@ -169,7 +173,7 @@
 ;;------
 
 ;; set default font size
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 160)
 
 ;; text decoration
 (require 'font-lock)
@@ -246,7 +250,26 @@
 ;; Keybindings
 ;;------------
 
+;; help shortcut
 (global-set-key [f1] 'help-command)
+
+;; duplicate whole line by C-d
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
+(global-set-key (kbd "C-d") 'duplicate-line)
+
+;; drag-stuff shortcuts
+(drag-stuff-global-mode 1)
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
 ;;---------
 ;; Spelling
