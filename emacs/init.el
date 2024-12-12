@@ -267,6 +267,7 @@
 
 ;; drag-stuff shortcuts
 (drag-stuff-global-mode 1)
+(drag-stuff-define-keys)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
