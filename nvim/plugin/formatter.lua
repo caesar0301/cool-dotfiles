@@ -88,17 +88,6 @@ formatter.setup {
         toml = {
             require("formatter.filetypes.toml").taplo
         },
-        markdown = {
-            function()
-                return {
-                    exe = "remark",
-                    args = {
-                        "--no-color",
-                    },
-                    stdin = true
-                }
-            end
-        },
         -- Use the special "*" filetype for defining formatter configurations on
         -- any filetype
         ["*"] = {

@@ -112,7 +112,6 @@ function install_formatter_utils {
 
   # formatters on npm
   npmlibs=(neovim)
-  if ! checkcmd remark; then npmlibs+=(remark-cli); fi
   if ! checkcmd luafmt; then npmlibs+=(lua-fmt); fi
   if ! checkcmd yaml-language-server; then npmlibs+=(yaml-language-server); fi
   if ! checkcmd js-beautify; then npmlibs+=(js-beautify); fi
