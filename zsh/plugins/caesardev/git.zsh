@@ -11,7 +11,6 @@ alias grsh="git reset --soft HEAD^ && git reset --hard HEAD"
 alias gsrh="git submodule foreach --recursive git reset --hard"
 alias gsur="git submodule update --init --recursive"
 
-alias git-quick-update="git add -u && git commit -m \"Quick update\" && git push"
 alias git-submodule-latest="git submodule foreach git pull origin master"
 
 function git-reset-recurse-submodules {
@@ -40,4 +39,15 @@ function git-prune-submodule {
     git submodule deinit -f -- $SUBMODULE
     rm -rf .git/modules/$SUBMODULE
     git rm -f $SUBMODULE
+}
+
+function git-quick-update {
+   # Get the list of modified files
+   modified_files=$(git diff --cached --name-only)
+   # Generate a commit message
+   commit_message="Update: "
+   for file in $modified_files; do
+       commit_message="$commit_message $file"
+   done
+   git add -u && git commit -m \"${commit_message}\" && git push
 }

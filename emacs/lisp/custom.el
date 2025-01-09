@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(zenburn-theme projectile all-the-icons darcula-theme solarized-theme helm ess yasnippet auto-complete cmake-mode zotelo yaml-mode use-package slime scss-mode r-autoyas neotree matlab-mode markdown-mode lispy jedi java-snippets helm-descbinds flycheck el-autoyas auto-complete-auctex auctex))
+   '(drag-stuff zenburn-theme projectile all-the-icons darcula-theme solarized-theme helm ess yasnippet auto-complete cmake-mode zotelo yaml-mode use-package slime scss-mode r-autoyas neotree matlab-mode markdown-mode lispy jedi java-snippets helm-descbinds flycheck el-autoyas auto-complete-auctex auctex))
  '(safe-local-variable-values
    '((package . asdf)
      (base . 10)
@@ -23,7 +23,7 @@
      (cpp-define-intro . +)
      (c-auto-align-backslashes)
      (whitespace-style quote
-                       (face trailing empty tabs))
+		       (face trailing empty tabs))
      (whitespace-action))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
