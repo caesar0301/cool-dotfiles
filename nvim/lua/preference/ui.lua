@@ -14,9 +14,9 @@ vim.opt.tabstop = 4
 -- fine-grained shifting = 2 spaces
 vim.opt.shiftwidth = 2
 
--- Linebreak on 500 characters
+-- Linebreak on 79 characters
 vim.opt.linebreak = true
-vim.opt.textwidth = 500
+vim.opt.textwidth = 79
 
 vim.opt.autoindent = true -- Auto indent
 vim.opt.smartindent = true -- Smart indent
