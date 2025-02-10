@@ -11,6 +11,7 @@ source ${0:h}/dev.zsh
 source ${0:h}/docker.zsh
 source ${0:h}/dotup.zsh
 source ${0:h}/git.zsh
+source ${0:h}/common.zsh
 
 if [[ $OSTYPE == darwin* ]]; then
     source ${0:h}/macosx.zsh
