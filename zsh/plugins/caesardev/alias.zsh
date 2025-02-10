@@ -33,6 +33,3 @@ alias ag_bazel='ag --ignore-dir="build" -G "(BUILD|.\.bazel)"'
 
 # java
 alias java_decompile="java -jar $HOME/.local/bin/cfr-0.152.jar"
-
-# backup file side by side
-alias backup="if [ -e $1 ]; then cp $1 $1.bak.$(date +%Y%m%d%H%M%S); fi"
