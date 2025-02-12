@@ -114,3 +114,37 @@ function latest_github_release {
   link=$(curl -s https://api.github.com/repos/$repo/$proj/releases/latest | grep browser_download_url | cut -d '"' -f 4)
   echo $link
 }
+
+function is_linux {
+  if [[ $(uname -s) == "Linux" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_mac {
+  if [[ $(uname -s) == "Darwin" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_x86_64 {
+  CPU_ARCH=$(uname -m)
+  if [[ "$CPU_ARCH" == "x86_64" ]] || [[ "$CPU_ARCH" == "i"*"86" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_arm64 {
+  CPU_ARCH=$(uname -m)
+  if [[ "$CPU_ARCH" == "arm64" ]] || [[ "$CPU_ARCH" == "aarch64" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}

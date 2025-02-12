@@ -44,10 +44,23 @@ function install_useful_libs {
 function install_allegro_cl {
   info "Installing Allegro CL Express Edition..."
 
-  # FIXME: to support macos
-  local DLINK="https://franz.com/ftp/pub/acl11.0express/linuxamd64.64/acl11.0express-linux-x64.tbz2"
-  #https://franz.com/ftp/pub/acl11.0express/macarm64.64/acl11.0express-macos-arm64.dmg
-  #https://franz.com/ftp/pub/acl11.0express/macosx86-64.64/acl11.0express-macos-x64.dmg
+  local DLINK
+  if is_linux; then
+    if is_x86_64; then
+      DLINK="https://franz.com/ftp/pub/acl11.0express/linuxamd64.64/acl11.0express-linux-x64.tbz2"
+    else # aarch64
+      DLINK="https://franz.com/ftp/pub/acl11.0express/linuxarm64.64/acl11.0express-linux-aarch64v8.tbz2"
+    fi
+  elif is_macos; then
+    if is_x86_64; then
+      DLINK="https://franz.com/ftp/pub/acl11.0express/macosx86-64.64/acl11.0express-macos-x64.dmg"
+    else # aarch64
+      DLINK="https://franz.com/ftp/pub/acl11.0express/macarm64.64/acl11.0express-macos-arm64.dmg"
+    fi
+  else
+    error "Unsupported OS" && return 1
+  fi
+
   local TARNAME=$(basename $DLINK)
   if [ -e $ACL_HOME/alisp ]; then
     warn "ACL already installed at ${ACL_HOME}/alisp"
