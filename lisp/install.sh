@@ -42,7 +42,7 @@ function install_useful_libs {
 }
 
 function install_allegro_cl {
-  info "Installing Allegro CL Express Edition..."
+  info "(Optional) Installing Allegro CL Express Edition..."
 
   local DLINK
   if is_linux; then
@@ -52,11 +52,7 @@ function install_allegro_cl {
       DLINK="https://franz.com/ftp/pub/acl11.0express/linuxarm64.64/acl11.0express-linux-aarch64v8.tbz2"
     fi
   elif is_macos; then
-    if is_x86_64; then
-      DLINK="https://franz.com/ftp/pub/acl11.0express/macosx86-64.64/acl11.0express-macos-x64.dmg"
-    else # aarch64
-      DLINK="https://franz.com/ftp/pub/acl11.0express/macarm64.64/acl11.0express-macos-arm64.dmg"
-    fi
+    error "Allegro CL should be installed maually on MacOS" && return 1
   else
     error "Unsupported OS" && return 1
   fi

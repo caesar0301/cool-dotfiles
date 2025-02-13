@@ -123,7 +123,7 @@ function is_linux {
   fi
 }
 
-function is_mac {
+function is_macos {
   if [[ $(uname -s) == "Darwin" ]]; then
     return 0
   else
