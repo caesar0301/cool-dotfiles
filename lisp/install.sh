@@ -52,7 +52,10 @@ function install_allegro_cl {
       DLINK="https://franz.com/ftp/pub/acl11.0express/linuxarm64.64/acl11.0express-linux-aarch64v8.tbz2"
     fi
   elif is_macos; then
-    error "Allegro CL should be installed maually on MacOS" && return 1
+    error "Allegro CL should be installed maually on MacOS:"
+    error "1. download from https://franz.com/downloads/clp/download"
+    error "2. mount the dmg and install files: /Volumes/AllegroCL64express/AllegroCL64express.app/Contents/Resources/* ~/.local/share/acl"
+    return 1
   else
     error "Unsupported OS" && return 1
   fi
