@@ -56,7 +56,7 @@ function install_allegro_cl {
     error "1. download from https://franz.com/downloads/clp/download"
     error "2. mount the dmg and install files:"
     error "  cp -r /Volumes/AllegroCL64express/AllegroCL64express.app/Contents/Resources/* ~/.local/share/acl/"
-    error "3. build modern mode: acl build_modern_mode_allegro.lisp"
+    error "3. build modern mode: ~/.local/share/acl/alisp -L build_modern_mode_allegro.lisp"
     return 1
   else
     error "Unsupported OS" && return 1
