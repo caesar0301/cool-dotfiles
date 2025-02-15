@@ -1,6 +1,12 @@
-# Set ClashMeta
+# Install Mihomo (original ClashMeta)
 
-## `clash_config_fetcher.py`
+Download from https://github.com/MetaCubeX/mihomo/releases
+
+sudo systemctl status mihomo
+
+## Update config
+
+`clash_config_fetcher.py`
 
 Fetch clash config from remote server. Two vars are supported:
 * V2SS_LINK: v2ss config registration link
