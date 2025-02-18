@@ -58,7 +58,7 @@ function install_java_decompiler {
 
 function install_all_deps {
   install_zsh
-  #install_pyenv # use conda instead
+  install_pyenv
   install_jenv
   install_java_decompiler
   install_rbenv
