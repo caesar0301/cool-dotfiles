@@ -8,16 +8,11 @@
 #     You can put any plugin or zsh-suffixed scripts in
 #     ~/.config/zsh/plugins to make them work.
 #############################################################
-
-# Install zinit
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-source "${ZINIT_HOME}/zinit.zsh"
-
-ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 ZSH_CONFIG_DIR="${HOME}/.config/zsh"
 ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
+source "${ZINIT_HOME}/zinit.zsh"
 
 # extra envs
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
@@ -31,10 +26,7 @@ autoload -Uz _zi && (( ${+_comps} )) && _comps[zi]=_zi
 
 # Oh-My-Zsh libs
 zinit ice wait lucid; zinit snippet OMZL::clipboard.zsh
-zinit ice wait lucid; zinit snippet OMZL::compfix.zsh
 zinit ice wait lucid; zinit snippet OMZL::completion.zsh
-zinit ice wait lucid; zinit snippet OMZL::correction.zsh
-zinit ice wait lucid; zinit snippet OMZL::directories.zsh
 zinit ice wait lucid; zinit snippet OMZL::functions.zsh
 zinit ice wait lucid; zinit snippet OMZL::git.zsh
 zinit ice wait lucid; zinit snippet OMZL::spectrum.zsh
@@ -108,7 +100,6 @@ function zshld {
         ls -d $ZINIT_WORKDIR/snippets/* | grep "$myextdir" | xargs rm -rf
     fi
     source $HOME/.zshrc
-    echo "zsh config reloaded!"
 }
 
 # extra paths

@@ -24,6 +24,12 @@ function install_zsh {
   fi
 }
 
+function install_zinit {
+  local ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
+  [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+  [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+}
+
 function install_pyenv {
   if [ ! -e $HOME/.pyenv ]; then
     info "Installing pyenv to $HOME/.pyenv..."
@@ -58,6 +64,7 @@ function install_java_decompiler {
 
 function install_all_deps {
   install_zsh
+  install_zinit
   install_pyenv
   install_jenv
   install_java_decompiler
