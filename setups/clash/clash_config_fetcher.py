@@ -191,19 +191,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="ClashConfigFetcher")
     parser.add_argument("-s", "--v2ss", type=str, help="V2SS registration link")
     parser.add_argument("-t", "--trojan", type=str, help="Trojan registration link")
-    parser.add_argument("-r", "--rulesets", action="store_true", help="Add ruleset")
-    parser.add_argument(
-        "-p", "--providers", action="store_true", help="Add ruleset as providers"
-    )
-    parser.add_argument(
-        "-d",
-        "--default-direct",
-        action="store_true",
-        help="Add default MATCH as DIRECT",
-    )
-    parser.add_argument(
-        "-g", "--groups", action="store_true", help="Add country wise groups"
-    )
+    parser.add_argument("-r", "--rulesets", action="store_true",
+                        help="Add ruleset (default false)")
+    parser.add_argument("-p", "--providers", action="store_true",
+                        help="Add ruleset as providers (default false)")
+    parser.add_argument("-d", "--default-direct", action="store_true",
+                        help="Add default MATCH as DIRECT (default false)")
+    parser.add_argument("-g", "--groups", action="store_true",
+                        help="Add country wise groups (default false)")
     args = parser.parse_args()
 
     add_bundled_ruleset = args.rulesets
