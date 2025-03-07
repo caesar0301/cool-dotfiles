@@ -118,24 +118,20 @@ vim.keymap.set("n", "<space>", "/", opt_s("Search"))
 vim.keymap.set("n", "<C-space>", "?", opt_s("Backwards search"))
 
 -- Search with plugin Telescope
--- In CWD, lists files respecting .gitignore
+-- Shortcuts:
+--   <leader>ff: list files in CWD.
+--   <leader>fw: search for the string under cursor or selection in CWD.
+--   <leader>fg: search for a string in CWD.
+--   <leader>fd: search for a string in a given directory.
+
 vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, opt_s("[telescope] Find files"))
-
--- In CWD, search for the string under cursor or selection
-vim.keymap.set("n", "<leader>fw", require("telescope.builtin").grep_string, opt_s("[telescope] Search current word"))
-
--- In CWD, search for a string, respecting .gitignore
+vim.keymap.set("n", "<leader>fw", require("telescope.builtin").grep_string, opt_s("[telescope] Find current word"))
 vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, opt_s("[telescope] Search everywhere"))
-
--- In specified directory, search for a string
-vim.api.nvim_create_user_command(
-    "SearchDir",
-    function(opts)
-        require("telescope.builtin").live_grep({prompt_title = "Search in " .. opts.fargs[1], cwd = opts.fargs[1]})
-    end,
-    {nargs = 1}
-)
-vim.keymap.set("n", "<leader>fd", ":SearchDir ", opt_s("[telescope] Search in given directory"))
+local function live_grep_directory()
+    local dir = vim.fn.input("Directory: ", vim.fn.expand("%:p:h"), "dir")
+    require("telescope.builtin").live_grep({cwd = dir})
+end
+vim.keymap.set("n", "<leader>fd", live_grep_directory, {desc = "[telescope] Search in directory"})
 
 -- Find and replace current word under cursor (case sensitive)
 vim.keymap.set(
