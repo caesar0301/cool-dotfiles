@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 from yaml import load, dump, safe_load
-from yaml import Loader, Dumper
+from yaml import Loader
 import copy
 import urllib.request
-import os
 import time
 import argparse
 
-add_bundled_ruleset = False
-add_ruleset_provider = False
 default_match_direct = False
 add_country_groups = False
+add_gfwlist = False
 
 
 # Remote configs
@@ -111,15 +109,16 @@ def add_group(target, new_group):
     target["proxy-groups"] = groups
 
 
-def finalize_rules(rules):
-    gfwr = gfwrules()
-    allrules = set(rules + gfwr)
-    res = sorted([i for i in set(allrules) if not i.startswith("MATCH,")])
+def finalize_rules(trojan):
+    rules = copy.deepcopy(trojan["rules"])
+    if add_gfwlist:
+        rules = set(rules + gfwrules())
+    res = sorted([i for i in set(rules) if not i.startswith("MATCH,")])
     if default_match_direct:
         res.append("MATCH,DIRECT")
     else:
         res.append("MATCH,Proxy")
-    return res
+    trojan["rules"] = res
 
 
 def finalize_groups(result):
@@ -159,66 +158,58 @@ def finalize_groups(result):
     return result
 
 
-def finalize(trojan, v2ss):
-    if trojan is not None and v2ss is None:
-        final = trojan
-    elif trojan is None and v2ss is not None:
-        final = v2ss
-    elif trojan is None and v2ss is None:
-        return None
-    else:
-        # not None in [trojan, v2ss]:
-        final = copy.deepcopy(trojan)
-        final["proxies"] += v2ss["proxies"]
-        final["rules"] = sorted(
-            list(set(trojan["rules"]).union(set(v2ss["rules"]))),
-            key=lambda x: rule_key(x),
-        )
-    final["secret"] = "canyoukissme"
-    final["proxy-groups"] = list()
-
-    if add_ruleset_provider:
-        read_ruleset_as_providers(final)
-    if add_bundled_ruleset:
-        read_ruleset_as_rules(final)
-
-    final["rules"] = finalize_rules(final["rules"])
-    finalize_groups(final)
-    return final
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="ClashConfigFetcher")
-    parser.add_argument("-s", "--v2ss", type=str, help="V2SS registration link")
     parser.add_argument("-t", "--trojan", type=str, help="Trojan registration link")
-    parser.add_argument("-r", "--rulesets", action="store_true",
-                        help="Add ruleset (default false)")
-    parser.add_argument("-p", "--providers", action="store_true",
-                        help="Add ruleset as providers (default false)")
-    parser.add_argument("-d", "--default-direct", action="store_true",
-                        help="Add default MATCH as DIRECT (default false)")
-    parser.add_argument("-g", "--groups", action="store_true",
-                        help="Add country wise groups (default false)")
+    parser.add_argument(
+        "-r", "--rulesets", action="store_true", help="Add ruleset (default false)"
+    )
+    parser.add_argument(
+        "-p",
+        "--providers",
+        action="store_true",
+        help="Add ruleset as providers (default false)",
+    )
+    parser.add_argument(
+        "-d",
+        "--default-direct",
+        action="store_true",
+        help="Add default MATCH as DIRECT (default false)",
+    )
+    parser.add_argument(
+        "-g",
+        "--groups",
+        action="store_true",
+        help="Add country wise groups (default false)",
+    )
+    parser.add_argument(
+        "-w", "--gfwlist", action="store_true", help="Add gfwlist rules (default false)"
+    )
     args = parser.parse_args()
+    if not args.trojan:
+        raise RuntimeError("--trojan argument should be set")
 
-    add_bundled_ruleset = args.rulesets
-    add_ruleset_provider = args.providers
-    default_match_direct = args.default_direct
     add_country_groups = args.groups
+    default_match_direct = args.default_direct
+    add_gfwlist = args.gfwlist
 
     # load remote policies
-    if not args.v2ss:
-        print("WARNNING: empty v2ss registration link")
-    if not args.trojan:
-        print("WARNNING: empty trojan registration link")
     trojan = read_remote_config(args.trojan)
-    v2ss = read_remote_config(args.v2ss)
+    if trojan is None:
+        raise RuntimeError("unexpected None remote trojan config")
 
-    final = finalize(trojan, v2ss)
-    if not final:
-        raise RuntimeError(
-            "At least one of --v2ss or --trojan argument should be set"
-        )
+    trojan["secret"] = "canyoukissme"
+    trojan["proxy-groups"] = list()
+
+    if args.providers:
+        read_ruleset_as_providers(trojan)
+    if args.rulesets:
+        read_ruleset_as_rules(trojan)
+
+    finalize_rules(trojan)
+    finalize_groups(trojan)
+
+    # write out to file
     ofile = "config.%s" % time.strftime("%Y%m%d")
     with open(ofile, "w") as ofile:
-        dump(final, ofile)
+        dump(trojan, ofile)
