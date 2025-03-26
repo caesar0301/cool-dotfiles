@@ -1,10 +1,11 @@
 -- Vimtex settings
 vim.g.vimtex_compiler_method = "latexmk"
-vim.g.vimtex_view_method = "skim"
 
--- Or with a generic interface:
--- vim.g.vimtex_view_general_viewer = 'okular'
--- vim.g.vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+if _G.IS_MAC then
+  vim.g.vimtex_view_method = "skim"
+elseif _G.IS_LINUX then
+  vim.g.vimtex_view_method = "zathura"
+end
 
 vim.g.vimtex_quickfix_mode = 2
 vim.g.vimtex_quickfix_autoclose_after_keystrokes = 1
