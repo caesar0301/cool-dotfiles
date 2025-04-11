@@ -124,7 +124,7 @@ def finalize_rules(trojan):
 def finalize_groups(result):
     # selected proxies
     selected_proxies = []
-    selected_countries = ["美国", "日本"]
+    selected_countries = ["美国", "日本", "香港", "新加坡", "澳大利亚"]
     for cname in selected_countries:
         selected_proxies += [i for i in result["proxies"] if cname in i["name"]]
     result["proxies"] = selected_proxies
