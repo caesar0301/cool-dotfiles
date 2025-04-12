@@ -3,6 +3,7 @@ export EDITOR=vim
 alias vi=vim
 alias vim=nvim
 alias em='emacs -nw'
+alias ll='ls -alF'
 
 # k8s
 alias k="kubectl"
