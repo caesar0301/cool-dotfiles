@@ -48,6 +48,15 @@ function greprp {
   grep -r "$oldstr" $spath | awk -F: '{print $1}' | uniq | xargs -i sed -i -E "s|$oldstr|$newstr|g" {}
 }
 
+# Reset colima env
+function colima-reset-all {
+  rm -rf ~/.colima ~/.lima ~/.docker
+}
+
+####################################
+## Configure language environment
+####################################
+
 function _initGoenv {
     GOROOT=${GOROOT:-/usr/local/go}
     if [ -e $GOROOT ]; then
