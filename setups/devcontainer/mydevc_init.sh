@@ -2,7 +2,7 @@
 
 # -------------------------------
 # Configuration
-IMAGE_NAME="devcontainer:ubuntu2404"
+IMAGE_NAME="caesar0301/devcontainer:ubuntu2404"
 CONTAINER_NAME="mydevc"
 PROXY_HOST="host.docker.internal"
 PROXY_PORT="7890"
