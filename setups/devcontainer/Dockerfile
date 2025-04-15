@@ -10,7 +10,8 @@ RUN sed -i 's|http://ports.ubuntu.com/ubuntu-ports|http://mirrors.aliyun.com/ubu
 RUN apt-get update && \
     apt-get install -y sudo adduser build-essential git curl wget vim \
       neovim cmake gdb zsh tmux python3 python3-pip golang-go \
-      openjdk-17-jdk openjdk-21-jdk nodejs npm && \
+      openjdk-17-jdk openjdk-21-jdk nodejs npm universal-ctags ripgrep \
+      silversearcher-ag && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
