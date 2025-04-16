@@ -21,7 +21,7 @@ function install_neovim {
   if ! checkcmd nvim; then
     mkdir_nowarn $HOME/.local
     link="https://github.com/neovim/neovim-releases/releases/latest/download/nvim-linux-x86_64.tar.gz"
-    curl -k -L --progress-bar $link | tar zxf --strip-components=1 -C $HOME/.local
+    curl -k -L --progress-bar $link | tar xf --strip-components=1 -C $HOME/.local
   else
     info "neovim binary already installed"
   fi

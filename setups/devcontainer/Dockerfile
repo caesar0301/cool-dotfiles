@@ -3,7 +3,6 @@
 FROM ubuntu:24.04
 
 ARG TARGETARCH
-ARG ADMIN_PASS=admin
 
 # Replace sources.list with the Aliyun mirror
 RUN sed -i 's|http://ports.ubuntu.com/ubuntu-ports|http://mirrors.aliyun.com/ubuntu-ports|g' /etc/apt/sources.list.d/ubuntu.sources
@@ -18,6 +17,7 @@ RUN apt-get update && apt-get install -y sudo adduser \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create a new user named 'admin' and add it to the sudo group
+ARG ADMIN_PASS=admin
 RUN adduser --disabled-password --gecos "" admin && \
     echo "admin:${ADMIN_PASS}" | chpasswd && \
     usermod -aG sudo admin && \
