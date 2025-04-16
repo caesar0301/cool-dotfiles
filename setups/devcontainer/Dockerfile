@@ -26,7 +26,7 @@ USER admin
 WORKDIR /home/admin
 
 # Install dotfiles
-RUN echo "hello2"
+RUN echo "hello"
 RUN git clone --depth=1 https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles \ 
     && cd ~/.dotfiles && ./zsh/install.sh \
     && cd ~/.dotfiles && SUDO_PASS="${ADMIN_PASS}" ~/.dotfiles/nvim/install.sh

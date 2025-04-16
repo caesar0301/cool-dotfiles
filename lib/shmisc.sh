@@ -234,16 +234,7 @@ function install_golang {
 
   mkdir_nowarn $HOME/.local
 
-  if is_linux; then
-    if is_x86_64; then
-      GO_RELEASE="go${gover}.linux-amd64"
-    elif is_arm64; then
-      GO_RELEASE="go${gover}.linux-arm64"
-    else
-      error "Unsupported CPU architecture, exit"
-      exit 1
-    fi
-  elif is_macos; then
+  if is_macos; then
     if is_x86_64; then
       GO_RELEASE="go${gover}.darwin-amd64"
     elif is_arm64; then
@@ -252,12 +243,19 @@ function install_golang {
       error "Unsupported CPU architecture, exit"
       exit 1
     fi
-  else
-    error "Unsupported OS type, exit"
-    exit 1
+  else # is_linux
+    if is_x86_64; then
+      GO_RELEASE="go${gover}.linux-amd64"
+    elif is_arm64; then
+      GO_RELEASE="go${gover}.linux-arm64"
+    else
+      error "Unsupported CPU architecture, exit"
+      exit 1
+    fi
   fi
 
   link="${godl}/${GO_RELEASE}.tar.gz"
+  info "Downloading go from $link"
   curl -k -L --progress-bar $link | tar -xz -C $HOME/.local
 }
 
@@ -341,16 +339,7 @@ function install_neovim {
 
   mkdir_nowarn $HOME/.local
 
-  if is_linux; then
-    if is_x86_64; then
-      NVIM_RELEASE="nvim-linux-x86_64"
-    elif is_arm64; then
-      NVIM_RELEASE="nvim-linux-arm64"
-    else
-      error "Unsupported CPU architecture, exit"
-      exit 1
-    fi
-  elif is_macos; then
+  if is_macos; then
     if is_x86_64; then
       NVIM_RELEASE="nvim-macos-x86_64"
     elif is_arm64; then
@@ -359,9 +348,15 @@ function install_neovim {
       error "Unsupported CPU architecture, exit"
       exit 1
     fi
-  else
-    error "Unsupported OS type, exit"
-    exit 1
+  else # is_linux
+    if is_x86_64; then
+      NVIM_RELEASE="nvim-linux-x86_64"
+    elif is_arm64; then
+      NVIM_RELEASE="nvim-linux-arm64"
+    else
+      error "Unsupported CPU architecture, exit"
+      exit 1
+    fi
   fi
 
   link="https://github.com/neovim/neovim/releases/download/v${nvimver}/${NVIM_RELEASE}.tar.gz"
