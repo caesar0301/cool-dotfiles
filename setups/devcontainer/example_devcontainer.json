@@ -1,0 +1,13 @@
+{
+  "name": "My Dev Container",
+  "image": "registry.cn-hangzhou.aliyuncs.com/lacogito/devcontainer:ubuntu2404-aliv1",
+  "workspaceFolder": "/home/admin/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/home/admin/workspace,type=bind"
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh"
+  },
+  "postCreateCommand": "echo 'Dev container is ready!'"
+}
+
