@@ -2,7 +2,7 @@
 
 # -------------------------------
 # Configuration
-IMAGE_NAME="registry.cn-hangzhou.aliyuncs.com/lacogito/devcontainer:ubuntu2404-aliv1"
+IMAGE_NAME="registry.cn-hangzhou.aliyuncs.com/lacogito/devcontainer:ubuntu2404-v250416"
 CONTAINER_NAME="mydevc"
 PROXY_HOST="host.docker.internal"
 PROXY_PORT="7890"
