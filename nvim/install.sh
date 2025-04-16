@@ -8,10 +8,18 @@ THISDIR=$(dirname $(realpath $0))
 XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
-SHFMT_VERSION="v3.7.0"
-GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
 PYPI_OPTIONS="-i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com"
 NPM_OPTIONS="--prefer-offline --no-audit --progress=false"
+
+SHFMT_VERSION="v3.7.0"
+NVIM_DL="https://github.com/neovim/neovim-releases/releases/latest/download"
+JDT_DL="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
+JAVA_FMT_DL="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
+
+GO_DL="https://go.dev/dl"
+GO_VERSION="1.24.2"
+GO_LOCAL_PATH=$HOME/.local/go
+GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
 
 # load common utils
 source $THISDIR/../lib/shmisc.sh
@@ -20,11 +28,67 @@ function install_neovim {
   info "Installing neovim..."
   if ! checkcmd nvim; then
     mkdir_nowarn $HOME/.local
-    link="https://github.com/neovim/neovim-releases/releases/latest/download/nvim-linux-x86_64.tar.gz"
-    curl -k -L --progress-bar $link | tar xf --strip-components=1 -C $HOME/.local
+    if is_linux; then
+      if is_x86_64; then
+        NVIM_RELEASE="nvim-linux-x86_64"
+      elif is_arm64; then
+        NVIM_RELEASE="nvim-linux-arm64"
+      else
+        error "Unsupported CPU architecture, exit"
+        exit 1
+      fi
+    elif is_macos; then
+      if is_x86_64; then
+        NVIM_RELEASE="nvim-macos-x86_64"
+      elif is_arm64; then
+        NVIM_RELEASE="nvim-macos-arm64"
+      else
+        error "Unsupported CPU architecture, exit"
+        exit 1
+      fi
+    else
+      error "Unsupported OS type, exit"
+      exit 1
+    fi
+    link="${NVIM_DL}/${NVIM_RELEASE}.tar.gz"
+    curl -k -L --progress-bar $link | tar -xz --strip-components=1 -C $HOME/.local
   else
     info "neovim binary already installed"
   fi
+}
+
+function install_golang {
+  info "Installing golang..."
+  if ! checkcmd go; then
+    mkdir_nowarn $HOME/.local
+    if is_linux; then
+      if is_x86_64; then
+        GO_RELEASE="go${GO_VERSION}.linux-amd64"
+      elif is_arm64; then
+        GO_RELEASE="go${GO_VERSION}.linux-arm64"
+      else
+        error "Unsupported CPU architecture, exit"
+        exit 1
+      fi
+    elif is_macos; then
+      if is_x86_64; then
+        GO_RELEASE="go${GO_VERSION}.darwin-amd64"
+      elif is_arm64; then
+        GO_RELEASE="go${GO_VERSION}.darwin-arm64"
+      else
+        error "Unsupported CPU architecture, exit"
+        exit 1
+      fi
+    else
+      error "Unsupported OS type, exit"
+      exit 1
+    fi
+    link="${GO_DL}/${GO_RELEASE}.tar.gz"
+    curl -k -L --progress-bar $link | tar -xz -C $HOME/.local
+  else
+    info "go binary already installed"
+  fi
+
 }
 
 function install_hack_nerd_font {
@@ -50,11 +114,10 @@ function install_hack_nerd_font {
 # Required by nvim-jdtls
 function install_jdt_language_server {
   info "Installing jdt-language-server to $dpath..."
-  jdtlink="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
   dpath=$HOME/.local/share/jdt-language-server
   if [ ! -e $dpath/bin/jdtls ]; then
     mkdir_nowarn $dpath >/dev/null
-    curl -L --progress-bar $jdtlink | tar zxf - -C $dpath
+    curl -L --progress-bar $JDT_DL | tar zxf - -C $dpath
   else
     info "$dpath/bin/jdtls already exists"
   fi
@@ -62,10 +125,9 @@ function install_jdt_language_server {
 
 function install_google_java_format {
   info "Installing google-java-format to $dpath..."
-  rfile="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
   dpath=$HOME/.local/share/google-java-format
   if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
-    curl -L --progress-bar --create-dirs $rfile -o $dpath/google-java-format-all-deps.jar
+    curl -L --progress-bar --create-dirs $JAVA_FMT_DL -o $dpath/google-java-format-all-deps.jar
   else
     info "$dpath/google-java-format-all-deps.jar already installed"
   fi
@@ -83,7 +145,12 @@ function install_shfmt {
 }
 
 function go_install_lib {
-  checkcmd go && go install "$1" || warn "Go not found in PATH, skip $1"
+  if [ -e ${GO_LOCAL_PATH}/bin/go ]; then
+    GOCMD=${GO_LOCAL_PATH}/bin/go
+  else
+    GOCMD=go
+  fi
+  checkcmd $GOCMD && $GOCMD install "$1" || warn "Go not found in PATH, skip $1"
 }
 
 function install_yamlfmt {
@@ -261,6 +328,7 @@ done
 
 if [ "x$WITHDEPS" == "x1" ]; then
   install_neovim
+  install_golang
   install_all_deps
 fi
 
