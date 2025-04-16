@@ -42,8 +42,8 @@ function install_jenv {
     info "Installing jenv to $HOME/.jenv..."
     git clone https://github.com/jenv/jenv.git $HOME/.jenv
   fi
-  eval "$(~/.jenv/bin/jenv init -)"
-  jenv enable-plugin export
+  eval "$($HOME/.jenv/bin/jenv init -)"
+  $HOME/.jenv/bin/jenv enable-plugin export
 }
 
 function install_rbenv {
