@@ -5,7 +5,7 @@
 # Copyright (c) 2024, Xiaming Chen
 # License: MIT
 
-GO_LOCAL_PATH=$HOME/.local/go
+LOCAL_GOROOT=$HOME/.local/go
 
 # colored messages
 function warn {
@@ -232,7 +232,7 @@ function install_golang {
     return
   fi
 
-  mkdir_nowarn $HOME/.local
+  mkdir_nowarn $(dirname $LOCAL_GOROOT)
 
   if is_macos; then
     if is_x86_64; then
@@ -256,12 +256,12 @@ function install_golang {
 
   link="${godl}/${GO_RELEASE}.tar.gz"
   info "Downloading go from $link"
-  curl -k -L --progress-bar $link | tar -xz -C $HOME/.local
+  curl -k -L --progress-bar $link | tar -xz -C $(dirname $LOCAL_GOROOT)
 }
 
 function go_install_lib {
-  if [ -e ${GO_LOCAL_PATH}/bin/go ]; then
-    GOCMD=${GO_LOCAL_PATH}/bin/go
+  if [ -e ${LOCAL_GOROOT}/bin/go ]; then
+    GOCMD=${LOCAL_GOROOT}/bin/go
   else
     GOCMD=go
   fi

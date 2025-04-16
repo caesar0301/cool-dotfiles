@@ -60,10 +60,10 @@ function colima-reset-all {
 function _initGoenv {
     GOROOT=${GOROOT:-$HOME/.local/go}
     if [ -e $GOROOT ]; then
-        export GOROOT=$GOROOT
         export PATH=$PATH:$GOROOT/bin
     fi
     if command -v go &>/dev/null; then
+        export GOROOT=$(go env GOROOT)
         export GOPATH=$(go env GOPATH)
         export GO111MODULE=on
         export GOPROXY=https://goproxy.cn,direct
