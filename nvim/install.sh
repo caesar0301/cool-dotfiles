@@ -129,7 +129,7 @@ function install_all_deps {
 
 function post_install {
   info "Post installation"
-  nvim --headless \
+  $HOME/.local/bin/nvim --headless \
     -c "PackerInstall" \
     -c "TSUpdate lua python go java vim vimdoc luadoc markdown" \
     -c "qall"
