@@ -332,6 +332,8 @@ function install_zsh {
 
 function install_neovim {
   info "Installing neovim..."
+  local nvimver=${1:-"0.11.0"}
+
   if checkcmd nvim; then
     info "neovim binary already installed"
     return
@@ -362,7 +364,7 @@ function install_neovim {
     exit 1
   fi
 
-  link="https://github.com/neovim/neovim-releases/releases/latest/download/${NVIM_RELEASE}.tar.gz"
+  link="https://github.com/neovim/neovim/releases/download/v${nvimver}/${NVIM_RELEASE}.tar.gz"
   info "Downloading neovim from $link"
   curl -k -L --progress-bar $link | tar -xz --strip-components=1 -C $HOME/.local
 }
