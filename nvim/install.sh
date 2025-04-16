@@ -82,13 +82,13 @@ function install_shfmt {
   chmod +x $HOME/.local/bin/shfmt
 }
 
+function go_install_lib {
+  checkcmd go && go install "$1" || warn "Go not found in PATH, skip $1"
+}
+
 function install_yamlfmt {
   info "Installing yamlfmt..."
-  if checkcmd go; then
-    go install github.com/google/yamlfmt/cmd/yamlfmt@latest
-  else
-    warn "Go not found in PATH, skip to install yamlfmt"
-  fi
+  go_install_lib github.com/google/yamlfmt/cmd/yamlfmt@latest
 }
 
 # Formatting dependencies
@@ -147,11 +147,7 @@ function install_lsp_deps {
   fi
 
   info "Install gopls..."
-  if checkcmd go; then
-    go install golang.org/x/tools/gopls@latest
-  else
-    warn "Go not found in PATH, skip to install gotags"
-  fi
+  go_install_lib golang.org/x/tools/gopls@latest
 }
 
 function install_fzf {
@@ -180,11 +176,7 @@ function install_ctags_and_deps {
     warn "Command ctags not found in PATH. Please install universal-ctags from https://github.com/universal-ctags/ctags"
   fi
   # gotags
-  if checkcmd go; then
-    go install github.com/jstemmer/gotags@latest
-  else
-    warn "Go not found in PATH, skip to install gotags"
-  fi
+  go_install_lib github.com/jstemmer/gotags@latest
 }
 
 function handle_ctags {
