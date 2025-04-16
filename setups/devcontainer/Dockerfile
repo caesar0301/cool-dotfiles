@@ -15,9 +15,9 @@ RUN apt-get update && apt-get install -y sudo adduser \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create a new user named 'admin' and add it to the sudo group
-ARG ADMIN_PASS=admin
+ARG SUDO_PASS=admin
 RUN adduser --disabled-password --gecos "" admin && \
-    echo "admin:${ADMIN_PASS}" | chpasswd && \
+    echo "admin:${SUDO_PASS}" | chpasswd && \
     usermod -aG sudo admin && \
     chsh -s /usr/bin/zsh admin
 
@@ -26,10 +26,9 @@ USER admin
 WORKDIR /home/admin
 
 # Install dotfiles
-RUN echo "hello"
-RUN git clone --depth=1 https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles \ 
-    && cd ~/.dotfiles && ./zsh/install.sh \
-    && cd ~/.dotfiles && SUDO_PASS="${ADMIN_PASS}" ~/.dotfiles/nvim/install.sh
+RUN git clone --depth=1 https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles
+RUN cd ~/.dotfiles && ./zsh/install.sh
+RUN cd ~/.dotfiles && SUDO_PASS="${SUDO_PASS}" ~/.dotfiles/nvim/install.sh
 
 # Set the default command to start a bash shell
 CMD ["/usr/bin/zsh"]
