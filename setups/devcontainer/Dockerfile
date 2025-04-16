@@ -25,12 +25,8 @@ RUN adduser --disabled-password --gecos "" admin && \
 USER admin
 WORKDIR /home/admin
 
-# Install golang
-ARG GO_VERSION=1.24.2
-ENV PATH=$PATH:/home/admin/go/bin
-
 # Install dotfiles
-RUN which go
+RUN echo "hello"
 RUN git clone --depth=1 https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles
 RUN cd ~/.dotfiles && ./zsh/install.sh
 RUN cd ~/.dotfiles && SUDO_PASS="${ADMIN_PASS}" ~/.dotfiles/nvim/install.sh
