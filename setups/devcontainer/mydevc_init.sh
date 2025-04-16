@@ -30,6 +30,7 @@ docker run -d \
   -e http_proxy="$PROXY_URL" \
   -e https_proxy="$PROXY_URL" \
   -e no_proxy="localhost,127.0.0.1,$PROXY_HOST" \
+  -v $(pwd)/devc_workdata:/home/admin/workspace/ \
   "$IMAGE_NAME" \
   tail -f /dev/null
 

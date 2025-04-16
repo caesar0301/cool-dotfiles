@@ -9,7 +9,7 @@ RUN sed -i 's|http://ports.ubuntu.com/ubuntu-ports|http://mirrors.aliyun.com/ubu
 # Update package list and install sudo, then clean up to reduce image size
 RUN apt-get update && \
     apt-get install -y sudo adduser build-essential git curl wget vim \
-      neovim cmake gdb zsh tmux python3 python3-pip golang-go \
+      cmake gdb zsh tmux python3 python3-pip \
       openjdk-17-jdk openjdk-21-jdk nodejs npm universal-ctags ripgrep \
       silversearcher-ag && \
     apt-get clean && \
@@ -26,11 +26,10 @@ USER admin
 
 # Install dotfiles
 RUN git clone --depth=1 https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles
-RUN ~/.dotfiles/zsh/install.sh
-RUN ~/.dotfiles/nvim/install.sh
+RUN ~/.dotfiles/zsh/install.sh && \
+    ~/.dotfiles/nvim/install.sh
 
-ENV GOPATH=/usr/lib/go
-ENV PATH=$PATH:$GOPATH/bin
+WORKDIR /home/admin
 
 # Set the default command to start a bash shell
 CMD ["/usr/bin/zsh"]
