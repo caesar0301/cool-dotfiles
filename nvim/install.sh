@@ -119,7 +119,11 @@ function install_formatter_utils {
     if [[ ${#npmlibs[@]} > 0 ]]; then
       info "Installing npm deps: $npmlibs"
       npm config set registry https://registry.npmmirror.com
-      check_sudo_access && sudo npm install ${NPM_OPTIONS} -g ${npmlibs[@]}
+      if [ "x${SUDO_PASS}" == "x" ]; then
+        sudo npm install ${NPM_OPTIONS} -g ${npmlibs[@]}
+      else
+        echo "${SUDO_PASS}" | sudo -S npm install ${NPM_OPTIONS} -g ${npmlibs[@]}
+      fi
     fi
   else
     warn "Command npm not found, install and try again."
