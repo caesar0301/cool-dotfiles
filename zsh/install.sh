@@ -12,77 +12,10 @@ ZSH_VERSION="5.8"
 
 source $THISDIR/../lib/shmisc.sh
 
-function install_zsh {
-  info "Installing zsh..."
-  if ! checkcmd zsh; then
-    mkdir_nowarn $HOME/.local/bin
-    mkdir_nowarn /tmp/build-zsh
-    curl -k -L --progress-bar http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz | tar xJ -C /tmp/build-zsh/
-    cd /tmp/build-zsh/zsh-${ZSH_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
-  else
-    info "zsh binary already exists"
-  fi
-}
-
 function install_zinit {
   local ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
   [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
   [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-}
-
-function install_pyenv {
-  if [ ! -e $HOME/.pyenv ]; then
-    info "Installing pyenv to $HOME/.pyenv..."
-    curl -k https://pyenv.run | bash
-  fi
-}
-
-function install_jenv {
-  if [ ! -e $HOME/.jenv ]; then
-    info "Installing jenv to $HOME/.jenv..."
-    git clone https://github.com/jenv/jenv.git $HOME/.jenv
-  fi
-  eval "$($HOME/.jenv/bin/jenv init -)"
-  $HOME/.jenv/bin/jenv enable-plugin export
-}
-
-function install_rbenv {
-  if [ ! -e $HOME/.rbenv ]; then
-    info "Installing rbenv to $HOME/.rbenv..."
-    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-  fi
-}
-
-function install_java_decompiler {
-  info "Installing CFR - another java decompiler"
-  mkdir_nowarn $HOME/.local/bin
-  target="$HOME/.local/bin/cfr-0.152.jar"
-  if [ ! -e $target ]; then
-    curl -k -L --progress-bar https://www.benf.org/other/cfr/cfr-0.152.jar --output $target
-  fi
-}
-
-function install_all_deps {
-  install_zsh
-  install_zinit
-  install_pyenv
-  install_jenv
-  install_java_decompiler
-  install_rbenv
-}
-
-############################################################################
-
-function handle_shell_proxy {
-  if [ ! -e $HOME/.config/proxy ] || [ -L $HOME/.config/proxy ]; then
-    if [ x$SOFTLINK == "x1" ]; then
-      ln -sf $THISDIR/proxy-config $HOME/.config/proxy
-    else
-      cp $THISDIR/proxy-config $HOME/.config/proxy
-    fi
-  else
-    warn "$HOME/.config/proxy existed, skip without rewriting"
-  fi
 }
 
 function handle_zsh {
@@ -110,8 +43,6 @@ function handle_zsh {
     $CMD $dname $XDG_CONFIG_HOME/zsh/plugins/
   done
 }
-
-############################################################################
 
 function cleanse_zsh {
   rm -rf $XDG_CONFIG_HOME/zsh/init.zsh
@@ -147,9 +78,12 @@ while getopts fsech opt; do
   esac
 done
 
+install_zsh
+install_zinit
 if [ "x$WITHDEPS" == "x1" ]; then
-  install_all_deps
+  install_pyenv
+  install_jenv
+  install_java_decompiler
 fi
-handle_shell_proxy
 handle_zsh
 info "Zsh installed successfully!"

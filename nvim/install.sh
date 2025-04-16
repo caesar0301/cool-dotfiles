@@ -11,160 +11,22 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 PYPI_OPTIONS="-i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com"
 NPM_OPTIONS="--prefer-offline --no-audit --progress=false"
 
-SHFMT_VERSION="v3.7.0"
-NVIM_DL="https://github.com/neovim/neovim-releases/releases/latest/download"
-JDT_DL="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
-JAVA_FMT_DL="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
-
-GO_DL="https://go.dev/dl"
-GO_VERSION="1.24.2"
-GO_LOCAL_PATH=$HOME/.local/go
-GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
-
 # load common utils
 source $THISDIR/../lib/shmisc.sh
 
-function install_neovim {
-  info "Installing neovim..."
-  if ! checkcmd nvim; then
-    mkdir_nowarn $HOME/.local
-    if is_linux; then
-      if is_x86_64; then
-        NVIM_RELEASE="nvim-linux-x86_64"
-      elif is_arm64; then
-        NVIM_RELEASE="nvim-linux-arm64"
-      else
-        error "Unsupported CPU architecture, exit"
-        exit 1
-      fi
-    elif is_macos; then
-      if is_x86_64; then
-        NVIM_RELEASE="nvim-macos-x86_64"
-      elif is_arm64; then
-        NVIM_RELEASE="nvim-macos-arm64"
-      else
-        error "Unsupported CPU architecture, exit"
-        exit 1
-      fi
-    else
-      error "Unsupported OS type, exit"
-      exit 1
-    fi
-    link="${NVIM_DL}/${NVIM_RELEASE}.tar.gz"
-    curl -k -L --progress-bar $link | tar -xz --strip-components=1 -C $HOME/.local
-  else
-    info "neovim binary already installed"
-  fi
-}
-
-function install_golang {
-  info "Installing golang..."
-  if ! checkcmd go; then
-    mkdir_nowarn $HOME/.local
-    if is_linux; then
-      if is_x86_64; then
-        GO_RELEASE="go${GO_VERSION}.linux-amd64"
-      elif is_arm64; then
-        GO_RELEASE="go${GO_VERSION}.linux-arm64"
-      else
-        error "Unsupported CPU architecture, exit"
-        exit 1
-      fi
-    elif is_macos; then
-      if is_x86_64; then
-        GO_RELEASE="go${GO_VERSION}.darwin-amd64"
-      elif is_arm64; then
-        GO_RELEASE="go${GO_VERSION}.darwin-arm64"
-      else
-        error "Unsupported CPU architecture, exit"
-        exit 1
-      fi
-    else
-      error "Unsupported OS type, exit"
-      exit 1
-    fi
-    link="${GO_DL}/${GO_RELEASE}.tar.gz"
-    curl -k -L --progress-bar $link | tar -xz -C $HOME/.local
-  else
-    info "go binary already installed"
-  fi
-
-}
-
-function install_hack_nerd_font {
-  info "Install Hack nerd font and update font cache..."
-  if ! checkcmd fc-list; then
-    error "fontconfig tools (fc-list, fc-cache) not found."
-    exit 1
-  fi
-  FONTDIR=$HOME/.local/share/fonts
-  if [ "$(uname)" == "Darwin" ]; then
-    FONTDIR=$HOME/Library/Fonts
-  fi
-  # install nerd patched font Hack, required by nvim-web-devicons
-  if ! $(fc-list | grep "Hack Nerd Font" >/dev/null); then
-    mkdir_nowarn $FONTDIR
-    curl -L --progress-bar https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz | tar xJ -C $FONTDIR
-    fc-cache -f
-  else
-    info "Hack Nerd Font already installed"
-  fi
-}
-
-# Required by nvim-jdtls
-function install_jdt_language_server {
-  info "Installing jdt-language-server to $dpath..."
-  dpath=$HOME/.local/share/jdt-language-server
-  if [ ! -e $dpath/bin/jdtls ]; then
-    mkdir_nowarn $dpath >/dev/null
-    curl -L --progress-bar $JDT_DL | tar zxf - -C $dpath
-  else
-    info "$dpath/bin/jdtls already exists"
-  fi
-}
-
-function install_google_java_format {
-  info "Installing google-java-format to $dpath..."
-  dpath=$HOME/.local/share/google-java-format
-  if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
-    curl -L --progress-bar --create-dirs $JAVA_FMT_DL -o $dpath/google-java-format-all-deps.jar
-  else
-    info "$dpath/google-java-format-all-deps.jar already installed"
-  fi
-}
-
-function install_shfmt {
-  info "Installing shfmt..."
-  shfmtfile="shfmt_${SHFMT_VERSION}_linux_amd64"
-  if [ "$(uname)" == "Darwin" ]; then
-    shfmtfile="shfmt_${SHFMT_VERSION}_darwin_amd64"
-  fi
-  mkdir_nowarn $HOME/.local/bin
-  curl -L --progress-bar https://github.com/mvdan/sh/releases/download/${SHFMT_VERSION}/$shfmtfile -o $HOME/.local/bin/shfmt
-  chmod +x $HOME/.local/bin/shfmt
-}
-
-function go_install_lib {
-  if [ -e ${GO_LOCAL_PATH}/bin/go ]; then
-    GOCMD=${GO_LOCAL_PATH}/bin/go
-  else
-    GOCMD=go
-  fi
-  checkcmd $GOCMD && $GOCMD install "$1" || warn "Go not found in PATH, skip $1"
-}
-
-function install_yamlfmt {
-  info "Installing yamlfmt..."
-  go_install_lib github.com/google/yamlfmt/cmd/yamlfmt@latest
-}
-
 # Formatting dependencies
-function install_formatter_utils {
+function install_lang_formatters {
   info "Installing file format dependencies..."
 
   install_google_java_format
-  if ! checkcmd shfmt; then install_shfmt; fi
-  if ! checkcmd yamlfmt; then install_yamlfmt; fi
+
+  if ! checkcmd shfmt; then
+    install_shfmt
+  fi
+
+  if ! checkcmd yamlfmt; then
+    go_install_lib github.com/google/yamlfmt/cmd/yamlfmt@latest
+  fi
 
   # formatters on pip
   piplibs=(pynvim black sqlparse cmake_format)
@@ -217,37 +79,14 @@ function install_lsp_deps {
     fi
   fi
 
-  info "Install gopls..."
   go_install_lib golang.org/x/tools/gopls@latest
-}
-
-function install_fzf {
-  if [ ! -e $HOME/.fzf ]; then
-    info "Installing fzf to $HOME/.fzf..."
-    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-    $HOME/.fzf/install --all
-  fi
-  shellconfig=$(current_shell_config)
-  if ! grep -r "source.*\.fzf\.zsh" $shellconfig >/dev/null; then
-    local config='[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh'
-    echo >>$shellconfig
-    echo "# automatic configs by cool-dotfiles nvim installer" >>$shellconfig
-    echo $config >>$shellconfig
-  fi
+  go_install_lib github.com/jstemmer/gotags@latest
 }
 
 function check_ripgrep {
   if ! checkcmd rg; then
     warn "ripgrep not found, as required by telescope.nvim"
   fi
-}
-
-function install_ctags_and_deps {
-  if ! checkcmd ctags; then
-    warn "Command ctags not found in PATH. Please install universal-ctags from https://github.com/universal-ctags/ctags"
-  fi
-  # gotags
-  go_install_lib github.com/jstemmer/gotags@latest
 }
 
 function handle_ctags {
@@ -283,9 +122,8 @@ function install_all_deps {
   install_lsp_deps
   install_jdt_language_server
   install_hack_nerd_font # required by nvim-web-devicons
-  install_formatter_utils
+  install_lang_formatters
   install_fzf
-  install_ctags_and_deps
   check_ripgrep
 }
 
