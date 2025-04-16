@@ -362,7 +362,7 @@ function install_neovim {
     exit 1
   fi
 
-  nvimdl="https://github.com/neovim/neovim-releases/releases/latest/download"
-  link="${nvimdl}/${NVIM_RELEASE}.tar.gz"
+  link="https://github.com/neovim/neovim-releases/releases/latest/download/${NVIM_RELEASE}.tar.gz"
+  info "Downloading neovim from $link"
   curl -k -L --progress-bar $link | tar -xz --strip-components=1 -C $HOME/.local
 }
