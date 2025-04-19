@@ -42,12 +42,26 @@ function git-prune-submodule {
 }
 
 function git-quick-update {
-   # Get the list of modified files
-   modified_files=$(git diff --cached --name-only)
-   # Generate a commit message
-   commit_message="Update: "
-   for file in $modified_files; do
-       commit_message="$commit_message $file"
-   done
-   git add -u && git commit -m \"${commit_message}\" && git push
+    # Get the list of modified files
+    modified_files=$(git diff --cached --name-only)
+
+    # Check if there are any modified files
+    if [ -z "$modified_files" ]; then
+        echo "No modified files to commit."
+        return 1
+    fi
+
+    # Generate a commit message
+    commit_message="Update:"
+    for file in $modified_files; do
+        commit_message="$commit_message \"$file\""
+    done
+
+    # Add, commit, and push the changes
+    if git add -u && git commit -m "$commit_message" && git push; then
+        echo "Changes committed and pushed successfully."
+    else
+        echo "Failed to commit and push changes."
+        return 1
+    fi
 }
