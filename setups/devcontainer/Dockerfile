@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y sudo adduser \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create a new user named 'admin' and add it to the sudo group
-ARG SUDO_PASS=admin
+ARG SUDO_PASS=devadmin
 RUN adduser --disabled-password --gecos "" admin && \
     echo "admin:${SUDO_PASS}" | chpasswd && \
     usermod -aG sudo admin && \
