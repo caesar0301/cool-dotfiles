@@ -42,8 +42,8 @@ function git-prune-submodule {
 }
 
 function git-quick-update {
-    # Get the list of modified files
-    modified_files=$(git diff --cached --name-only)
+    # Get list of both staged and unstaged modified files, removing duplicates
+    modified_files=$(git diff --name-only && git diff --cached --name-only | sort -u)
 
     # Check if there are any modified files
     if [ -z "$modified_files" ]; then
@@ -57,8 +57,11 @@ function git-quick-update {
         commit_message="$commit_message \"$file\""
     done
 
-    # Add, commit, and push the changes
-    if git add -u && git commit -m "$commit_message" && git push; then
+    # Stage the modified files
+    git add -u
+
+    # Commit and push the changes
+    if git commit -m "$commit_message" && git push; then
         echo "Changes committed and pushed successfully."
     else
         echo "Failed to commit and push changes."
