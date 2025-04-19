@@ -4,59 +4,68 @@
 # https://github.com/caesar0301/cool-dotfiles
 # Maintainer: xiaming.chen
 ###################################################
-THISDIR=$(dirname $(realpath $0))
-XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+THISDIR=$(dirname "$(realpath "$0")")
+XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 
-TMUX_VERSION=3.5a
+TMUX_VERSION="3.5a"
 
-source $THISDIR/../lib/shmisc.sh
+# Load common utils
+source "$THISDIR/../lib/shmisc.sh"
 
+# Function to display usage information
 function usage {
-  echo "Usage: install.sh [-f] [-s] [-e]"
+  echo "Usage: install.sh [-f] [-s] [-e] [-c]"
   echo "  -f copy and install"
-  echo "  -s soft linke install"
+  echo "  -s soft link install"
   echo "  -e install dependencies"
   echo "  -c cleanse install"
 }
 
+# Function to install tmux
 function install_tmux {
   info "Installing tmux..."
   if ! checkcmd tmux; then
-    mkdir_nowarn $HOME/.local/bin
-    mkdir_nowarn /tmp/build-tmux
-    link="https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz"
-    curl -k -L --progress-bar $link | tar xvz -C /tmp/build-tmux/
-    cd /tmp/build-tmux/tmux-${TMUX_VERSION} && ./configure --prefix $HOME/.local && make && make install && cd -
+    mkdir_nowarn "$HOME/.local/bin"
+    mkdir_nowarn "/tmp/build-tmux"
+    local link="https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz"
+    curl -k -L --progress-bar "$link" | tar xvz -C "/tmp/build-tmux/"
+    (
+      cd "/tmp/build-tmux/tmux-${TMUX_VERSION}" && ./configure --prefix "$HOME/.local" && make && make install
+    )
+    rm -rf "/tmp/build-tmux"
   else
     info "tmux binary already installed"
   fi
 }
 
+# Function to install TPM (Tmux Plugin Manager)
 function install_tpm {
-  info "Installing tpm..."
-  mkdir_nowarn $XDG_CONFIG_HOME/tmux/plugins
-  if [ ! -e $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
-    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
+  info "Installing TPM..."
+  mkdir_nowarn "$XDG_CONFIG_HOME/tmux/plugins"
+  if [ ! -e "$XDG_CONFIG_HOME/tmux/plugins/tpm" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$XDG_CONFIG_HOME/tmux/plugins/tpm"
   fi
 }
 
+# Function to handle tmux configuration
 function handle_tmux {
-  mkdir_nowarn $XDG_CONFIG_HOME/tmux
-  if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
-    ln -sf $THISDIR/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
+  mkdir_nowarn "$XDG_CONFIG_HOME/tmux"
+  if [ x"$SOFTLINK" == "x1" ]; then
+    ln -sf "$THISDIR/tmux.conf" "$XDG_CONFIG_HOME/tmux/tmux.conf"
+    ln -sf "$THISDIR/tmux.conf.local" "$XDG_CONFIG_HOME/tmux/tmux.conf.local"
   else
-    cp $THISDIR/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
-    cp $THISDIR/tmux.conf.local $XDG_CONFIG_HOME/tmux/tmux.conf.local
+    cp "$THISDIR/tmux.conf" "$XDG_CONFIG_HOME/tmux/tmux.conf"
+    cp "$THISDIR/tmux.conf.local" "$XDG_CONFIG_HOME/tmux/tmux.conf.local"
   fi
 }
 
+# Function to cleanse tmux configuration
 function cleanse_tmux {
-  rm -rf $XDG_CONFIG_HOME/tmux/tmux.conf.local
-  rm -rf $XDG_CONFIG_HOME/tmux/tmux.conf
-  rm -rf $XDG_CONFIG_HOME/tmux/plugins/tpm
-  info "All tmux cleansed!"
+  rm -rf "$XDG_CONFIG_HOME/tmux/tmux.conf.local"
+  rm -rf "$XDG_CONFIG_HOME/tmux/tmux.conf"
+  rm -rf "$XDG_CONFIG_HOME/tmux/plugins/tpm"
+  info "All tmux files cleansed!"
 }
 
 # Change to 0 to install a copy instead of soft link
