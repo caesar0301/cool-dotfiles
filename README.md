@@ -1,6 +1,8 @@
 # cool-dotfiles
 
-Personal collection of dotfiles
+Personal collection of dotfiles.
+
+[![Build and Push DevContainer Docker Image](https://github.com/caesar0301/cool-dotfiles/actions/workflows/build-devcontainer.yml/badge.svg)](https://github.com/caesar0301/cool-dotfiles/actions/workflows/build-devcontainer.yml)
 
 ## Install all dotfiles
 
