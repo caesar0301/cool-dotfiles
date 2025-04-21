@@ -28,8 +28,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Check devcontainer changes
+        uses: dorny/paths-filter@v3
+        id: devcontainer-changes
+        with:
+          filters: |
+            devcontainer:
+              - 'setups/devcontainer/Dockerfile'
+
       # Build and push Docker image
-      - name: Build and push
+      - name: Build and push devcontainer image
+        if: steps.devcontainer-changes.outputs.matched
         uses: docker/build-push-action@v5
         with:
           context: .
