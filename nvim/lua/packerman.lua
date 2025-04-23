@@ -21,9 +21,6 @@ return packer.startup(
         -- Comment out with gc/gcc/gcap
         use "tpope/vim-commentary"
 
-        -- Enable repeating supported plugin maps with "."
-        use "tpope/vim-repeat"
-
         -- Code style formatter
         use "mhartington/formatter.nvim"
 
@@ -78,12 +75,6 @@ return packer.startup(
         -- shows the context of the currently visible buffer contents
         use {
             "wellle/context.vim"
-        }
-
-        -- Zen coding
-        use {
-            "amix/vim-zenroom2",
-            requires = {{"junegunn/goyo.vim"}}
         }
 
         -- displays a popup with possible keybindings of the command you started typing
