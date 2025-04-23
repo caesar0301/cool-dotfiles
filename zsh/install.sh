@@ -42,8 +42,8 @@ function handle_zsh {
     CMD="cp -r"
   fi
 
+  $CMD "$THISDIR/_helper.zsh" "$XDG_CONFIG_HOME/zsh/_helper.zsh"
   $CMD "$THISDIR/init.zsh" "$XDG_CONFIG_HOME/zsh/init.zsh"
-  $CMD "$THISDIR/bundles" "$XDG_CONFIG_HOME/zsh/"
 
   # Install extra plugins
   mkdir_nowarn "$XDG_CONFIG_HOME/zsh/plugins"
@@ -57,6 +57,7 @@ function handle_zsh {
 # Function to cleanse Zsh configuration
 function cleanse_zsh {
   rm -rf "$XDG_CONFIG_HOME/zsh/init.zsh"
+  rm -rf "$XDG_CONFIG_HOME/zsh/_helper.zsh"
   local ZSHPLUG="$THISDIR/plugins"
   if [ -e "$ZSHPLUG" ]; then
     for i in $(find "$ZSHPLUG" -name "*.plugin.zsh"); do

@@ -13,10 +13,17 @@ ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
 source "${ZINIT_HOME}/zinit.zsh"
+source "${ZSH_CONFIG_DIR}/_helper.zsh"
 
 # extra envs
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
 export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
+
+# enabled plugins
+ENABLED_PLUGINS=(
+  shell-proxy # shell-proxy setter
+  caesardev   # personal dev tools
+)
 
 ###------------------------------------------------
 ### ZI MANAGER
@@ -57,29 +64,19 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit ice wait lucid; zinit snippet OMZP::git
 zinit ice wait lucid; zinit snippet OMZP::colored-man-pages
 
-# Load custom extensions under $ZSH_PLUGIN_DIR
-function _load_custom_extensions {
-    if [ -e ${ZSH_PLUGIN_DIR} ]; then
-        # Load plugins
-        for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
-            zinit ice wait lucid; zinit light $plugin
-        done
-        # Load plain zsh scripts
-        for i in `find ${ZSH_PLUGIN_DIR} -maxdepth 1 -type f -name "*.zsh"`; do
-            zinit ice wait lucid; zinit light $i;
-        done
-    fi
-}
-_load_custom_extensions
+# Load custom extensions
+for plugin in $ENABLED_PLUGINS; do
+  _zinit_ice_plugin $plugin
+done
 
 autoload -U parseopts zargs zcalc zed zmv
 autoload -U compinit && compinit
 zinit cdreplay -q
-#zinit cdlist
 
 ###------------------------------------------------
 ### ZSH ENHANCEMENT
 ###------------------------------------------------
+
 # disable Ctrl+D to close session
 setopt IGNORE_EOF
 

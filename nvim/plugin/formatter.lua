@@ -73,6 +73,9 @@ formatter.setup {
         sh = {
             require("formatter.filetypes.sh").shfmt
         },
+        zsh = {
+            require("formatter.filetypes.sh").shfmt
+        },
         sql = {
             require("formatter.filetypes.sql").sqlfluff
         },
