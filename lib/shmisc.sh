@@ -7,8 +7,8 @@
 
 LOCAL_GOROOT="$HOME/.local/go"
 
-# Function to print colored messages
-function print_message {
+# Print colored messages
+print_message() {
   local color_code=$1
   local level=$2
   shift 2
@@ -16,30 +16,30 @@ function print_message {
 }
 
 # Colored messages
-function warn {
+warn() {
   print_message '\033[0;33m' "WARN" "$@"
 }
 
-function info {
+info() {
   print_message '\033[0;32m' "INFO" "$@"
 }
 
-function error {
+error() {
   print_message '\033[0;31m' "ERROR" "$@"
   exit 1
 }
 
 # Get absolute path of current file
-function abspath {
+abspath() {
   echo "$(dirname "$(realpath "$0")")"
 }
 
-function absfilepath {
+absfilepath() {
   echo "$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
 }
 
 # Create a temporary directory and set a trap to clean it up
-function get_temp_dir {
+get_temp_dir() {
   local TEMP_DIR
   TEMP_DIR="$(mktemp -d)"
   trap 'rm -rf "$TEMP_DIR"' EXIT
@@ -47,17 +47,17 @@ function get_temp_dir {
 }
 
 # Check if a command exists
-function checkcmd {
+checkcmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
 # Create a directory if it doesn't exist
-function mkdir_nowarn {
+mkdir_nowarn() {
   mkdir -p "$1"
 }
 
 # Check and assure sudo access
-function check_sudo_access {
+check_sudo_access() {
   local prompt
   prompt=$(sudo -nv 2>&1)
   if [ $? -eq 0 ]; then
@@ -71,21 +71,21 @@ function check_sudo_access {
 }
 
 # Generate a random UUID
-function random_uuid {
+random_uuid() {
   local NEW_UUID
   NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
   echo "$NEW_UUID"
 }
 
 # Generate a random UUID with only lower-case alphanumeric characters
-function random_uuid_lower {
+random_uuid_lower() {
   local NEW_UUID
   NEW_UUID=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
   echo "$NEW_UUID"
 }
 
 # Generate a random number
-function random_num {
+random_num() {
   local WIDTH=${1:-4}
   local NUMBER
   NUMBER=$(cat /dev/urandom | tr -dc '0-9' | fold -w 256 | head -n 1 | sed -e 's/^0*//' | head --bytes "$WIDTH")
@@ -93,7 +93,7 @@ function random_num {
 }
 
 # Get the current shell name
-function current_shell_name {
+current_shell_name() {
   local ostype
   local username
   local shellname
@@ -108,7 +108,7 @@ function current_shell_name {
 }
 
 # Get the current shell configuration file
-function current_shell_config {
+current_shell_config() {
   local sname
   local shellconfig="/dev/null"
   sname=$(current_shell_name)
@@ -121,7 +121,7 @@ function current_shell_config {
 }
 
 # Get the latest GitHub release URL
-function latest_github_release {
+latest_github_release() {
   local repo=$1
   local proj=$2
   local link
@@ -130,31 +130,31 @@ function latest_github_release {
 }
 
 # Check if running on Linux
-function is_linux {
+is_linux() {
   [[ $(uname -s) == "Linux" ]]
 }
 
 # Check if running on macOS
-function is_macos {
+is_macos() {
   [[ $(uname -s) == "Darwin" ]]
 }
 
 # Check if running on x86 architecture
-function is_x86_64 {
+is_x86_64() {
   local CPU_ARCH
   CPU_ARCH=$(uname -m)
   [[ "$CPU_ARCH" == "x86_64" || "$CPU_ARCH" == "i"*"86" ]]
 }
 
 # Check if running on ARM architecture
-function is_arm64 {
+is_arm64() {
   local CPU_ARCH
   CPU_ARCH=$(uname -m)
   [[ "$CPU_ARCH" == "arm64" || "$CPU_ARCH" == "aarch64" ]]
 }
 
 # Install pyenv to manage Python versions
-function install_pyenv {
+install_pyenv() {
   if [ ! -e "$HOME/.pyenv" ]; then
     info "Installing pyenv to $HOME/.pyenv..."
     curl -k https://pyenv.run | bash
@@ -162,7 +162,7 @@ function install_pyenv {
 }
 
 # Install jenv to manage Java versions
-function install_jenv {
+install_jenv() {
   if checkcmd jenv; then
     info "jenv already installed"
     return
@@ -182,7 +182,7 @@ function install_jenv {
 }
 
 # Install a Java decompiler (CFR)
-function install_java_decompiler {
+install_java_decompiler() {
   info "Installing CFR - another Java decompiler"
   mkdir_nowarn "$HOME/.local/bin"
   local cfrfile="cfr-0.152.jar"
@@ -193,7 +193,7 @@ function install_java_decompiler {
 }
 
 # Install jdt-language-server
-function install_jdt_language_server {
+install_jdt_language_server() {
   info "Installing jdt-language-server to $dpath..."
   local dpath="$HOME/.local/share/jdt-language-server"
   local jdtdl="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
@@ -206,7 +206,7 @@ function install_jdt_language_server {
 }
 
 # Install google-java-format
-function install_google_java_format {
+install_google_java_format() {
   info "Installing google-java-format to $dpath..."
   local dpath="$HOME/.local/share/google-java-format"
   local fmtdl="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
@@ -217,8 +217,57 @@ function install_google_java_format {
   fi
 }
 
+# Install go version manager
+install_gvm() {
+  info "Installing GVM..."
+  bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+  if [ $? -ne 0 ]; then
+    error "GVM installation failed."
+    return
+  fi
+
+  # Detect shell and configure profile
+  SHELL_TYPE=$(basename "$SHELL")
+  case "$SHELL_TYPE" in
+  bash) PROFILE_FILE="$HOME/.bash_profile" ;;
+  zsh) PROFILE_FILE="$HOME/.zshrc" ;;
+  *) PROFILE_FILE="$HOME/.profile" ;;
+  esac
+
+  # Add GVM to shell profile if not already present
+  GVM_LINE='[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"'
+  if ! grep -Fx "$GVM_LINE" "$PROFILE_FILE" >/dev/null 2>&1; then
+    info "Adding GVM to $PROFILE_FILE..."
+    info "$GVM_LINE" >>"$PROFILE_FILE"
+  fi
+
+  # Source GVM in current session
+  source "$HOME/.gvm/scripts/gvm"
+
+  # Verify GVM installation
+  if command -v gvm >/dev/null 2>&1; then
+    info "GVM installed successfully. Version: $(gvm version)"
+  else
+    error "GVM installation failed. Please check logs above."
+    return
+  fi
+
+  # Install Go 1.24.2 to resolve version mismatch
+  info "Installing Go 1.24.2 (binary) as default..."
+  gvm install go1.24.2 -B
+  if [ $? -eq 0 ]; then
+    gvm use go1.24.2 --default
+    info "Go 1.24.2 set as default. Verify with: go version"
+  else
+    error "Failed to install Go 1.24.2. Please check GVM setup."
+    return
+  fi
+
+  info "GVM setup complete!"
+}
+
 # Install Go
-function install_golang {
+install_golang() {
   info "Installing Go..."
   local godl="https://go.dev/dl"
   local gover=${1:-"1.24.2"}
@@ -255,7 +304,7 @@ function install_golang {
 }
 
 # Install a Go library
-function go_install_lib {
+go_install_lib() {
   local GOCMD
   if [ -e "${LOCAL_GOROOT}/bin/go" ]; then
     GOCMD="${LOCAL_GOROOT}/bin/go"
@@ -265,15 +314,85 @@ function go_install_lib {
   if checkcmd "$GOCMD"; then
     "$GOCMD" install "$1"
   else
-    warn "Go not found in PATH, skip $1"
+    warn "Go not found in PATH, skip installing $1"
+  fi
+}
+
+# Install a pip library
+pip_install_lib() {
+  local libs=("$@") # Accept multiple arguments as an array
+  local options="--index-url http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com"
+  local pip_cmd="pip"
+
+  # Check if pip is available
+  if ! command -v "$pip_cmd" &>/dev/null; then
+    warn "pip not found in PATH, skipping installation of ${libs[*]}"
+    return
+  fi
+
+  # Check if any libraries are provided
+  if [[ ${#libs[@]} -eq 0 ]]; then
+    warn "No libraries specified for installation"
+    return
+  fi
+
+  info "Installing pip libraries: ${libs[*]}"
+  # Install all libraries in one pip command, with upgrade and quiet flags
+  "$pip_cmd" install $options -q -U "${libs[@]}" || {
+    warn "Failed to install one or more libraries: ${libs[*]}"
+    return
+  }
+}
+
+# Install one or more npm libraries globally
+npm_install_lib() {
+  local libs=("$@") # Capture all arguments as an array
+  local options="--prefer-offline --no-audit --progress=false"
+  local npm_cmd="npm"
+  local registry="https://registry.npmmirror.com"
+
+  # Check if npm is available
+  if ! command -v "$npm_cmd" >/dev/null 2>&1; then
+    warn "npm not found in PATH, skipping installation of ${libs[*]}"
+    return
+  fi
+
+  # Validate input
+  if [ ${#libs[@]} -eq 0 ]; then
+    warn "No libraries specified for installation"
+    return
+  fi
+
+  info "Installing npm libraries: ${libs[*]}"
+  # Set npm registry
+  "$npm_cmd" config set registry "$registry"
+
+  # Install libraries with or without sudo
+  if [ -z "$SUDO_PASS" ]; then
+    sudo "$npm_cmd" install $options -g "${libs[@]}"
+  else
+    echo "$SUDO_PASS" | sudo -S "$npm_cmd" install $options -g "${libs[@]}"
+  fi
+}
+
+# Install a R library
+rlang_install_lib() {
+  local lib=$1
+  if checkcmd R; then
+    if ! R -e "library(${lib})" >/dev/null 2>&1; then
+      R -e "install.packages('${lib}', repos='https://mirrors.nju.edu.cn/CRAN/')"
+    fi
+  else
+    warn "R not found in PATH, skip installing $lib"
   fi
 }
 
 # Install Hack Nerd Font
-function install_hack_nerd_font {
+install_hack_nerd_font() {
   info "Installing Hack Nerd Font and updating font cache..."
   if ! checkcmd fc-list; then
-    error "Fontconfig tools (fc-list, fc-cache) not found."
+    warn "Fontconfig tools (fc-list, fc-cache) not found."
+    return
   fi
   local FONTDIR="$HOME/.local/share/fonts"
   if is_macos; then
@@ -289,7 +408,7 @@ function install_hack_nerd_font {
 }
 
 # Install shfmt
-function install_shfmt {
+install_shfmt() {
   info "Installing shfmt..."
   local shfmtver=${1:-"v3.7.0"}
   local shfmtfile="shfmt_${shfmtver}_linux_amd64"
@@ -302,7 +421,7 @@ function install_shfmt {
 }
 
 # Install fzf
-function install_fzf {
+install_fzf() {
   if [ ! -e "$HOME/.fzf" ]; then
     info "Installing fzf to $HOME/.fzf..."
     git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
@@ -319,7 +438,7 @@ function install_fzf {
 }
 
 # Install zsh
-function install_zsh {
+install_zsh() {
   info "Installing zsh..."
   if checkcmd zsh; then
     info "zsh binary already exists"
@@ -335,7 +454,7 @@ function install_zsh {
 }
 
 # Install Neovim
-function install_neovim {
+install_neovim() {
   info "Installing Neovim..."
   local nvimver=${1:-"0.11.0"}
 

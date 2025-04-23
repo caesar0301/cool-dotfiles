@@ -8,9 +8,6 @@ THISDIR=$(dirname "$(realpath "$0")")
 XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 
-PYPI_OPTIONS="-i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com"
-NPM_OPTIONS="--prefer-offline --no-audit --progress=false"
-
 # Load common utils
 source "$THISDIR/../lib/shmisc.sh"
 
@@ -29,57 +26,21 @@ function install_lang_formatters {
   fi
 
   # Install formatters from pip
-  local piplibs=("pynvim" "black" "sqlparse" "cmake_format")
-  if checkcmd pip; then
-    if [[ ${#piplibs[@]} -gt 0 ]]; then
-      info "Installing pip deps: ${piplibs[*]}"
-      pip install ${PYPI_OPTIONS} -q -U "${piplibs[@]}"
-    fi
-  else
-    warn "Command pip not found, install and try again."
-  fi
+  pip_install_lib pynvim black sqlparse cmake_format
 
   # Install formatters from npm
   local npmlibs=("neovim")
   if ! checkcmd luafmt; then npmlibs+=("lua-fmt"); fi
   if ! checkcmd yaml-language-server; then npmlibs+=("yaml-language-server"); fi
   if ! checkcmd js-beautify; then npmlibs+=("js-beautify"); fi
-  if checkcmd npm; then
-    if [[ ${#npmlibs[@]} -gt 0 ]]; then
-      info "Installing npm deps: ${npmlibs[*]}"
-      npm config set registry https://registry.npmmirror.com
-      if [ "x${SUDO_PASS}" == "x" ]; then
-        sudo npm install ${NPM_OPTIONS} -g "${npmlibs[@]}"
-      else
-        echo "${SUDO_PASS}" | sudo -S npm install ${NPM_OPTIONS} -g "${npmlibs[@]}"
-      fi
-    fi
-  else
-    warn "Command npm not found, install and try again."
-  fi
+  npm_install_lib "${npmlibs[*]}"
 }
 
 # Function to install LSP dependencies
 function install_lsp_deps {
   info "Installing LSP dependencies..."
-
-  local piplibs=("pyright" "cmake-language-server")
-  if checkcmd pip; then
-    if [[ ${#piplibs[@]} -gt 0 ]]; then
-      info "Installing pip deps: ${piplibs[*]}"
-      pip install ${PYPI_OPTIONS} -q -U "${piplibs[@]}"
-    fi
-  else
-    warn "Command pip not found, install and try again."
-  fi
-
-  info "Installing R language server..."
-  if checkcmd R; then
-    if ! R -e "library(languageserver)" >/dev/null 2>&1; then
-      R -e "install.packages('languageserver', repos='https://mirrors.nju.edu.cn/CRAN/')"
-    fi
-  fi
-
+  pip_install_lib pyright cmake-language-server
+  rlang_install_lib "languageserver"
   go_install_lib golang.org/x/tools/gopls@latest
   go_install_lib github.com/jstemmer/gotags@latest
 }
@@ -121,16 +82,6 @@ function handle_neovim {
   fi
 }
 
-# Function to perform post-installation tasks
-function post_install {
-  info "Post installation"
-  nvim --headless \
-    -c "PackerInstall" \
-    -c "TSUpdate lua python go java vim vimdoc luadoc markdown" \
-    -c "qall"
-  echo ""
-}
-
 # Function to cleanse all Neovim-related files
 function cleanse_all {
   rm -rf "$HOME/.ctags"
@@ -163,7 +114,6 @@ done
 
 if [ "x$WITHDEPS" == "x1" ]; then
   install_neovim
-  install_golang
   install_lsp_deps
   install_jdt_language_server
   install_hack_nerd_font # Required by nvim-web-devicons
@@ -174,6 +124,10 @@ fi
 
 handle_ctags
 handle_neovim
-post_install
+
+warn "**********Post installation*************"
+warn ":PackerInstall to install Neovim plugins"
+warn ":TSUpdate lua python go java vim vimdoc luadoc markdown"
+warn "****************************************"
 
 info "Success! Run :PackerInstall to install Neovim plugins"
