@@ -1,6 +1,19 @@
 vim.cmd [[packadd packer.nvim]]
 
-return require("packer").startup(
+local packer = require("packer")
+
+packer.init(
+    {
+        max_jobs = 10, -- Limit to 10 concurrent jobs
+        display = {
+            open_fn = function()
+                return require("packer.util").float({border = "rounded"})
+            end
+        }
+    }
+)
+
+return packer.startup(
     function(use)
         -- Packer can manage itself
         use "wbthomason/packer.nvim"

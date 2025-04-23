@@ -14,20 +14,13 @@ source "$THISDIR/../lib/shmisc.sh"
 # Function to install language formatters
 function install_lang_formatters {
   info "Installing file format dependencies..."
-
   install_google_java_format
-
-  if ! checkcmd shfmt; then
-    install_shfmt
-  fi
-
+  if ! checkcmd shfmt; then install_shfmt; fi
   if ! checkcmd yamlfmt; then
     go_install_lib github.com/google/yamlfmt/cmd/yamlfmt@latest
   fi
-
   # Install formatters from pip
   pip_install_lib pynvim black sqlparse cmake_format
-
   # Install formatters from npm
   local npmlibs=("neovim")
   if ! checkcmd luafmt; then npmlibs+=("lua-fmt"); fi
@@ -126,7 +119,8 @@ handle_ctags
 handle_neovim
 
 warn "**********Post installation*************"
-warn ":PackerInstall to install Neovim plugins"
+warn "Run following commands in Neovim to install plugins:"
+warn ":PackerInstall"
 warn ":TSUpdate lua python go java vim vimdoc luadoc markdown"
 warn "****************************************"
 
