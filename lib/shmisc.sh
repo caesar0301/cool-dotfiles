@@ -219,6 +219,16 @@ install_google_java_format() {
 
 # Install go version manager
 install_gvm() {
+  if checkcmd gvm; then
+    info "gvm already installed"
+    return
+  fi
+
+  if [ -e "$HOME/.gvm" ]; then
+    warn "$HOME/.gvm alreay exists, skip"
+    return
+  fi
+
   info "Installing GVM..."
   bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
   if [ $? -ne 0 ]; then
@@ -238,7 +248,7 @@ install_gvm() {
   GVM_LINE='[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"'
   if ! grep -Fx "$GVM_LINE" "$PROFILE_FILE" >/dev/null 2>&1; then
     info "Adding GVM to $PROFILE_FILE..."
-    info "$GVM_LINE" >>"$PROFILE_FILE"
+    echo "$GVM_LINE" >>"$PROFILE_FILE"
   fi
 
   # Source GVM in current session
