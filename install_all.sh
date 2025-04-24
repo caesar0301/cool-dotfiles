@@ -15,7 +15,7 @@ function usage {
   echo "  -c cleanse install"
 }
 
-components=(tmux zsh nvim vifm  emacs misc )
+components=(tmux zsh nvim vifm emacs misc)
 # components+=(lisp rlwrap)
 
 for key in "${components[@]}"; do
