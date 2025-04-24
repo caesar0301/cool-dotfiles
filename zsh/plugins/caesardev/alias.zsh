@@ -28,7 +28,6 @@ alias dict="sdcv -0 -c"
 alias pc="proxychains4 -q"
 
 # Ag searching
-alias ag_scons='ag --ignore-dir="build" -G "(SConscript|SConstruct)"'
 alias ag_cmake='ag --ignore-dir="build" -G "(ODPSBuild.txt|CMakeLists.txt|.\.cmake)"'
 alias ag_bazel='ag --ignore-dir="build" -G "(BUILD|.\.bazel)"'
 

@@ -8,10 +8,8 @@
 
 source ${0:h}/alias.zsh
 source ${0:h}/dev_env.zsh
-source ${0:h}/docker.zsh
 source ${0:h}/dotup.zsh
 source ${0:h}/git.zsh
-source ${0:h}/common.zsh
 source ${0:h}/misc.zsh
 
 if [[ $OSTYPE == darwin* ]]; then

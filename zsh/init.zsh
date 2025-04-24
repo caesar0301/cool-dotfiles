@@ -12,6 +12,7 @@ ZSH_CONFIG_DIR="${HOME}/.config/zsh"
 ZSH_PLUGIN_DIR="${ZSH_CONFIG_DIR}/plugins/"
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 ZINIT_WORKDIR="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit"
+
 source "${ZINIT_HOME}/zinit.zsh"
 source "${ZSH_CONFIG_DIR}/_helper.zsh"
 
@@ -89,15 +90,6 @@ setopt noflowcontrol
 export HISTFILE=$HOME/.zhistory
 export HISTSIZE=9999
 export SAVEHIST=9999
-
-# reload zsh configs globally
-function zshld {
-    myextdir=$(basename $(echo "${ZSH_PLUGIN_DIR}" | sed -E -n "s|(.*[^/])/?|\1|p"))
-    if [ -e $ZINIT_WORKDIR ]; then
-        ls -d $ZINIT_WORKDIR/snippets/* | grep "$myextdir" | xargs rm -rf
-    fi
-    source $HOME/.zshrc
-}
 
 # extra paths
 export PATH=$HOME/.local/bin:$PATH
