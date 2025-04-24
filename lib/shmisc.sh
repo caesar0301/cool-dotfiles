@@ -154,6 +154,28 @@ is_arm64() {
   [[ "$CPU_ARCH" == "arm64" || "$CPU_ARCH" == "aarch64" ]]
 }
 
+# Install files from pairs of source and destination files.
+# Input should be pairs of source and destination files.
+# If LINK_INSTEAD_OF_COPY is set, use soft link instead of copy.
+install_file_pairs() {
+  local copycmd="cp"
+  if [ "$LINK_INSTEAD_OF_COPY" == 1 ]; then
+    copycmd="ln -sf"
+  fi
+  while [ $# -ge 2 ]; do
+    src="$1"
+    dest="$2"
+    if [ ! -e "$src" ]; then
+      warn "Error: Source '$src' does not exist"
+      shift 2
+      continue
+    fi
+    $copycmd "$src" "$dest" || error "Error copying '$src' to '$dest'"
+    shift 2
+  done
+  [ $# -eq 1 ] && error "Error: Missing destination for '$1'"
+}
+
 # Install pyenv to manage Python versions
 install_pyenv() {
   if [ ! -e "$HOME/.pyenv" ]; then
@@ -230,7 +252,7 @@ install_gvm() {
   fi
 
   info "Installing GVM..."
-  bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)"
   if [ $? -ne 0 ]; then
     error "GVM installation failed."
     return

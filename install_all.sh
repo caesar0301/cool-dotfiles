@@ -15,19 +15,17 @@ function usage {
   echo "  -c cleanse install"
 }
 
-function start_install_msg {
-  info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-  info "START INSTALLING $1"
-}
+components=(tmux zsh nvim vifm  emacs misc )
+# components+=(lisp rlwrap)
 
-function finish_install_msg {
-  info "FINISH INSTALLING $1"
-  info "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-}
-
-components=(tmux zsh nvim vifm lisp emacs rlwrap misc)
 for key in "${components[@]}"; do
-  start_install_msg $key
+  info "➜ START INSTALLING $key"
   sh $THISDIR/$key/install.sh $@
-  finish_install_msg $key
+  if [ $? -eq 0 ]; then
+    info "✔ FINISH INSTALLING $key"
+  else
+    error "✖ ERROR INSTALLING $key"
+  fi
 done
+
+info "🎉 All installed successfully!"

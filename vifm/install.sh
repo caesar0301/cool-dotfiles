@@ -17,18 +17,6 @@ INSTALL_FILES=(
   colors
 )
 
-# Function to handle file operations
-handle_file() {
-  local src=$1
-  local dest=$2
-  local cmd=$3
-  if [ "$cmd" == "ln" ]; then
-    ln -sf "$src" "$dest" || error "Failed to create soft link for $src"
-  elif [ "$cmd" == "cp" ]; then
-    cp -r "$src" "$dest" || error "Failed to copy $src"
-  fi
-}
-
 # Function to display usage information
 usage() {
   info "Usage: install.sh [-f] [-s] [-e] [-c]"
@@ -49,15 +37,8 @@ install_vifm() {
 # Function to handle Vifm configuration
 handle_vifm() {
   create_dir "$VIFM_CONFIG_HOME"
-  local cmd
-  if [ x"$SOFTLINK" == "x1" ]; then
-    cmd="ln"
-  else
-    cmd="cp"
-  fi
-
   for i in "${INSTALL_FILES[@]}"; do
-    handle_file "$THISDIR/$i" "$VIFM_CONFIG_HOME/$i" "$cmd"
+    install_file_pairs "$THISDIR/$i" "$VIFM_CONFIG_HOME/$i"
   done
 }
 
@@ -70,12 +51,12 @@ cleanse_vifm() {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_vifm && exit 0 ;;
   h | ?) usage && exit 0 ;;

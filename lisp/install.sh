@@ -92,13 +92,8 @@ EOF
 }
 
 function handle_lisp {
-  if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/dot-clinit.cl $HOME/.clinit.cl
-    ln -sf $THISDIR/dot-sbclrc $HOME/.sbclrc
-  else
-    cp $THISDIR/dot-clinit.cl $HOME
-    cp $THISDIR/dot-sbclrc $HOME/.sbclrc
-  fi
+  install_file_pairs "$THISDIR/dot-clinit.cl" "$HOME/.clinit.cl" \
+    "$THISDIR/dot-sbclrc" "$HOME/.sbclrc"
 }
 
 function cleanse_lisp {
@@ -108,12 +103,12 @@ function cleanse_lisp {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_lisp && exit 0 ;;
   h | ?) usage && exit 0 ;;

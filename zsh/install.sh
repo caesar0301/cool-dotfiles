@@ -27,25 +27,26 @@ install_zinit() {
   fi
 }
 
+handle_shell_proxy() {
+  if [ ! -e $HOME/.config/proxy ] || [ -L $HOME/.config/proxy ]; then
+    install_file_pairs "$THISDIR/config/proxy-config" "$HOME/.config/proxy"
+  else
+    warn "$HOME/.config/proxy existed, skip without rewriting"
+  fi
+}
+
 # Function to handle Zsh configuration
 handle_zsh() {
   create_dir "$XDG_CONFIG_HOME/zsh"
 
   if [ ! -e "$HOME/.zshrc" ] || [ -L "$HOME/.zshrc" ]; then
-    cp "$THISDIR/zshrc" "$HOME/.zshrc" || error "Failed to copy zshrc"
+    install_file_pairs "$THISDIR/zshrc" "$HOME/.zshrc"
   else
     warn "$HOME/.zshrc existed, skip without rewriting"
   fi
 
-  local CMD
-  if [ x"$SOFTLINK" == "x1" ]; then
-    CMD="ln -sf"
-  else
-    CMD="cp -r"
-  fi
-
   for i in "${INSTALL_FILES[@]}"; do
-    $CMD "$THISDIR/$i" "$XDG_CONFIG_HOME/zsh/$i" || error "Failed to copy $i"
+    install_file_pairs "$THISDIR/$i" "$XDG_CONFIG_HOME/zsh/$i"
   done
 
   # Install extra plugins
@@ -53,13 +54,14 @@ handle_zsh() {
   for i in $(find "$THISDIR/plugins" -name "*.plugin.zsh"); do
     local dname
     dname=$(dirname "$i")
-    $CMD "$dname" "$XDG_CONFIG_HOME/zsh/plugins/" || error "Failed to copy plugin $dname"
+    install_file_pairs "$dname" "$XDG_CONFIG_HOME/zsh/plugins/"
   done
 }
 
 # Function to cleanse Zsh configuration
 cleanse_zsh() {
   rm -rf "$XDG_DATA_HOME/zinit"
+  rm -rf "$HOME/.config/proxy"
 
   for i in "${INSTALL_FILES[@]}"; do
     rm -rf "$XDG_CONFIG_HOME/zsh/$i"
@@ -87,12 +89,12 @@ usage() {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_zsh && exit 0 ;;
   h | ?) usage && exit 0 ;;
@@ -107,5 +109,6 @@ if [ "x$WITHDEPS" == "x1" ]; then
   install_gvm
   install_java_decompiler
 fi
+handle_shell_proxy
 handle_zsh
 info "Zsh installed successfully!"

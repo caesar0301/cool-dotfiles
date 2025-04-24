@@ -26,12 +26,7 @@ function install_local_bins {
 # auto completion of SBCL with rlwrap
 function handle_rlwrap {
   if [ ! -e $HOME/.sbcl_completions ] || [ -L $HOME/.sbcl_completions ]; then
-    # Do not overwrite user local configs
-    if [ x$SOFTLINK == "x1" ]; then
-      ln -sf $THISDIR/../rlwrap/sbcl_completions $HOME/.sbcl_completions
-    else
-      cp $THISDIR/../rlwrap/sbcl_completions $HOME/.sbcl_completions
-    fi
+    install_file_pairs "$THISDIR/../rlwrap/sbcl_completions" "$HOME/.sbcl_completions"
   else
     warn "$HOME/.sbcl_completions existed, skip without rewriting"
   fi
@@ -39,12 +34,7 @@ function handle_rlwrap {
 
 function handle_kitty {
   create_dir $XDG_CONFIG_HOME/kitty
-  if [ x$SOFTLINK == "x1" ]; then
-    CMD="ln -sf"
-  else
-    CMD="cp -r"
-  fi
-  $CMD $THISDIR/../kitty/kitty.conf $XDG_CONFIG_HOME/kitty/kitty.conf
+  install_file_pairs "$THISDIR/../kitty/kitty.conf" "$XDG_CONFIG_HOME/kitty/kitty.conf"
 }
 
 function cleanse_kitty {
@@ -64,15 +54,13 @@ function cleanse_all {
   info "All cleansed!"
 }
 
-####################################################
-
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_all && exit 0 ;;
   h | ?) usage && exit 0 ;;

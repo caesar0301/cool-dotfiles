@@ -35,15 +35,8 @@ usage() {
 # Function to handle rlwrap configuration
 handle_rlwrap() {
   create_dir "$RLWRAP_HOME"
-  local cmd
-  if [ x"$SOFTLINK" == "x1" ]; then
-    cmd="ln"
-  else
-    cmd="cp"
-  fi
-
-  handle_file "$THISDIR/lisp_completions" "$RLWRAP_HOME/lisp_completions" "$cmd"
-  handle_file "$THISDIR/sbcl_completions" "$RLWRAP_HOME/sbcl_completions" "$cmd"
+  install_file_pairs "$THISDIR/lisp_completions" "$RLWRAP_HOME/lisp_completions"
+  install_file_pairs "$THISDIR/sbcl_completions" "$RLWRAP_HOME/sbcl_completions"
 }
 
 # Function to cleanse rlwrap configuration
@@ -54,12 +47,12 @@ cleanse_rlwrap() {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_rlwrap && exit 0 ;;
   h | ?) usage && exit 0 ;;

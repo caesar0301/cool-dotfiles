@@ -21,18 +21,6 @@ INSTALL_FILES=(
   init.el
 )
 
-# Function to handle file operations
-handle_file() {
-  local src=$1
-  local dest=$2
-  local cmd=$3
-  if [ "$cmd" == "ln" ]; then
-    ln -sf "$src" "$dest" || error "Failed to create soft link for $src"
-  elif [ "$cmd" == "cp" ]; then
-    cp -r "$src" "$dest" || error "Failed to copy $src"
-  fi
-}
-
 # Function to display usage information
 usage() {
   info "Usage: install.sh [-f] [-s] [-e] [-c]"
@@ -59,15 +47,8 @@ check_emacs_deps() {
 # Function to handle Emacs configuration
 handle_emacs() {
   create_dir "$EM_CONFIG"
-  local cmd
-  if [ x"$SOFTLINK" == "x1" ]; then
-    cmd="ln"
-  else
-    cmd="cp"
-  fi
-
   for file in "${INSTALL_FILES[@]}"; do
-    handle_file "$THISDIR/$file" "$EM_CONFIG/$file" "$cmd"
+    install_file_pairs "$THISDIR/$file" "$EM_CONFIG/$file"
   done
 }
 
@@ -80,12 +61,12 @@ cleanse_emacs() {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_emacs && exit 0 ;;
   h | ?) usage && exit 0 ;;

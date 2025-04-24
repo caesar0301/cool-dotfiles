@@ -51,11 +51,7 @@ function handle_ctags {
   create_dir "$ctags_home"
   if [ -e "$ctags_home" ]; then
     for i in $(find "$THISDIR/../ctags" -maxdepth 1 -type f -name "*.ctags"); do
-      if [ x"$SOFTLINK" == "x1" ]; then
-        ln -sf "$i" "$ctags_home/"
-      else
-        cp "$i" "$ctags_home/"
-      fi
+      install_file_pairs "$i" "$ctags_home/"
     done
   fi
 }
@@ -68,11 +64,15 @@ function handle_neovim {
     info "Installing plugin manager Packer..."
     git clone --depth 1 https://github.com/wbthomason/packer.nvim "$packer_home"
   fi
-  if [ x"$SOFTLINK" == "x1" ]; then
-    ln -sf "$THISDIR" "$XDG_CONFIG_HOME/"
-  else
-    cp -r "$THISDIR" "$XDG_CONFIG_HOME/"
-  fi
+  install_file_pairs "$THISDIR" "$XDG_CONFIG_HOME/"
+}
+
+function post_install {
+  warn "**********Post installation*************"
+  warn "Run following commands in Neovim to install plugins:"
+  warn ":PackerInstall"
+  warn ":TSUpdate lua python go java vim vimdoc luadoc markdown"
+  warn "****************************************"
 }
 
 # Function to cleanse all Neovim-related files
@@ -93,12 +93,12 @@ function usage {
 }
 
 # Change to 0 to install a copy instead of soft link
-SOFTLINK=1
+LINK_INSTEAD_OF_COPY=1
 WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
-  f) SOFTLINK=0 ;;
-  s) SOFTLINK=1 ;;
+  f) LINK_INSTEAD_OF_COPY=0 ;;
+  s) LINK_INSTEAD_OF_COPY=1 ;;
   e) WITHDEPS=1 ;;
   c) cleanse_all && exit 0 ;;
   h | ?) usage && exit 0 ;;
@@ -117,11 +117,6 @@ fi
 
 handle_ctags
 handle_neovim
-
-warn "**********Post installation*************"
-warn "Run following commands in Neovim to install plugins:"
-warn ":PackerInstall"
-warn ":TSUpdate lua python go java vim vimdoc luadoc markdown"
-warn "****************************************"
+post_install
 
 info "Success! Run :PackerInstall to install Neovim plugins"
