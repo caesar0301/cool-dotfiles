@@ -5,8 +5,6 @@
 # Copyright (c) 2024, Xiaming Chen
 # License: MIT
 
-LOCAL_GOROOT="$HOME/.local/go"
-
 # Print colored messages
 print_message() {
   local color_code=$1
@@ -38,6 +36,14 @@ absfilepath() {
   echo "$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
 }
 
+# Function to create directories
+create_dir() {
+  local dir=$1
+  if [ ! -d "$dir" ]; then
+    create_dir "$dir"
+  fi
+}
+
 # Create a temporary directory and set a trap to clean it up
 get_temp_dir() {
   local TEMP_DIR
@@ -49,11 +55,6 @@ get_temp_dir() {
 # Check if a command exists
 checkcmd() {
   command -v "$1" >/dev/null 2>&1
-}
-
-# Create a directory if it doesn't exist
-mkdir_nowarn() {
-  mkdir -p "$1"
 }
 
 # Check and assure sudo access
@@ -184,7 +185,7 @@ install_jenv() {
 # Install a Java decompiler (CFR)
 install_java_decompiler() {
   info "Installing CFR - another Java decompiler"
-  mkdir_nowarn "$HOME/.local/bin"
+  create_dir "$HOME/.local/bin"
   local cfrfile="cfr-0.152.jar"
   local target="$HOME/.local/bin/$cfrfile"
   if [ ! -e "$target" ]; then
@@ -198,7 +199,7 @@ install_jdt_language_server() {
   local dpath="$HOME/.local/share/jdt-language-server"
   local jdtdl="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
   if [ ! -e "$dpath/bin/jdtls" ]; then
-    mkdir_nowarn "$dpath"
+    create_dir "$dpath"
     curl -L --progress-bar "$jdtdl" | tar zxf - -C "$dpath"
   else
     info "$dpath/bin/jdtls already exists"
@@ -278,16 +279,16 @@ install_gvm() {
 
 # Install Go
 install_golang() {
-  info "Installing Go..."
-  local godl="https://go.dev/dl"
-  local gover=${1:-"1.24.2"}
-
   if checkcmd go; then
-    info "Go binary already installed"
     return
   fi
 
-  mkdir_nowarn "$(dirname "$LOCAL_GOROOT")"
+  info "Installing Go..."
+  local godl="https://go.dev/dl"
+  local gover=${1:-"1.24.2"}
+  local custom_goroot="$HOME/.local/go"
+
+  create_dir "$(dirname "$custom_goroot")"
 
   local GO_RELEASE
   if is_macos; then
@@ -310,22 +311,26 @@ install_golang() {
 
   local link="${godl}/${GO_RELEASE}.tar.gz"
   info "Downloading Go from $link"
-  curl -k -L --progress-bar "$link" | tar -xz -C "$(dirname "$LOCAL_GOROOT")"
+  curl -k -L --progress-bar "$link" | tar -xz -C "$(dirname "$custom_goroot")"
 }
 
 # Install a Go library
 go_install_lib() {
-  local GOCMD
-  if [ -e "${LOCAL_GOROOT}/bin/go" ]; then
-    GOCMD="${LOCAL_GOROOT}/bin/go"
-  else
-    GOCMD="go"
+  local gocmd="go"
+  local lib=$1
+  local custom_goroot="$HOME/.local/go"
+
+  if ! checkcmd "$gocmd"; then
+    if [ -e "${custom_goroot}/bin/go" ]; then
+      gocmd="${custom_goroot}/bin/go"
+      info "Using custom Go installation at $gocmd"
+    else
+      warn "Go not found in PATH, skip installing $lib"
+      return
+    fi
   fi
-  if checkcmd "$GOCMD"; then
-    "$GOCMD" install "$1"
-  else
-    warn "Go not found in PATH, skip installing $1"
-  fi
+
+  "$gocmd" install "$lib"
 }
 
 # Install a pip library
@@ -409,7 +414,7 @@ install_hack_nerd_font() {
     FONTDIR="$HOME/Library/Fonts"
   fi
   if ! fc-list | grep "Hack Nerd Font" >/dev/null; then
-    mkdir_nowarn "$FONTDIR"
+    create_dir "$FONTDIR"
     curl -L --progress-bar "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.tar.xz" | tar xJ -C "$FONTDIR"
     fc-cache -f
   else
@@ -419,13 +424,16 @@ install_hack_nerd_font() {
 
 # Install shfmt
 install_shfmt() {
+  if checkcmd shfmt; then
+    return
+  fi
   info "Installing shfmt..."
   local shfmtver=${1:-"v3.7.0"}
   local shfmtfile="shfmt_${shfmtver}_linux_amd64"
   if [ "$(uname)" == "Darwin" ]; then
     shfmtfile="shfmt_${shfmtver}_darwin_amd64"
   fi
-  mkdir_nowarn "$HOME/.local/bin"
+  create_dir "$HOME/.local/bin"
   curl -L --progress-bar "https://github.com/mvdan/sh/releases/download/${shfmtver}/$shfmtfile" -o "$HOME/.local/bin/shfmt"
   chmod +x "$HOME/.local/bin/shfmt"
 }
@@ -449,13 +457,12 @@ install_fzf() {
 
 # Install zsh
 install_zsh() {
-  info "Installing zsh..."
   if checkcmd zsh; then
-    info "zsh binary already exists"
     return
   fi
-  mkdir_nowarn "$HOME/.local/bin"
-  mkdir_nowarn "/tmp/build-zsh"
+  info "Installing zsh..."
+  create_dir "$HOME/.local/bin"
+  create_dir "/tmp/build-zsh"
   curl -k -L --progress-bar "http://ftp.funet.fi/pub/unix/shells/zsh/zsh-${ZSH_VERSION}.tar.xz" | tar xJ -C "/tmp/build-zsh/"
   (
     cd "/tmp/build-zsh/zsh-${ZSH_VERSION}" && ./configure --prefix "$HOME/.local" && make && make install
@@ -465,15 +472,13 @@ install_zsh() {
 
 # Install Neovim
 install_neovim() {
-  info "Installing Neovim..."
-  local nvimver=${1:-"0.11.0"}
-
   if checkcmd nvim; then
-    info "Neovim binary already installed"
     return
   fi
 
-  mkdir_nowarn "$HOME/.local"
+  info "Installing Neovim..."
+  local nvimver=${1:-"0.11.0"}
+  create_dir "$HOME/.local"
 
   local NVIM_RELEASE
   if is_macos; then

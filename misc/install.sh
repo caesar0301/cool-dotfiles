@@ -19,7 +19,7 @@ function usage {
 }
 
 function install_local_bins {
-  mkdir_nowarn $HOME/.local/bin
+  create_dir $HOME/.local/bin
   cp $THISDIR/../bin/* $HOME/.local/bin
 }
 
@@ -38,7 +38,7 @@ function handle_rlwrap {
 }
 
 function handle_kitty {
-  mkdir_nowarn $XDG_CONFIG_HOME/kitty
+  create_dir $XDG_CONFIG_HOME/kitty
   if [ x$SOFTLINK == "x1" ]; then
     CMD="ln -sf"
   else

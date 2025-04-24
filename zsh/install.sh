@@ -13,24 +13,26 @@ ZSH_VERSION="5.8"
 # Load common utils
 source "$THISDIR/../lib/shmisc.sh"
 
+INSTALL_FILES=(
+  init.zsh
+  _helper.zsh
+)
+
 # Function to install Zinit
-function install_zinit {
+install_zinit() {
   local ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
-  if [ ! -d "$ZINIT_HOME" ]; then
-    mkdir -p "$(dirname "$ZINIT_HOME")"
-  fi
+  create_dir "$(dirname "$ZINIT_HOME")"
   if [ ! -d "$ZINIT_HOME/.git" ]; then
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" || error "Failed to clone Zinit"
   fi
 }
 
 # Function to handle Zsh configuration
-function handle_zsh {
-  mkdir_nowarn "$XDG_CONFIG_HOME/zsh"
+handle_zsh() {
+  create_dir "$XDG_CONFIG_HOME/zsh"
 
   if [ ! -e "$HOME/.zshrc" ] || [ -L "$HOME/.zshrc" ]; then
-    # Do not overwrite user local configs
-    cp "$THISDIR/zshrc" "$HOME/.zshrc"
+    cp "$THISDIR/zshrc" "$HOME/.zshrc" || error "Failed to copy zshrc"
   else
     warn "$HOME/.zshrc existed, skip without rewriting"
   fi
@@ -42,22 +44,27 @@ function handle_zsh {
     CMD="cp -r"
   fi
 
-  $CMD "$THISDIR/_helper.zsh" "$XDG_CONFIG_HOME/zsh/_helper.zsh"
-  $CMD "$THISDIR/init.zsh" "$XDG_CONFIG_HOME/zsh/init.zsh"
+  for i in "${INSTALL_FILES[@]}"; do
+    $CMD "$THISDIR/$i" "$XDG_CONFIG_HOME/zsh/$i" || error "Failed to copy $i"
+  done
 
   # Install extra plugins
-  mkdir_nowarn "$XDG_CONFIG_HOME/zsh/plugins"
+  create_dir "$XDG_CONFIG_HOME/zsh/plugins"
   for i in $(find "$THISDIR/plugins" -name "*.plugin.zsh"); do
     local dname
     dname=$(dirname "$i")
-    $CMD "$dname" "$XDG_CONFIG_HOME/zsh/plugins/"
+    $CMD "$dname" "$XDG_CONFIG_HOME/zsh/plugins/" || error "Failed to copy plugin $dname"
   done
 }
 
 # Function to cleanse Zsh configuration
-function cleanse_zsh {
-  rm -rf "$XDG_CONFIG_HOME/zsh/init.zsh"
-  rm -rf "$XDG_CONFIG_HOME/zsh/_helper.zsh"
+cleanse_zsh() {
+  rm -rf "$XDG_DATA_HOME/zinit"
+
+  for i in "${INSTALL_FILES[@]}"; do
+    rm -rf "$XDG_CONFIG_HOME/zsh/$i"
+  done
+
   local ZSHPLUG="$THISDIR/plugins"
   if [ -e "$ZSHPLUG" ]; then
     for i in $(find "$ZSHPLUG" -name "*.plugin.zsh"); do
@@ -66,12 +73,12 @@ function cleanse_zsh {
       rm -rf "$XDG_CONFIG_HOME/zsh/plugins/$(basename "$dname")"
     done
   fi
-  rm -rf "$XDG_DATA_HOME/zinit"
+
   info "All Zsh files cleansed!"
 }
 
 # Function to display usage information
-function usage {
+usage() {
   info "Usage: install.sh [-f] [-s] [-e] [-c]"
   info "  -f copy and install"
   info "  -s soft link install"

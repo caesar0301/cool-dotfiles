@@ -4,36 +4,53 @@
 # https://github.com/caesar0301/cool-dotfiles
 # Maintainer: xiaming.chen
 ###################################################
-THISDIR=$(dirname $(realpath $0))
-XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+THISDIR=$(dirname "$(realpath "$0")")
+XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 RLWRAP_HOME=${XDG_CONFIG_HOME}/rlwrap
 
-source $THISDIR/../lib/shmisc.sh
+source "$THISDIR/../lib/shmisc.sh"
 
-function usage {
-  echo "Usage: install.sh [-f] [-s] [-e]"
-  echo "  -f copy and install"
-  echo "  -s soft linke install"
-  echo "  -e install dependencies"
-  echo "  -c cleanse install"
-}
-
-function handle_rlwrap {
-  mkdir_nowarn $RLWRAP_HOME
-  if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/lisp_completions $RLWRAP_HOME/lisp_completions
-    ln -sf $THISDIR/sbcl_completions $RLWRAP_HOME/sbcl_completions
-  else
-    cp $THISDIR/lisp_completions $RLWRAP_HOME/
-    cp $THISDIR/sbcl_completions $RLWRAP_HOME/
+# Function to handle file operations
+handle_file() {
+  local src=$1
+  local dest=$2
+  local cmd=$3
+  if [ "$cmd" == "ln" ]; then
+    ln -sf "$src" "$dest" || error "Failed to create soft link for $src"
+  elif [ "$cmd" == "cp" ]; then
+    cp -r "$src" "$dest" || error "Failed to copy $src"
   fi
 }
 
-function cleanse_rlwrap {
-  rm -rf $RLWRAP_HOME/lisp_completions
-  rm -rf $RLWRAP_HOME/sbcl_completions
-  info "All rlwrap cleansed!"
+# Function to display usage information
+usage() {
+  info "Usage: install.sh [-f] [-s] [-e] [-c]"
+  info "  -f copy and install"
+  info "  -s soft link install"
+  info "  -e install dependencies"
+  info "  -c cleanse install"
+}
+
+# Function to handle rlwrap configuration
+handle_rlwrap() {
+  create_dir "$RLWRAP_HOME"
+  local cmd
+  if [ x"$SOFTLINK" == "x1" ]; then
+    cmd="ln"
+  else
+    cmd="cp"
+  fi
+
+  handle_file "$THISDIR/lisp_completions" "$RLWRAP_HOME/lisp_completions" "$cmd"
+  handle_file "$THISDIR/sbcl_completions" "$RLWRAP_HOME/sbcl_completions" "$cmd"
+}
+
+# Function to cleanse rlwrap configuration
+cleanse_rlwrap() {
+  rm -rf "$RLWRAP_HOME/lisp_completions"
+  rm -rf "$RLWRAP_HOME/sbcl_completions"
+  info "All rlwrap files cleansed!"
 }
 
 # Change to 0 to install a copy instead of soft link

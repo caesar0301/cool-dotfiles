@@ -15,7 +15,7 @@ source "$THISDIR/../lib/shmisc.sh"
 function install_lang_formatters {
   info "Installing file format dependencies..."
   install_google_java_format
-  if ! checkcmd shfmt; then install_shfmt; fi
+  install_shfmt
   if ! checkcmd yamlfmt; then
     go_install_lib github.com/google/yamlfmt/cmd/yamlfmt@latest
   fi
@@ -48,7 +48,7 @@ function check_ripgrep {
 # Function to handle ctags configuration
 function handle_ctags {
   local ctags_home="$HOME/.ctags.d"
-  mkdir_nowarn "$ctags_home"
+  create_dir "$ctags_home"
   if [ -e "$ctags_home" ]; then
     for i in $(find "$THISDIR/../ctags" -maxdepth 1 -type f -name "*.ctags"); do
       if [ x"$SOFTLINK" == "x1" ]; then

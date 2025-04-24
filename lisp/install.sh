@@ -69,7 +69,7 @@ function install_allegro_cl {
     if [ ! -e /tmp/$TARNAME ]; then
       curl $DLINK -o /tmp/$TARNAME
     fi
-    mkdir_nowarn $ACL_HOME
+    create_dir $ACL_HOME
     tar --strip-components=1 -xjf /tmp/$TARNAME -C $ACL_HOME
   fi
 

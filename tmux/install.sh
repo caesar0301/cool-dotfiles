@@ -26,8 +26,8 @@ function usage {
 function install_tmux {
   info "Installing tmux..."
   if ! checkcmd tmux; then
-    mkdir_nowarn "$HOME/.local/bin"
-    mkdir_nowarn "/tmp/build-tmux"
+    create_dir "$HOME/.local/bin"
+    create_dir "/tmp/build-tmux"
     local link="https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz"
     curl -k -L --progress-bar "$link" | tar xvz -C "/tmp/build-tmux/"
     (
@@ -42,7 +42,7 @@ function install_tmux {
 # Function to install TPM (Tmux Plugin Manager)
 function install_tpm {
   info "Installing TPM..."
-  mkdir_nowarn "$XDG_CONFIG_HOME/tmux/plugins"
+  create_dir "$XDG_CONFIG_HOME/tmux/plugins"
   if [ ! -e "$XDG_CONFIG_HOME/tmux/plugins/tpm" ]; then
     git clone https://github.com/tmux-plugins/tpm "$XDG_CONFIG_HOME/tmux/plugins/tpm"
   fi
@@ -50,7 +50,7 @@ function install_tpm {
 
 # Function to handle tmux configuration
 function handle_tmux {
-  mkdir_nowarn "$XDG_CONFIG_HOME/tmux"
+  create_dir "$XDG_CONFIG_HOME/tmux"
   if [ x"$SOFTLINK" == "x1" ]; then
     ln -sf "$THISDIR/tmux.conf" "$XDG_CONFIG_HOME/tmux/tmux.conf"
     ln -sf "$THISDIR/tmux.conf.local" "$XDG_CONFIG_HOME/tmux/tmux.conf.local"

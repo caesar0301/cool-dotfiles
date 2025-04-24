@@ -4,46 +4,69 @@
 # https://github.com/caesar0301/cool-dotfiles
 # Maintainer: xiaming.chen
 ###################################################
-THISDIR=$(dirname $(realpath $0))
-XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+THISDIR=$(dirname "$(realpath "$0")")
+XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 VIFM_CONFIG_HOME=${XDG_CONFIG_HOME}/vifm
 
-source $THISDIR/../lib/shmisc.sh
+source "$THISDIR/../lib/shmisc.sh"
 
-function usage {
-  echo "Usage: install.sh [-f] [-s] [-e]"
-  echo "  -f copy and install"
-  echo "  -s soft linke install"
-  echo "  -e install dependencies"
-  echo "  -c cleanse install"
+INSTALL_FILES=(
+  vifmrc
+  scripts
+  colors
+)
+
+# Function to handle file operations
+handle_file() {
+  local src=$1
+  local dest=$2
+  local cmd=$3
+  if [ "$cmd" == "ln" ]; then
+    ln -sf "$src" "$dest" || error "Failed to create soft link for $src"
+  elif [ "$cmd" == "cp" ]; then
+    cp -r "$src" "$dest" || error "Failed to copy $src"
+  fi
 }
 
-function install_vifm {
+# Function to display usage information
+usage() {
+  info "Usage: install.sh [-f] [-s] [-e] [-c]"
+  info "  -f copy and install"
+  info "  -s soft link install"
+  info "  -e install dependencies"
+  info "  -c cleanse install"
+}
+
+# Function to install Vifm
+install_vifm() {
   if ! checkcmd vifm; then
     warn "vifm binary not found, skip"
     exit 0
   fi
 }
 
-function handle_vifm {
-  mkdir_nowarn $VIFM_CONFIG_HOME
-  if [ x$SOFTLINK == "x1" ]; then
-    ln -sf $THISDIR/vifmrc $VIFM_CONFIG_HOME/vifmrc
-    ln -sf $THISDIR/scripts $VIFM_CONFIG_HOME/
-    ln -sf $THISDIR/colors $VIFM_CONFIG_HOME/
+# Function to handle Vifm configuration
+handle_vifm() {
+  create_dir "$VIFM_CONFIG_HOME"
+  local cmd
+  if [ x"$SOFTLINK" == "x1" ]; then
+    cmd="ln"
   else
-    cp $THISDIR/vifmrc $VIFM_CONFIG_HOME/vifmrc
-    cp -r $THISDIR/scripts $VIFM_CONFIG_HOME/
-    cp -r $THISDIR/colors $VIFM_CONFIG_HOME/
+    cmd="cp"
   fi
+
+  for i in "${INSTALL_FILES[@]}"; do
+    handle_file "$THISDIR/$i" "$VIFM_CONFIG_HOME/$i" "$cmd"
+  done
 }
 
-function cleanse_vifm {
-  rm -rf $VIFM_CONFIG_HOME/vifmrc
-  rm -rf $VIFM_CONFIG_HOME/scripts
-  rm -rf $VIFM_CONFIG_HOME/colors
-  info "All vifm cleansed!"
+# Function to cleanse Vifm configuration
+cleanse_vifm() {
+  for i in "${INSTALL_FILES[@]}"; do
+    rm -rf "$VIFM_CONFIG_HOME/$i"
+  done
+  info "All Vifm files cleansed!"
 }
 
 # Change to 0 to install a copy instead of soft link
@@ -62,4 +85,4 @@ done
 install_vifm
 handle_vifm
 
-info "vifm installed successfully!"
+info "Vifm installed successfully!"
