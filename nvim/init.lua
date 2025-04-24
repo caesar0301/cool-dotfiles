@@ -8,19 +8,11 @@
 --
 -- Usage: :PackerInstall
 -------------------------------------------------------------
--- Load all plugins
-require("packerman")
 
 -- Setup globals that I expect to be always available.
-require("autocmds")
-require("globals")
-
--- Preferred settings
-require("preference")
-
--- neovide client: https://neovide.dev/
-if vim.g.neovide then
-    require("neovide")
+local modules = {"packerman", "core", "preference"}
+for _, module in ipairs(modules) do
+    require(module)
 end
 
 -- Load all user preferences
