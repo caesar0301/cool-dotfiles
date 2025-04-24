@@ -40,7 +40,7 @@ absfilepath() {
 create_dir() {
   local dir=$1
   if [ ! -d "$dir" ]; then
-    create_dir "$dir"
+    mkdir -p "$dir"
   fi
 }
 
@@ -221,7 +221,6 @@ install_google_java_format() {
 # Install go version manager
 install_gvm() {
   if checkcmd gvm; then
-    info "gvm already installed"
     return
   fi
 
