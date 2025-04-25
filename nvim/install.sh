@@ -137,7 +137,7 @@ function setup_ctags {
   # Install each ctags configuration file
   local success=true
   for config_file in "${config_files[@]}"; do
-    if ! install_file_pairs "$config_file" "$ctags_home/$(basename "$config_file")"; then
+    if ! install_file_pair "$config_file" "$ctags_home/$(basename "$config_file")"; then
       warn "Failed to install ctags config: $(basename "$config_file")"
       success=false
     fi
@@ -159,7 +159,7 @@ function handle_neovim {
     info "Installing plugin manager Packer..."
     git clone --depth 1 https://github.com/wbthomason/packer.nvim "$packer_home"
   fi
-  install_file_pairs "$THISDIR" "$XDG_CONFIG_HOME/"
+  install_file_pair "$THISDIR" "$XDG_CONFIG_HOME/"
 }
 
 function post_install {
@@ -200,8 +200,10 @@ while getopts fsech opt; do
   esac
 done
 
+install_neovim
+handle_neovim
+
 if [ "x$WITHDEPS" == "x1" ]; then
-  install_neovim
   install_lsp_deps
   install_jdt_language_server
   install_hack_nerd_font # Required by nvim-web-devicons
@@ -210,7 +212,5 @@ if [ "x$WITHDEPS" == "x1" ]; then
   setup_ctags
 fi
 
-handle_neovim
 post_install
-
 info "Success! Run :PackerInstall to install Neovim plugins"

@@ -38,7 +38,7 @@ install_zinit() {
 
 handle_shell_proxy() {
   if [ ! -e $HOME/.config/proxy ] || [ -L $HOME/.config/proxy ]; then
-    install_file_pairs "$THISDIR/config/proxy-config" "$HOME/.config/proxy"
+    install_file_pair "$THISDIR/config/proxy-config" "$HOME/.config/proxy"
   else
     warn "$HOME/.config/proxy existed, skip without rewriting"
   fi
@@ -49,13 +49,13 @@ handle_zsh() {
   create_dir "$XDG_CONFIG_HOME/zsh"
 
   if [ ! -e "$HOME/.zshrc" ] || [ -L "$HOME/.zshrc" ]; then
-    install_file_pairs "$THISDIR/zshrc" "$HOME/.zshrc"
+    install_file_pair "$THISDIR/zshrc" "$HOME/.zshrc"
   else
     warn "$HOME/.zshrc existed, skip without rewriting"
   fi
 
   for i in "${INSTALL_FILES[@]}"; do
-    install_file_pairs "$THISDIR/$i" "$XDG_CONFIG_HOME/zsh/$i"
+    install_file_pair "$THISDIR/$i" "$XDG_CONFIG_HOME/zsh/$i"
   done
 
   # Install extra plugins
@@ -63,7 +63,7 @@ handle_zsh() {
   for i in $(find "$THISDIR/plugins" -name "*.plugin.zsh"); do
     local dname
     dname=$(dirname "$i")
-    install_file_pairs "$dname" "$XDG_CONFIG_HOME/zsh/plugins/"
+    install_file_pair "$dname" "$XDG_CONFIG_HOME/zsh/plugins/"
   done
 }
 

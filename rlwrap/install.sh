@@ -35,8 +35,8 @@ usage() {
 # Function to handle rlwrap configuration
 handle_rlwrap() {
   create_dir "$RLWRAP_HOME"
-  install_file_pairs "$THISDIR/lisp_completions" "$RLWRAP_HOME/lisp_completions"
-  install_file_pairs "$THISDIR/sbcl_completions" "$RLWRAP_HOME/sbcl_completions"
+  install_file_pair "$THISDIR/lisp_completions" "$RLWRAP_HOME/lisp_completions"
+  install_file_pair "$THISDIR/sbcl_completions" "$RLWRAP_HOME/sbcl_completions"
 }
 
 # Function to cleanse rlwrap configuration

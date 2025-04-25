@@ -394,23 +394,20 @@ is_arm64() {
 # Install files from pairs of source and destination files.
 # Input should be pairs of source and destination files.
 # If LINK_INSTEAD_OF_COPY is set, use soft link instead of copy.
-install_file_pairs() {
+install_file_pair() {
   local copycmd="cp"
   if [ "$LINK_INSTEAD_OF_COPY" == 1 ]; then
     copycmd="ln -sf"
   fi
-  while [ $# -ge 2 ]; do
-    src="$1"
-    dest="$2"
-    if [ ! -e "$src" ]; then
-      warn "Error: Source '$src' does not exist"
-      shift 2
-      continue
-    fi
-    $copycmd "$src" "$dest" || error "Error copying '$src' to '$dest'"
-    shift 2
-  done
-  [ $# -eq 1 ] && error "Error: Missing destination for '$1'"
+  if [ $# -ne 2 ]; then
+    error "install_file_pair: requires source and destination files"
+  fi
+  local src="$1"
+  local dest="$2"
+  if [ ! -e "$src" ]; then
+    error "Error: Source '$src' does not exist"
+  fi
+  $copycmd "$src" "$dest" || error "Error copying '$src' to '$dest'"
 }
 
 # Install pyenv to manage Python versions

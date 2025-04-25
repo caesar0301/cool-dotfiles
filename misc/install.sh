@@ -26,7 +26,7 @@ function install_local_bins {
 # auto completion of SBCL with rlwrap
 function handle_rlwrap {
   if [ ! -e $HOME/.sbcl_completions ] || [ -L $HOME/.sbcl_completions ]; then
-    install_file_pairs "$THISDIR/../rlwrap/sbcl_completions" "$HOME/.sbcl_completions"
+    install_file_pair "$THISDIR/../rlwrap/sbcl_completions" "$HOME/.sbcl_completions"
   else
     warn "$HOME/.sbcl_completions existed, skip without rewriting"
   fi
@@ -34,7 +34,7 @@ function handle_rlwrap {
 
 function handle_kitty {
   create_dir $XDG_CONFIG_HOME/kitty
-  install_file_pairs "$THISDIR/../kitty/kitty.conf" "$XDG_CONFIG_HOME/kitty/kitty.conf"
+  install_file_pair "$THISDIR/../kitty/kitty.conf" "$XDG_CONFIG_HOME/kitty/kitty.conf"
 }
 
 function cleanse_kitty {

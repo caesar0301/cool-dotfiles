@@ -38,7 +38,7 @@ install_vifm() {
 handle_vifm() {
   create_dir "$VIFM_CONFIG_HOME"
   for i in "${INSTALL_FILES[@]}"; do
-    install_file_pairs "$THISDIR/$i" "$VIFM_CONFIG_HOME/$i"
+    install_file_pair "$THISDIR/$i" "$VIFM_CONFIG_HOME/$i"
   done
 }
 

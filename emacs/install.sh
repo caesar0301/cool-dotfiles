@@ -48,7 +48,7 @@ check_emacs_deps() {
 handle_emacs() {
   create_dir "$EM_CONFIG"
   for file in "${INSTALL_FILES[@]}"; do
-    install_file_pairs "$THISDIR/$file" "$EM_CONFIG/$file"
+    install_file_pair "$THISDIR/$file" "$EM_CONFIG/$file"
   done
 }
 

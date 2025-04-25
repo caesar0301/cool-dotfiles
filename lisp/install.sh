@@ -150,8 +150,8 @@ function install_allegro_cl {
 }
 
 function handle_lisp {
-  install_file_pairs "$THISDIR/dot-clinit.cl" "$HOME/.clinit.cl" \
-    "$THISDIR/dot-sbclrc" "$HOME/.sbclrc"
+  install_file_pair "$THISDIR/dot-clinit.cl" "$HOME/.clinit.cl"
+  install_file_pair "$THISDIR/dot-sbclrc" "$HOME/.sbclrc"
 }
 
 function cleanse_lisp {
