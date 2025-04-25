@@ -1,5 +1,13 @@
 # Manage dev environments.
 
+# Function to add to PATH if the directory exists
+add_to_path() {
+  local dir=$1
+  if [ -d "$dir" ]; then
+    export PATH="$dir:$PATH"
+  fi
+}
+
 # Function to initialize Go environment
 _init_go_env() {
   if command -v go &>/dev/null; then
