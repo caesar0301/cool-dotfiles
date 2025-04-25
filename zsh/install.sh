@@ -114,6 +114,7 @@ install_zsh
 install_zinit
 if [ "x$WITHDEPS" == "x1" ]; then
   install_pyenv
+  install_uv
   install_jenv
   install_gvm
   install_java_decompiler

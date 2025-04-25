@@ -227,9 +227,9 @@ get_os_name() {
   fi
 
   case "${os_name,,}" in
-    linux*) echo "linux" ;;
-    darwin*) echo "darwin" ;;
-    *) error "Unsupported OS: $os_name" ;;
+  linux*) echo "linux" ;;
+  darwin*) echo "darwin" ;;
+  *) error "Unsupported OS: $os_name" ;;
   esac
 }
 
@@ -243,9 +243,9 @@ get_arch_name() {
   fi
 
   case "${arch_name,,}" in
-    x86_64*) echo "amd64" ;;
-    aarch64*|arm64*) echo "arm64" ;;
-    *) error "Unsupported architecture: $arch_name" ;;
+  x86_64*) echo "amd64" ;;
+  aarch64* | arm64*) echo "arm64" ;;
+  *) error "Unsupported architecture: $arch_name" ;;
   esac
 }
 
@@ -416,6 +416,11 @@ install_pyenv() {
     info "Installing pyenv to $HOME/.pyenv..."
     curl -k https://pyenv.run | bash
   fi
+}
+
+# Install uv
+install_uv() {
+  curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 
 # Install jenv to manage Java versions
