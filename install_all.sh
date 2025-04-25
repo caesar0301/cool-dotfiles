@@ -16,7 +16,7 @@ function usage {
 }
 
 components=(tmux zsh nvim vifm emacs misc)
-# components+=(lisp rlwrap)
+components+=(lisp rlwrap)
 
 for key in "${components[@]}"; do
   info "➜ START INSTALLING $key"

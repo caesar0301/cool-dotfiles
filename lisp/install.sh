@@ -1,94 +1,152 @@
 #!/bin/bash
 ###################################################
-# Install script for
+# Install script for Common Lisp development environment
 # https://github.com/caesar0301/cool-dotfiles
+#
+# Features:
+# - Quicklisp package manager
+# - Allegro CL Express Edition
+# - Common utilities and libraries
+#
 # Maintainer: xiaming.chen
 ###################################################
-THISDIR=$(dirname $(realpath $0))
-XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-QUICKLISP_HOME=${QUICKLISP_HOME:-${HOME}/quicklisp}
-ACL_HOME=${XDG_DATA_HOME}/acl
 
-source $THISDIR/../lib/shmisc.sh
+set -euo pipefail
+
+# Resolve script location
+THISDIR=$(dirname "$(realpath "$0")")
+
+# Load common utilities
+source "$THISDIR/../lib/shmisc.sh" || {
+  echo "Error: Failed to load shmisc.sh"
+  exit 1
+}
+
+readonly QUICKLISP_HOME="$HOME/quicklisp"
+readonly ACL_HOME="$XDG_DATA_HOME/acl"
+
+# Default configuration
+readonly DEFAULT_LISP_LIBS=("quicklisp-slime-helper" "alexandria")
 
 function usage {
-  echo "Usage: install.sh [-f] [-s] [-e]"
-  echo "  -f copy and install"
-  echo "  -s soft linke install"
-  echo "  -e install dependencies"
-  echo "  -c cleanse install"
+  cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Options:
+  -f    Copy and install files
+  -s    Create symbolic links instead of copying
+  -e    Install dependencies
+  -c    Clean installation
+  -h    Show this help message
+EOF
 }
 
 function install_quicklisp {
-  info "Installing quicklisp..."
+  info "Installing Quicklisp package manager..."
+
   if ! checkcmd sbcl; then
-    warn "sbcl not found, install and retry"
+    error "Steel Bank Common Lisp (sbcl) not found. Please install it first."
     return 1
   fi
-  if [ -e ${QUICKLISP_HOME}/setup.lisp ]; then
-    warn "quicklisp alreay installed at ${QUICKLISP_HOME}"
-  else
-    curl -s https://beta.quicklisp.org/quicklisp.lisp -o /tmp/quicklisp.lisp
-    sbcl --load /tmp/quicklisp.lisp --eval '(quicklisp-quickstart:install)' --quit
-    rm -rf /tmp/quicklisp.lisp
+
+  if [ -e "$QUICKLISP_HOME/setup.lisp" ]; then
+    warn "Quicklisp already installed at $QUICKLISP_HOME"
+    return 0
   fi
+
+  local QUICKLISP_SETUP="/tmp/quicklisp.lisp"
+  if ! curl -fsSL https://beta.quicklisp.org/quicklisp.lisp -o "$QUICKLISP_SETUP"; then
+    error "Failed to download Quicklisp setup file"
+    return 1
+  fi
+
+  if ! sbcl --load "$QUICKLISP_SETUP" \
+          --eval '(quicklisp-quickstart:install)' \
+          --quit; then
+    error "Failed to install Quicklisp"
+    rm -f "$QUICKLISP_SETUP"
+    return 1
+  fi
+
+  rm -f "$QUICKLISP_SETUP"
+  info "Quicklisp installation completed"
 }
 
 function install_useful_libs {
-  info "Installing lisp libraries via quicklisp..."
-  libs=(quicksys alexandria)
-  sbcl --eval "(ql:quickload '(\"quicklisp-slime-helper\" \"alexandria\"))" --quit
+  info "Installing Common Lisp libraries..."
+
+  if ! [ -e "$QUICKLISP_HOME/setup.lisp" ]; then
+    error "Quicklisp not installed. Run install_quicklisp first."
+    return 1
+  fi
+
+  local LOAD_CMD="(ql:quickload '(${DEFAULT_LISP_LIBS[*]}))"
+  if ! sbcl --eval "$LOAD_CMD" --quit; then
+    error "Failed to install libraries"
+    return 1
+  fi
+
+  info "Libraries installation completed"
 }
 
 function install_allegro_cl {
-  info "(Optional) Installing Allegro CL Express Edition..."
+  # Check if already installed
+  if [ -e "$ACL_HOME/alisp" ]; then
+    warn "Allegro CL already installed at $ACL_HOME/alisp"
+    return 0
+  fi
 
-  local DLINK
+  create_dir "$ACL_HOME"
+
+  # Install based on OS
   if is_linux; then
+    local DLINK
     if is_x86_64; then
       DLINK="https://franz.com/ftp/pub/acl11.0express/linuxamd64.64/acl11.0express-linux-x64.tbz2"
-    else # aarch64
+    elif is_arm64; then
       DLINK="https://franz.com/ftp/pub/acl11.0express/linuxarm64.64/acl11.0express-linux-aarch64v8.tbz2"
+    else
+      error "Unsupported Linux architecture"
+      return 1
     fi
+
+    # Download and extract
+    local TARNAME=$(basename "$DLINK")
+    if [ ! -e "/tmp/$TARNAME" ]; then
+      info "Downloading Allegro CL..."
+      curl -L "$DLINK" -o "/tmp/$TARNAME"
+    fi
+    info "Extracting Allegro CL..."
+    tar --strip-components=1 -xjf "/tmp/$TARNAME" -C "$ACL_HOME"
+
   elif is_macos; then
-    error "Allegro CL should be installed maually on MacOS:"
-    error "1. download from https://franz.com/downloads/clp/download"
-    error "2. mount the dmg and install files:"
-    error "  cp -r /Volumes/AllegroCL64express/AllegroCL64express.app/Contents/Resources/* ~/.local/share/acl/"
-    error "3. build modern mode: ~/.local/share/acl/alisp -L build_modern_mode_allegro.lisp"
+    info "Please download Allegro CL from: https://franz.com/downloads/clp/download"
+    info "After downloading, please mount the DMG file"
+
+    while [ ! -d "/Volumes/AllegroCL64express" ]; do
+      info "Waiting for AllegroCL64express volume to be mounted..."
+      sleep 2
+    done
+
+    info "Copying Allegro CL files..."
+    cp -r "/Volumes/AllegroCL64express/AllegroCL64express.app/Contents/Resources/"* "$ACL_HOME"
+  else
+    error "Unsupported operating system"
     return 1
-  else
-    error "Unsupported OS" && return 1
   fi
 
-  local TARNAME=$(basename $DLINK)
-  if [ -e $ACL_HOME/alisp ]; then
-    warn "ACL already installed at ${ACL_HOME}/alisp"
-  else
-    if [ ! -e /tmp/$TARNAME ]; then
-      curl $DLINK -o /tmp/$TARNAME
+  # Build modern mode
+  if [ ! -e "$ACL_HOME/mlisp" ]; then
+    info "Compiling modern mode executable (mlisp)..."
+    if ! "$ACL_HOME/alisp" -L "$THISDIR/build_modern_mode_allegro.lisp" -e '(exit 0)' -kill; then
+      error "Failed to compile modern mode"
+      return 1
     fi
-    create_dir $ACL_HOME
-    tar --strip-components=1 -xjf /tmp/$TARNAME -C $ACL_HOME
   fi
 
-  warn "You should add ${ACL_HOME} to your PATH for convinience"
-
-  # ACL modern mode
-  if [ -e $ACL_HOME/mlisp ]; then
-    warn "ACL modern mode executable (mlisp) already exists"
-  else
-    info "Compiling ACL modern mode executable (mlisp)..."
-    $ACL_HOME/alisp <<EOF
-;; mlisp:
-(progn
-  (build-lisp-image "sys:mlisp.dxl" :case-mode :case-sensitive-lower
-                    :include-ide nil :restart-app-function nil)
-  (when (probe-file "sys:mlisp") (delete-file "sys:mlisp"))
-  (sys:copy-file "sys:alisp" "sys:mlisp"))
-EOF
-  fi
+  info "Allegro CL installation completed"
+  warn "You should add ${ACL_HOME} to your PATH for convenience"
+  return 0
 }
 
 function handle_lisp {

@@ -1,8 +1,17 @@
 #!/bin/bash
 ###################################################
-# Install script for
+# Zsh Development Environment Setup
 # https://github.com/caesar0301/cool-dotfiles
-# Maintainer: xiaming.chen
+#
+# Features:
+# - Zinit plugin manager installation
+# - Shell proxy configuration
+# - Core Zsh configuration files
+# - Custom plugin management
+# - XDG base directory support
+#
+# Author: Xiaming Chen
+# License: MIT
 ###################################################
 THISDIR=$(dirname "$(realpath "$0")")
 XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}

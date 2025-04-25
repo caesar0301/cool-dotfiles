@@ -1,81 +1,318 @@
 #!/bin/bash
-# Handy shell utilities to speed up development.
-# https://github.com/caesar0301/cool-dotfiles/blob/main/lib/shmisc.sh
+###################################################
+# Shell Utility Library
+# https://github.com/caesar0301/cool-dotfiles
+#
+# Features:
+# - XDG base directory support
+# - Colored logging functions
+# - Path manipulation utilities
+# - Package management helpers
+# - OS and architecture detection
 #
 # Copyright (c) 2024, Xiaming Chen
 # License: MIT
+###################################################
 
-# Print colored messages
+set -euo pipefail
+
+# XDG base directory specification
+readonly XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
+readonly XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
+readonly XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
+
+# ANSI color codes
+readonly COLOR_RED='\033[0;31m'
+readonly COLOR_GREEN='\033[0;32m'
+readonly COLOR_YELLOW='\033[0;33m'
+readonly COLOR_RESET='\033[0m'
+
+# Log levels
+readonly LOG_INFO="INFO"
+readonly LOG_WARN="WARN"
+readonly LOG_ERROR="ERROR"
+
+# Print a formatted log message
+# Arguments:
+#   $1 - color code
+#   $2 - log level
+#   $3 - message
 print_message() {
+  if [ $# -lt 3 ]; then
+    printf "${COLOR_RED}[ERROR] Invalid number of arguments to print_message${COLOR_RESET}\n" >&2
+    return 1
+  fi
+
   local color_code=$1
   local level=$2
   shift 2
-  printf "${color_code}[%s] [${level}] %s\033[0m\n" "$(date '+%Y-%m-%dT%H:%M:%S')" "$@"
+  printf "%b[%s] [%s] %s%b\n" \
+    "$color_code" \
+    "$(date '+%Y-%m-%dT%H:%M:%S')" \
+    "$level" \
+    "$*" \
+    "$COLOR_RESET"
 }
 
-# Colored messages
-warn() {
-  print_message '\033[0;33m' "WARN" "$@"
-}
-
+# Log an info message
+# Arguments:
+#   $@ - message
 info() {
-  print_message '\033[0;32m' "INFO" "$@"
+  print_message "$COLOR_GREEN" "$LOG_INFO" "$@"
 }
 
+# Log a warning message
+# Arguments:
+#   $@ - message
+warn() {
+  print_message "$COLOR_YELLOW" "$LOG_WARN" "$@" >&2
+}
+
+# Log an error message and exit
+# Arguments:
+#   $@ - message
 error() {
-  print_message '\033[0;31m' "ERROR" "$@"
+  print_message "$COLOR_RED" "$LOG_ERROR" "$@" >&2
   exit 1
 }
 
-# Get absolute path of current file
+# Get the absolute path of the current script's directory
+# Returns:
+#   Absolute path to the script's directory
 abspath() {
-  echo "$(dirname "$(realpath "$0")")"
+  local script_path
+  if ! script_path=$(realpath "$0"); then
+    error "Failed to resolve script path"
+  fi
+  dirname "$script_path"
 }
 
+# Get the absolute path of the current script file
+# Returns:
+#   Absolute path to the script file
 absfilepath() {
-  echo "$(cd "$(dirname "$0")" && pwd)/$(basename "$0")"
+  local dir file
+  if ! dir=$(cd "$(dirname "$0")" && pwd); then
+    error "Failed to resolve directory path"
+  fi
+  file=$(basename "$0")
+  echo "$dir/$file"
 }
 
-# Function to create directories
+# Create a directory if it doesn't exist
+# Arguments:
+#   $1 - directory path
 create_dir() {
+  if [ $# -ne 1 ]; then
+    error "create_dir: requires exactly one argument"
+  fi
+
   local dir=$1
   if [ ! -d "$dir" ]; then
     mkdir -p "$dir"
   fi
 }
 
-# Create a temporary directory and set a trap to clean it up
+# Create a temporary directory and set cleanup trap
+# Returns:
+#   Path to the created temporary directory
 get_temp_dir() {
-  local TEMP_DIR
+  local temp_dir
   TEMP_DIR="$(mktemp -d)"
   trap 'rm -rf "$TEMP_DIR"' EXIT
   echo "$TEMP_DIR"
 }
 
-# Check if a command exists
+# Check if a command exists in PATH
+# Arguments:
+#   $1 - command name
+# Returns:
+#   0 if command exists, 1 otherwise
 checkcmd() {
+  if [ $# -ne 1 ]; then
+    error "checkcmd: requires exactly one argument"
+  fi
   command -v "$1" >/dev/null 2>&1
 }
 
-# Check and assure sudo access
-check_sudo_access() {
-  local prompt
-  prompt=$(sudo -nv 2>&1)
-  if [ $? -eq 0 ]; then
-    info "sudo access has been set"
-  elif echo "$prompt" | grep -q '^sudo:'; then
-    warn "sudo access required:"
-    sudo -v
-  else
-    error "sudo access not granted"
+# Install Python packages with pip
+# Arguments:
+#   $@ - package names
+pip_install_lib() {
+  if [ $# -eq 0 ]; then
+    error "pip_install_lib: requires at least one package name"
+  fi
+  if ! checkcmd pip; then
+    error "pip is not installed"
+  fi
+  if ! pip install --user "$@"; then
+    error "Failed to install pip packages: $*"
   fi
 }
 
-# Generate a random UUID
-random_uuid() {
-  local NEW_UUID
-  NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-  echo "$NEW_UUID"
+# Install Node.js packages with npm
+# Arguments:
+#   $@ - package names
+npm_install_lib() {
+  if [ $# -eq 0 ]; then
+    error "npm_install_lib: requires at least one package name"
+  fi
+  if ! checkcmd npm; then
+    error "npm is not installed"
+  fi
+  if ! npm install -g "$@"; then
+    error "Failed to install npm packages: $*"
+  fi
+}
+
+# Install Go packages
+# Arguments:
+#   $@ - package paths
+go_install_lib() {
+  if [ $# -eq 0 ]; then
+    error "go_install_lib: requires at least one package path"
+  fi
+  if ! checkcmd go; then
+    error "go is not installed"
+  fi
+  if ! go install "$@"; then
+    error "Failed to install Go packages: $*"
+  fi
+}
+
+# Install R packages
+# Arguments:
+#   $@ - package names
+rlang_install_lib() {
+  if [ $# -eq 0 ]; then
+    error "rlang_install_lib: requires at least one package name"
+  fi
+  if ! checkcmd Rscript; then
+    error "R is not installed"
+  fi
+  if ! Rscript -e "install.packages(c('$*'), repos='https://cloud.r-project.org/')"; then
+    error "Failed to install R packages: $*"
+  fi
+}
+
+# Check and ensure sudo access with timeout
+# Arguments:
+#   $1 - optional sudo prompt message
+# Returns:
+#   0 if sudo access granted, exits with error otherwise
+check_sudo_access() {
+  local prompt timeout_mins=5
+  prompt=${1:-"[sudo] Enter password for sudo access: "}
+
+  # Reset sudo timeout
+  if ! sudo -v -p "$prompt"; then
+    error "Failed to get sudo access"
+  fi
+
+  # Keep sudo alive in the background
+  while true; do
+    sudo -n true
+    sleep $((timeout_mins * 60 / 2))
+    kill -0 "$$" || exit
+  done 2>/dev/null &
+}
+
+# Get normalized operating system name
+# Returns:
+#   'linux', 'darwin', or exits with error for unsupported OS
+get_os_name() {
+  local os_name
+  if ! os_name=$(uname -s); then
+    error "Failed to detect operating system"
+  fi
+
+  case "${os_name,,}" in
+    linux*) echo "linux" ;;
+    darwin*) echo "darwin" ;;
+    *) error "Unsupported OS: $os_name" ;;
+  esac
+}
+
+# Get normalized CPU architecture name
+# Returns:
+#   'amd64', 'arm64', or exits with error for unsupported architecture
+get_arch_name() {
+  local arch_name
+  if ! arch_name=$(uname -m); then
+    error "Failed to detect CPU architecture"
+  fi
+
+  case "${arch_name,,}" in
+    x86_64*) echo "amd64" ;;
+    aarch64*|arm64*) echo "arm64" ;;
+    *) error "Unsupported architecture: $arch_name" ;;
+  esac
+}
+
+# Generate a random UUID using Python
+# Returns:
+#   A random UUID string
+gen_uuid() {
+  if ! checkcmd python; then
+    error "Python is required for UUID generation"
+  fi
+
+  local uuid
+  if ! uuid=$(python -c 'import uuid; print(uuid.uuid4())'); then
+    error "Failed to generate UUID"
+  fi
+  echo "$uuid"
+}
+
+# Download a file from URL using curl
+# Arguments:
+#   $1 - source URL
+#   $2 - output file path
+download_file() {
+  if [ $# -ne 2 ]; then
+    error "download_file: requires URL and output path"
+  fi
+
+  if ! checkcmd curl; then
+    error "curl is not installed"
+  fi
+
+  local url=$1
+  local output=$2
+  local output_dir
+
+  # Create output directory if it doesn't exist
+  output_dir=$(dirname "$output")
+  create_dir "$output_dir"
+
+  if ! curl -fsSL "$url" -o "$output"; then
+    error "Failed to download: $url"
+  fi
+  info "Downloaded $url to $output"
+}
+
+# Extract a tar archive to specified directory
+# Arguments:
+#   $1 - archive file path
+#   $2 - output directory path
+extract_tar() {
+  if [ $# -ne 2 ]; then
+    error "extract_tar: requires archive and output path"
+  fi
+
+  local archive=$1
+  local output=$2
+
+  if [ ! -f "$archive" ]; then
+    error "Archive not found: $archive"
+  fi
+
+  create_dir "$output"
+
+  if ! tar -xf "$archive" -C "$output"; then
+    error "Failed to extract: $archive"
+  fi
+  info "Extracted $archive to $output"
 }
 
 # Generate a random UUID with only lower-case alphanumeric characters
@@ -217,7 +454,7 @@ install_java_decompiler() {
 
 # Install jdt-language-server
 install_jdt_language_server() {
-  info "Installing jdt-language-server to $dpath..."
+  info "Installing jdt-language-server..."
   local dpath="$HOME/.local/share/jdt-language-server"
   local jdtdl="https://download.eclipse.org/jdtls/milestones/1.23.0/jdt-language-server-1.23.0-202304271346.tar.gz"
   if [ ! -e "$dpath/bin/jdtls" ]; then
@@ -230,7 +467,7 @@ install_jdt_language_server() {
 
 # Install google-java-format
 install_google_java_format() {
-  info "Installing google-java-format to $dpath..."
+  info "Installing google-java-format..."
   local dpath="$HOME/.local/share/google-java-format"
   local fmtdl="https://github.com/google/google-java-format/releases/download/v1.17.0/google-java-format-1.17.0-all-deps.jar"
   if ! compgen -G "$dpath/google-java-format*.jar" >/dev/null; then
@@ -386,6 +623,7 @@ npm_install_lib() {
   local options="--prefer-offline --no-audit --progress=false"
   local npm_cmd="npm"
   local registry="https://registry.npmmirror.com"
+  local PASSSECRET=${SUDO_PASS:-""}
 
   # Check if npm is available
   if ! command -v "$npm_cmd" >/dev/null 2>&1; then
@@ -404,10 +642,10 @@ npm_install_lib() {
   "$npm_cmd" config set registry "$registry"
 
   # Install libraries with or without sudo
-  if [ -z "$SUDO_PASS" ]; then
+  if [ -z "$PASSSECRET" ]; then
     sudo "$npm_cmd" install $options -g "${libs[@]}"
   else
-    echo "$SUDO_PASS" | sudo -S "$npm_cmd" install $options -g "${libs[@]}"
+    echo "$PASSSECRET" | sudo -S "$npm_cmd" install $options -g "${libs[@]}"
   fi
 }
 

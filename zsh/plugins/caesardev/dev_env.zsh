@@ -73,3 +73,5 @@ _init_global_dev_envs() {
   _init_haskell_env
   _init_lisp_env
 }
+
+_init_global_dev_envs

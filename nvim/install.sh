@@ -1,58 +1,153 @@
 #!/bin/bash
 ###################################################
-# Install script for
+# Neovim Development Environment Setup
 # https://github.com/caesar0301/cool-dotfiles
+#
+# Features:
+# - Language formatters and linters
+# - Language Server Protocol (LSP) support
+# - Code navigation tools (ctags, ripgrep)
+# - Syntax highlighting and completion
+#
 # Maintainer: xiaming.chen
 ###################################################
+
+set -euo pipefail
+
+# Resolve script location
 THISDIR=$(dirname "$(realpath "$0")")
-XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 
-# Load common utils
-source "$THISDIR/../lib/shmisc.sh"
-
-# Function to install language formatters
-function install_lang_formatters {
-  info "Installing file format dependencies..."
-  install_google_java_format
-  install_shfmt
-  if ! checkcmd yamlfmt; then
-    go_install_lib github.com/google/yamlfmt/cmd/yamlfmt@latest
-  fi
-  # Install formatters from pip
-  pip_install_lib pynvim black sqlparse cmake_format
-  # Install formatters from npm
-  local npmlibs=("neovim")
-  if ! checkcmd luafmt; then npmlibs+=("lua-fmt"); fi
-  if ! checkcmd yaml-language-server; then npmlibs+=("yaml-language-server"); fi
-  if ! checkcmd js-beautify; then npmlibs+=("js-beautify"); fi
-  npm_install_lib "${npmlibs[*]}"
+# Load common utilities
+source "$THISDIR/../lib/shmisc.sh" || {
+  echo "Error: Failed to load shmisc.sh"
+  exit 1
 }
 
-# Function to install LSP dependencies
-function install_lsp_deps {
-  info "Installing LSP dependencies..."
-  pip_install_lib pyright cmake-language-server
-  rlang_install_lib "languageserver"
-  go_install_lib golang.org/x/tools/gopls@latest
-  go_install_lib github.com/jstemmer/gotags@latest
-}
+# Package manager keys and their packages
+readonly PKG_PIP="pip"
+readonly PKG_NPM="npm"
+readonly PKG_GO="go"
+readonly PKG_R="r"
 
-# Function to check if ripgrep is installed
-function check_ripgrep {
+# Formatter packages for each package manager
+readonly FORMATTERS_PIP="pynvim black sqlparse cmake_format"
+readonly FORMATTERS_NPM="neovim lua-fmt yaml-language-server js-beautify"
+readonly FORMATTERS_GO="github.com/google/yamlfmt/cmd/yamlfmt@latest"
+
+# LSP packages for each package manager
+readonly LSP_PIP="pyright cmake-language-server"
+readonly LSP_R="languageserver"
+readonly LSP_GO="golang.org/x/tools/gopls@latest github.com/jstemmer/gotags@latest"
+
+function check_dependencies {
+  local missing_deps=()
+  
+  # Check essential package managers
+  local required_cmds=(
+    "${PKG_PIP}"
+    "${PKG_NPM}"
+    "${PKG_GO}"
+    "${PKG_R}"
+  )
+  
+  for cmd in "${required_cmds[@]}"; do
+    if ! checkcmd "$cmd"; then
+      missing_deps+=("$cmd")
+    fi
+  done
+
+  # Check ripgrep for telescope.nvim
   if ! checkcmd rg; then
-    warn "ripgrep not found, as required by telescope.nvim"
+    warn "ripgrep not found, telescope.nvim functionality will be limited"
+  fi
+
+  if [ ${#missing_deps[@]} -gt 0 ]; then
+    error "Missing required dependencies: ${missing_deps[*]}"
+    return 1
   fi
 }
 
-# Function to handle ctags configuration
-function handle_ctags {
+function install_lang_formatters {
+  info "Installing language formatters..."
+
+  # Install Java formatter
+  if ! install_google_java_format; then
+    warn "Failed to install google-java-format"
+  fi
+
+  # Install shell formatter
+  if ! install_shfmt; then
+    warn "Failed to install shfmt"
+  fi
+
+  # Install pip formatters
+  if ! pip_install_lib ${FORMATTERS_PIP}; then
+    warn "Failed to install some pip formatters"
+  fi
+
+  # Install npm formatters
+  if ! npm_install_lib ${FORMATTERS_NPM}; then
+    warn "Failed to install some npm formatters"
+  fi
+
+  # Install Go formatters
+  if ! go_install_lib ${FORMATTERS_GO}; then
+    warn "Failed to install some Go formatters"
+  fi
+
+  info "Language formatters installation completed"
+}
+
+function install_lsp_deps {
+  info "Installing LSP servers..."
+
+  # Install pip LSP servers
+  if ! pip_install_lib ${LSP_PIP}; then
+    warn "Failed to install some pip LSP servers"
+  fi
+
+  # Install R LSP server
+  if ! rlang_install_lib ${LSP_R}; then
+    warn "Failed to install R language server"
+  fi
+
+  # Install Go LSP servers
+  if ! go_install_lib ${LSP_GO}; then
+    warn "Failed to install some Go LSP servers"
+  fi
+
+  info "LSP servers installation completed"
+}
+
+function setup_ctags {
   local ctags_home="$HOME/.ctags.d"
   create_dir "$ctags_home"
-  if [ -e "$ctags_home" ]; then
-    for i in $(find "$THISDIR/../ctags" -maxdepth 1 -type f -name "*.ctags"); do
-      install_file_pairs "$i" "$ctags_home/"
-    done
+
+  if [ ! -d "$THISDIR/../ctags" ]; then
+    error "Ctags configuration directory not found"
+    return 1
+  fi
+
+  local config_files=($(find "$THISDIR/../ctags" -maxdepth 1 -type f -name "*.ctags"))
+  if [ ${#config_files[@]} -eq 0 ]; then
+    warn "No ctags configuration files found"
+    return 0
+  fi
+
+  # Install each ctags configuration file
+  local success=true
+  for config_file in "${config_files[@]}"; do
+    if ! install_file_pairs "$config_file" "$ctags_home/$(basename "$config_file")"; then
+      warn "Failed to install ctags config: $(basename "$config_file")"
+      success=false
+    fi
+  done
+
+  if [ "$success" = true ]; then
+    info "Ctags configuration completed"
+  else
+    warn "Some ctags configurations failed to install"
+    return 1
   fi
 }
 
@@ -112,10 +207,9 @@ if [ "x$WITHDEPS" == "x1" ]; then
   install_hack_nerd_font # Required by nvim-web-devicons
   install_lang_formatters
   install_fzf
-  check_ripgrep
+  setup_ctags
 fi
 
-handle_ctags
 handle_neovim
 post_install
 

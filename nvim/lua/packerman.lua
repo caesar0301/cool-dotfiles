@@ -196,9 +196,6 @@ return packer.startup(
             }
         )
 
-        -- easily cycling through git diffs for all modified files
-        use "sindrets/diffview.nvim"
-
         -----------------------------
         -- Syntax Highlight (General)
         -----------------------------
