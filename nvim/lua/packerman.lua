@@ -325,6 +325,6 @@ return packer.startup(
         ---------------
 
         -- Free, ultrafast Copilot alternative
-        use "Exafunction/codeium.vim"
+        -- use "Exafunction/codeium.vim"
     end
 )
