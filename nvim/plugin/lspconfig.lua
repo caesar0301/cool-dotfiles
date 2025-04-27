@@ -39,7 +39,7 @@ local lsp_keymaps = function(client, bufnr)
     -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bopt_s(bufnr,"[lsp] code action"))
     vim.keymap.set("n", "ca", ":CodeActionMenu<CR>", bopt_s(bufnr, "[lsp] code action"))
     vim.keymap.set("n", "K", vim.lsp.buf.hover, bopt_s(bufnr, "[lsp] buffer hover"))
-    vim.keymap.set("n", "<leader>=", vim.lsp.buf.format, bopt_s(bufnr, "[lsp] format code"))
+    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, bopt_s(bufnr, "[lsp] format code"))
     vim.keymap.set("n", "<leader>ai", vim.lsp.buf.incoming_calls, bopt_s(bufnr, "[lsp] incoming calls"))
     vim.keymap.set("n", "<leader>ao", vim.lsp.buf.outgoing_calls, bopt_s(bufnr, "[lsp] outgoting calls"))
     vim.keymap.set("n", "<leader>gw", vim.lsp.buf.document_symbol, bopt_s(bufnr, "[lsp] document symbol"))
@@ -173,7 +173,7 @@ end
 
 local function getJDTLSHome()
     local home = os.getenv("HOME")
-    local jdtls_home = os.getenv("JDTLS_INSTALL_HOME")
+    local jdtls_home = os.getenv("JDTLS_HOME")
     if jdtls_home == nil or jdtls_home == "" then
         jdtls_home = home .. "/.local/share/jdt-language-server"
     end
