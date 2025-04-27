@@ -20,12 +20,6 @@ source "${ZSH_CONFIG_DIR}/_helper.zsh"
 export ZSH_CONFIG_DIR=${ZSH_CONFIG_DIR}
 export ZSH_PLUGIN_DIR=${ZSH_PLUGIN_DIR}
 
-# enabled plugins
-ENABLED_PLUGINS=(
-  shell-proxy # shell-proxy setter
-  caesardev   # personal dev tools
-)
-
 ###------------------------------------------------
 ### ZI MANAGER
 ###------------------------------------------------
@@ -66,9 +60,7 @@ zinit ice wait lucid; zinit snippet OMZP::git
 zinit ice wait lucid; zinit snippet OMZP::colored-man-pages
 
 # Load custom extensions
-for plugin in $ENABLED_PLUGINS; do
-  _zinit_ice_plugin $plugin
-done
+_load_custom_extensions
 
 autoload -U parseopts zargs zcalc zed zmv
 autoload -U compinit && compinit

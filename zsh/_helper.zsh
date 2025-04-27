@@ -51,11 +51,28 @@ function nvim-update-plugins {
 
 # Load custom extensions under $ZSH_PLUGIN_DIR
 _zinit_ice_plugin() {
-  plugin_name=$1
-  plugin_path=${ZSH_PLUGIN_DIR}/${plugin_name}
+  plugin_path=$1
   if [ ! -e ${plugin_path} ]; then
     return 1
   fi
   zinit ice wait lucid
   zinit light $plugin_path
+}
+
+# Load custom extensions
+_load_custom_extensions() {
+  if [ -e ${ZSH_PLUGIN_DIR} ]; then
+    # subdirectory plugins
+    for i in $(find ${ZSH_PLUGIN_DIR} -maxdepth 1 -mindepth 1 -type d); do
+      _zinit_ice_plugin $i
+    done
+    # softlink subdirectory plugins
+    for i in $(find ${ZSH_PLUGIN_DIR} -maxdepth 1 -mindepth 1 -type l -exec test -d {} \; -print); do
+      _zinit_ice_plugin $i
+    done
+    # plain zsh-file plugins
+    for i in $(find ${ZSH_PLUGIN_DIR} -maxdepth 1 -mindepth 1 -type f -name "*.zsh"); do
+      _zinit_ice_plugin $i
+    done
+  fi
 }
