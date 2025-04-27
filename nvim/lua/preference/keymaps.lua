@@ -41,8 +41,6 @@ vim.keymap.set("n", "<leader>al", ":AnyJumpLastResults<CR>", opt_s("[AnyJump] ju
 
 -- Plugin: formatter.nvim
 vim.keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>", opt_s("Format current buffer"))
--- Format current selection (visual mode) with formatter.nvim
-vim.keymap.set("v", "<leader>af", ":Format<CR>", opt_s("Format selection"))
 
 -- Smart insert in blank line (auto indent)
 vim.keymap.set(
