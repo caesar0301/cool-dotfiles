@@ -9,7 +9,7 @@ Personal collection of dotfiles.
 Clone this repo
 
 ```bash
-git clone --depth=1 https://github.com/caesar0301/cool-dotfiles.git ~/.dotfiles
+git clone --depth=1 https://github.com/caesar0301/dotfiles.git ~/.dotfiles
 ```
 
 Run `install_all.sh` automatically installs dependencies and configures `zsh`, `nvim`, `tmux` and `emacs` etc.
