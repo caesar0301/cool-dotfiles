@@ -73,3 +73,23 @@ vim.api.nvim_create_autocmd(
         end
     }
 )
+
+-- cleanse lsp client log automatically
+vim.api.nvim_create_autocmd(
+    "VimEnter",
+    {
+        callback = function()
+            local lsp_log = vim.fn.stdpath("state") .. "/lsp.log"
+            local max_size = 200 * 1024 * 1024 -- 1MB
+            local file = io.open(lsp_log, "r")
+            if file then
+                local size = file:seek("end")
+                file:close()
+                if size > max_size then
+                    io.open(lsp_log, "w"):close()
+                    vim.notify("LSP log cleared (was over 200MB)", vim.log.levels.INFO)
+                end
+            end
+        end
+    }
+)
