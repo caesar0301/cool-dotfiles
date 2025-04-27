@@ -1,61 +1,79 @@
-local lspconfig = require("lspconfig")
-local nvim_cmp = require("cmp_nvim_lsp")
+-- LSP Setup for Neovim
+-- Organized, concise, and modernized for maintainability
 
-local lsp_status = require("lsp-status")
+-- === Safely require dependencies ===
+local function safe_require(mod)
+    local ok, m = pcall(require, mod)
+    if not ok then
+        vim.notify("lspconfig: Missing dependency: " .. mod, vim.log.levels.ERROR)
+        return nil
+    end
+    return m
+end
+
+local lspconfig = safe_require("lspconfig")
+local nvim_cmp = safe_require("cmp_nvim_lsp")
+local lsp_status = safe_require("lsp-status")
+local goto_preview = safe_require("goto-preview")
+if not (lspconfig and nvim_cmp and lsp_status and goto_preview) then
+    return
+end
+
 lsp_status.register_progress()
-
-local goto_preview = require("goto-preview")
 goto_preview.setup {}
 
--- turn off logging by default; options: debug, error...
+-- Logging: set to 'error' to reduce noise
 vim.lsp.set_log_level("error")
 
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local common_caps = vim.lsp.protocol.make_client_capabilities()
-common_caps = nvim_cmp.default_capabilities(common_caps)
-common_caps = vim.tbl_extend("keep", common_caps, lsp_status.capabilities)
+-- === Capabilities ===
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = nvim_cmp.default_capabilities(capabilities)
+capabilities = vim.tbl_extend("keep", capabilities, lsp_status.capabilities)
 
-local lsp_keymaps = function(client, bufnr)
+-- === Keymaps ===
+local function lsp_keymaps(_, bufnr)
+    local bopt = function(desc)
+        return {buffer = bufnr, desc = desc}
+    end
     local print_wf = function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bopt_s(bufnr, "[lsp] goto declaration"))
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, bopt_s(bufnr, "[lsp] goto definition"))
-    vim.keymap.set("n", "gpd", goto_preview.goto_preview_definition, bopt_s(bufnr, "[lsp] preview definition"))
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bopt_s(bufnr, "[lsp] goto implementation"))
-    vim.keymap.set("n", "gpi", goto_preview.goto_preview_implementation, bopt_s(bufnr, "[lsp] preview implementation"))
-    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, bopt_s(bufnr, "[lsp] type definition"))
-    vim.keymap.set(
-        "n",
-        "gpt",
-        goto_preview.goto_preview_type_definition,
-        bopt_s(bufnr, "[lsp] preview type definition")
-    )
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, bopt_s(bufnr, "[lsp] references"))
-    vim.keymap.set("n", "gpr", goto_preview.goto_preview_references, bopt_s(bufnr, "[lsp] preview references"))
-    vim.keymap.set("n", "gP", goto_preview.close_all_win, bopt_s(bufnr, "[lsp] close all windows"))
-    vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, bopt_s(bufnr, "[lsp] show signature help"))
-    vim.keymap.set("n", "rn", vim.lsp.buf.rename, bopt_s(bufnr, "[lsp] rename"))
-    -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, bopt_s(bufnr,"[lsp] code action"))
-    vim.keymap.set("n", "ca", ":CodeActionMenu<CR>", bopt_s(bufnr, "[lsp] code action"))
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, bopt_s(bufnr, "[lsp] buffer hover"))
-    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, bopt_s(bufnr, "[lsp] format code"))
-    vim.keymap.set("n", "<leader>ai", vim.lsp.buf.incoming_calls, bopt_s(bufnr, "[lsp] incoming calls"))
-    vim.keymap.set("n", "<leader>ao", vim.lsp.buf.outgoing_calls, bopt_s(bufnr, "[lsp] outgoting calls"))
-    vim.keymap.set("n", "<leader>gw", vim.lsp.buf.document_symbol, bopt_s(bufnr, "[lsp] document symbol"))
-    vim.keymap.set("n", "<leader>gW", vim.lsp.buf.workspace_symbol, bopt_s(bufnr, "[lsp] workspace symbol"))
-    vim.keymap.set("n", "<leader>gl", print_wf, bopt_s(bufnr, "[lsp] list workspace folders"))
-    vim.keymap.set("n", "<leader>eq", vim.diagnostic.setloclist, opt_s("[lsp] diagnostic setloclist"))
-    vim.keymap.set("n", "<leader>ee", vim.diagnostic.open_float, opt_s("[lsp] diagnostic open float"))
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opt_s("[lsp] diagnostic goto previous"))
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opt_s("[lsp] diagnostic goto next"))
+
+    local mappings = {
+        {"n", "gD", vim.lsp.buf.declaration, "[lsp] goto declaration"},
+        {"n", "gd", vim.lsp.buf.definition, "[lsp] goto definition"},
+        {"n", "gpd", goto_preview.goto_preview_definition, "[lsp] preview definition"},
+        {"n", "gi", vim.lsp.buf.implementation, "[lsp] goto implementation"},
+        {"n", "gpi", goto_preview.goto_preview_implementation, "[lsp] preview implementation"},
+        {"n", "gt", vim.lsp.buf.type_definition, "[lsp] type definition"},
+        {"n", "gpt", goto_preview.goto_preview_type_definition, "[lsp] preview type definition"},
+        {"n", "gr", vim.lsp.buf.references, "[lsp] references"},
+        {"n", "gpr", goto_preview.goto_preview_references, "[lsp] preview references"},
+        {"n", "gP", goto_preview.close_all_win, "[lsp] close all windows"},
+        {"n", "gs", vim.lsp.buf.signature_help, "[lsp] show signature help"},
+        {"n", "rn", vim.lsp.buf.rename, "[lsp] rename"},
+        {"n", "ca", ":CodeActionMenu<CR>", "[lsp] code action"},
+        {"n", "K", vim.lsp.buf.hover, "[lsp] buffer hover"},
+        {"n", "<leader>lf", vim.lsp.buf.format, "[lsp] format code"},
+        {"n", "<leader>ai", vim.lsp.buf.incoming_calls, "[lsp] incoming calls"},
+        {"n", "<leader>ao", vim.lsp.buf.outgoing_calls, "[lsp] outgoing calls"},
+        {"n", "<leader>gw", vim.lsp.buf.document_symbol, "[lsp] document symbol"},
+        {"n", "<leader>gW", vim.lsp.buf.workspace_symbol, "[lsp] workspace symbol"},
+        {"n", "<leader>gl", print_wf, "[lsp] list workspace folders"},
+        {"n", "<leader>eq", vim.diagnostic.setloclist, "[lsp] diagnostic setloclist"},
+        {"n", "<leader>ee", vim.diagnostic.open_float, "[lsp] diagnostic open float"},
+        {"n", "[d", vim.diagnostic.goto_prev, "[lsp] diagnostic goto previous"},
+        {"n", "]d", vim.diagnostic.goto_next, "[lsp] diagnostic goto next"}
+    }
+    for _, m in ipairs(mappings) do
+        vim.keymap.set(m[1], m[2], m[3], bopt(m[4]))
+    end
 end
 
--- Use an on_attach function after the language server attaches to the current buffer
-local common_on_attach = function(client, bufnr)
-    -- shared keymap
+-- === on_attach handler ===
+local function common_on_attach(client, bufnr)
     lsp_keymaps(client, bufnr)
-    -- lsp-status.nvim
+    -- lsp-status.nvim (add more per-server customizations here)
     lsp_status.on_attach(client)
 end
 

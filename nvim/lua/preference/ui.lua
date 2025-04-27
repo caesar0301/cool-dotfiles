@@ -1,61 +1,46 @@
--- Show line number
+-- UI & Editing Preferences for Neovim
+
+-- Line Numbers
 vim.opt.number = true
 
--- Text, tab and indent related
--- Use spaces instead of tabs
-vim.opt.expandtab = true
+-- Indentation & Tabs
+vim.opt.expandtab    = true   -- Use spaces instead of tabs
+vim.opt.smarttab     = true   -- Smart tab behavior
+vim.opt.tabstop      = 4      -- A tab is 4 spaces
+vim.opt.shiftwidth   = 2      -- Indent by 2 spaces
+vim.opt.autoindent   = true   -- Auto indent new lines
+vim.opt.smartindent  = true   -- Smart autoindenting
 
--- Be smart when using tabs ;)
-vim.opt.smarttab = true
+-- Line Wrapping & Text Width
+vim.opt.wrap         = true   -- Wrap lines
+vim.opt.linebreak    = true   -- Wrap at word boundaries
+vim.opt.textwidth    = 79     -- Linebreak at 79 chars
+vim.opt.formatoptions:append("mM") -- Better CJK line wrapping
 
--- 1 tab == 4 spaces
-vim.opt.tabstop = 4
+-- Cursor & Navigation
+vim.opt.scrolloff    = 7      -- Keep 7 lines above/below cursor
+vim.opt.ruler        = true   -- Show cursor position
+vim.opt.cmdheight    = 1      -- Command bar height
 
--- fine-grained shifting = 2 spaces
-vim.opt.shiftwidth = 2
-
--- Linebreak on 79 characters
-vim.opt.linebreak = true
-vim.opt.textwidth = 79
-
-vim.opt.autoindent = true -- Auto indent
-vim.opt.smartindent = true -- Smart indent
-vim.opt.wrap = true -- Wrap lines
-
--- Chinese line wrapping
-vim.opt.formatoptions:append("mM")
-
--- Set 7 lines to the cursor - when moving vertically using j/k
-vim.opt.scrolloff = 7
-
--- Turn on the Wild menu
-vim.opt.wildmenu = true
-
--- Ignore compiled files
-vim.opt.wildignore = {"*.o", "*~", "*.pyc"}
-if vim.fn.has("win16") or vim.fn.has("win32") then
-    vim.opt.wildignore:append(".git/*", ".hg/*", ".svn/*")
+-- Wildmenu & File Ignore
+vim.opt.wildmenu     = true
+vim.opt.wildignore   = {"*.o", "*~", "*.pyc"}
+if vim.fn.has("win16") == 1 or vim.fn.has("win32") == 1 then
+  vim.opt.wildignore:append({".git/*", ".hg/*", ".svn/*"})
 else
-    vim.opt.wildignore:append("*/.git/*", "*/.hg/*", "*/.svn/*", "*/.DS_Store")
+  vim.opt.wildignore:append({"*/.git/*", "*/.hg/*", "*/.svn/*", "*/.DS_Store"})
 end
 
--- Always show current position
-vim.opt.ruler = true
+-- Buffer & Backspace Behavior
+vim.opt.hidden = true         -- Allow background buffers
+vim.opt.backspace:append({"eol", "start", "indent"})
+vim.opt.whichwrap = vim.opt.whichwrap + "<,>,h,l"
 
--- Height of the command bar
-vim.opt.cmdheight = 1
+-- Search
+vim.opt.ignorecase = true     -- Ignore case in search
+vim.opt.smartcase  = true     -- ...unless uppercase used
 
--- A buffer becomes hidden when it is abandoned
-vim.opt.hidden = true
-
--- Configure backspace so it acts as it should act
-vim.opt.backspace:append("eol", "start", "indent")
-vim.opt.whichwrap:append("<", ">", "h", "l")
-
--- Ignore case when searching
-vim.opt.ignorecase = true
-
--- When searching try to be smart about cases
+-- (Add more UI options below as needed)
 vim.opt.smartcase = true
 
 -- Highlight search results
