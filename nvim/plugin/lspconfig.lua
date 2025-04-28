@@ -52,7 +52,7 @@ local function lsp_keymaps(_, bufnr)
         {"n", "gP", goto_preview.close_all_win, "[lsp] close all windows"},
         {"n", "gs", vim.lsp.buf.signature_help, "[lsp] show signature help"},
         {"n", "rn", vim.lsp.buf.rename, "[lsp] rename"},
-        {"n", "ca", ":CodeActionMenu<CR>", "[lsp] code action"},
+        {"n", "ca", vim.lsp.buf.code_action, "[lsp] code action"},
         {"n", "K", vim.lsp.buf.hover, "[lsp] buffer hover"},
         {"n", "<leader>lf", vim.lsp.buf.format, "[lsp] format code"},
         {"n", "<leader>ai", vim.lsp.buf.incoming_calls, "[lsp] incoming calls"},
