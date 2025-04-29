@@ -1,5 +1,5 @@
-require("lualine").setup {
-    options = {
-        theme = "powerline_dark"
-    }
-}
+require("lualine").setup({
+	options = {
+		theme = "powerline_dark",
+	},
+})

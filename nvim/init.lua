@@ -10,13 +10,13 @@
 -------------------------------------------------------------
 
 -- Setup globals that I expect to be always available.
-local modules = {"packerman", "core", "preference"}
+local modules = { "packerman", "core", "preference" }
 for _, module in ipairs(modules) do
-    require(module)
+	require(module)
 end
 
 -- Load all user preferences
 local paths = vim.split(vim.fn.glob("~/.config/nvim/vimscripts/**/*.vim"), "\n")
 for i, file in pairs(paths) do
-    vim.cmd("source " .. file)
+	vim.cmd("source " .. file)
 end

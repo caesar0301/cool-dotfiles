@@ -1,5 +1,3 @@
-require("codeium").setup(
-    {
-        detect_proxy = true
-    }
-)
+require("codeium").setup({
+	detect_proxy = true,
+})

@@ -2,9 +2,9 @@
 vim.g.vimtex_compiler_method = "latexmk"
 
 if _G.IS_MAC then
-  vim.g.vimtex_view_method = "skim"
+	vim.g.vimtex_view_method = "skim"
 elseif _G.IS_LINUX then
-  vim.g.vimtex_view_method = "zathura"
+	vim.g.vimtex_view_method = "zathura"
 end
 
 vim.g.vimtex_quickfix_mode = 2

@@ -5,26 +5,26 @@
 -- for nvim 0.10.0+, enable auto osc52. see :help clipboard-osc52
 -- vim.opt.clipboard:append {"unnamed", "unnamedplus"}
 function my_paste(reg)
-    return function(lines)
-        local content = vim.fn.getreg('"')
-        return vim.split(content, "\n")
-    end
+	return function(lines)
+		local content = vim.fn.getreg('"')
+		return vim.split(content, "\n")
+	end
 end
-if (os.getenv("SSH_TTY") == nil) then
-    vim.opt.clipboard:append("unnamedplus")
+if os.getenv("SSH_TTY") == nil then
+	vim.opt.clipboard:append("unnamedplus")
 else
-    vim.opt.clipboard:append("unnamedplus")
-    vim.g.clipboard = {
-        name = "OSC 52",
-        copy = {
-            ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-            ["*"] = require("vim.ui.clipboard.osc52").copy("*")
-        },
-        paste = {
-            ["+"] = my_paste("+"),
-            ["*"] = my_paste("*")
-        }
-    }
+	vim.opt.clipboard:append("unnamedplus")
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			["+"] = my_paste("+"),
+			["*"] = my_paste("*"),
+		},
+	}
 end
 
 -- Sets how many lines of history VIM has to remember
@@ -42,5 +42,5 @@ vim.opt.spell = false
 -- In case of invalid default Python3 version
 local nvimpy = os.getenv("NVIM_PYTHON3")
 if nvimpy ~= nil and python_path ~= "" then
-    vim.g.python3_host_prog = nvimpy .. "/bin/python3"
+	vim.g.python3_host_prog = nvimpy .. "/bin/python3"
 end
