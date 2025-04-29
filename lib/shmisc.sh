@@ -150,21 +150,6 @@ pip_install_lib() {
   fi
 }
 
-# Install Node.js packages with npm
-# Arguments:
-#   $@ - package names
-npm_install_lib() {
-  if [ $# -eq 0 ]; then
-    error "npm_install_lib: requires at least one package name"
-  fi
-  if ! checkcmd npm; then
-    error "npm is not installed"
-  fi
-  if ! npm install -g "$@"; then
-    error "Failed to install npm packages: $*"
-  fi
-}
-
 # Install Go packages
 # Arguments:
 #   $@ - package paths
@@ -624,7 +609,6 @@ npm_install_lib() {
   local libs=("$@") # Capture all arguments as an array
   local options="--prefer-offline --no-audit --progress=false"
   local npm_cmd="npm"
-  local registry="https://registry.npmmirror.com"
   local PASSSECRET=${SUDO_PASS:-""}
 
   # Check if npm is available
@@ -640,8 +624,6 @@ npm_install_lib() {
   fi
 
   info "Installing npm libraries: ${libs[*]}"
-  # Set npm registry
-  "$npm_cmd" config set registry "$registry"
 
   # Install libraries with or without sudo
   if [ -z "$PASSSECRET" ]; then

@@ -21,7 +21,7 @@ formatter.setup {
     filetype = {
         -- Formatter configurations for filetypes go here and will be executed in order
         lua = {
-            require("formatter.filetypes.lua").luafmt
+            require("formatter.filetypes.lua").stylua
         },
         java = {
             function()

@@ -325,6 +325,12 @@ return packer.startup(
         ---------------
 
         -- Free, ultrafast Copilot alternative
-        -- use "Exafunction/codeium.vim"
+        use {
+            "Exafunction/windsurf.nvim",
+            requires = {
+                "nvim-lua/plenary.nvim",
+                "hrsh7th/nvim-cmp"
+            }
+        }
     end
 )

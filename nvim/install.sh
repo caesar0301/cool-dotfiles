@@ -31,7 +31,7 @@ readonly PKG_R="r"
 
 # Formatter packages for each package manager
 readonly FORMATTERS_PIP="pynvim black sqlparse cmake_format"
-readonly FORMATTERS_NPM="neovim lua-fmt yaml-language-server js-beautify"
+readonly FORMATTERS_NPM="neovim yaml-language-server js-beautify @johnnymorganz/stylua-bin"
 readonly FORMATTERS_GO="github.com/google/yamlfmt/cmd/yamlfmt@latest"
 
 # LSP packages for each package manager
@@ -41,7 +41,7 @@ readonly LSP_GO="golang.org/x/tools/gopls@latest github.com/jstemmer/gotags@late
 
 function check_dependencies {
   local missing_deps=()
-  
+
   # Check essential package managers
   local required_cmds=(
     "${PKG_PIP}"
@@ -49,7 +49,7 @@ function check_dependencies {
     "${PKG_GO}"
     "${PKG_R}"
   )
-  
+
   for cmd in "${required_cmds[@]}"; do
     if ! checkcmd "$cmd"; then
       missing_deps+=("$cmd")
