@@ -59,9 +59,7 @@ function colima-reset-all {
 
 # Prune all docker junk data
 function docker-prune-all {
-  yes y | docker container prune
-  yes y | docker image prune
-  yes y | docker volume prune
+  docker system prune -f
 }
 
 # Docker image tag generator
