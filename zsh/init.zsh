@@ -35,7 +35,6 @@ zinit ice wait lucid; zinit snippet OMZL::spectrum.zsh
 zinit ice wait lucid; zinit snippet OMZL::theme-and-appearance.zsh
 
 # Efficiency
-zinit ice wait lucid; zinit snippet OMZP::alias-finder
 zinit ice pick"z.sh" wait lucid; zinit load rupa/z
 
 # Completion & search
@@ -53,7 +52,9 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 # Development
 zinit ice wait lucid; zinit snippet OMZP::git
 
-# Load custom extensions
+# Custom extensions
+zinit light caesar0301/zsh-caesardev
+zinit light caesar0301/zsh-shell-proxy
 _load_custom_extensions
 
 autoload -U parseopts zargs zcalc zed zmv
