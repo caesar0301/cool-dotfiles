@@ -10,9 +10,3 @@ source ${0:h}/alias.zsh
 source ${0:h}/dev_env.zsh
 source ${0:h}/git.zsh
 source ${0:h}/misc.zsh
-
-if [[ $OSTYPE == darwin* ]]; then
-    source ${0:h}/macosx.zsh
-else
-    source ${0:h}/linux.zsh
-fi

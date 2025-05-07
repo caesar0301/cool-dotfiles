@@ -18,15 +18,6 @@ _init_go_env() {
   fi
 }
 
-# Function to initialize Rust environment
-_init_rust_env() {
-  if command -v rustc &>/dev/null; then
-    export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
-    export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
-  fi
-  add_to_path "$HOME/.cargo/bin"
-}
-
 # Function to initialize pyenv environment
 _init_pyenv() {
   if [ -d "$HOME/.pyenv" ]; then
@@ -69,7 +60,6 @@ _init_global_dev_envs() {
   _init_pyenv
   _init_jenv
   _init_go_env
-  _init_rust_env
   _init_haskell_env
   _init_lisp_env
 }

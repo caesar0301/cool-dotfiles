@@ -36,8 +36,6 @@ zinit ice wait lucid; zinit snippet OMZL::theme-and-appearance.zsh
 
 # Efficiency
 zinit ice wait lucid; zinit snippet OMZP::alias-finder
-zinit ice wait lucid; zinit snippet OMZP::extract
-zinit ice wait lucid; zinit snippet OMZP::vi-mode
 zinit ice pick"z.sh" wait lucid; zinit load rupa/z
 
 # Completion & search
@@ -45,9 +43,6 @@ zinit light zsh-users/zsh-completions
 
 zinit ice lucid wait='0' atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
-
-zinit ice pick"zsh-history-substring-search.zsh"
-zinit light zsh-users/zsh-history-substring-search
 
 zinit ice pick "zsh-syntax-highlighting.zsh" wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
@@ -57,7 +52,6 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Development
 zinit ice wait lucid; zinit snippet OMZP::git
-zinit ice wait lucid; zinit snippet OMZP::colored-man-pages
 
 # Load custom extensions
 _load_custom_extensions

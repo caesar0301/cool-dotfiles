@@ -428,17 +428,6 @@ install_jenv() {
   eval "$(jenv init -)"
 }
 
-# Install a Java decompiler (CFR)
-install_java_decompiler() {
-  info "Installing CFR - another Java decompiler"
-  create_dir "$HOME/.local/bin"
-  local cfrfile="cfr-0.152.jar"
-  local target="$HOME/.local/bin/$cfrfile"
-  if [ ! -e "$target" ]; then
-    curl -k -L --progress-bar "https://www.benf.org/other/cfr/$cfrfile" --output "$target"
-  fi
-}
-
 # Install jdt-language-server
 install_jdt_language_server() {
   info "Installing jdt-language-server..."
