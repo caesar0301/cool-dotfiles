@@ -44,6 +44,10 @@ handle_shell_proxy() {
   fi
 }
 
+handle_p10k() {
+  install_file_pair "$THISDIR/config/p10k.zsh" "$HOME/.p10k.zsh"
+}
+
 # Function to handle Zsh configuration
 handle_zsh() {
   create_dir "$XDG_CONFIG_HOME/zsh"
@@ -71,6 +75,7 @@ handle_zsh() {
 cleanse_zsh() {
   rm -rf "$XDG_DATA_HOME/zinit"
   rm -rf "$HOME/.config/proxy"
+  rm -rf "$HOME/.p10k.zsh"
 
   for i in "${INSTALL_FILES[@]}"; do
     rm -rf "$XDG_CONFIG_HOME/zsh/$i"
@@ -118,5 +123,6 @@ if [ "x$WITHDEPS" == "x1" ]; then
   install_gvm
 fi
 handle_shell_proxy
+handle_p10k
 handle_zsh
 info "Zsh installed successfully!"
