@@ -7,6 +7,26 @@ function zshld {
   source $HOME/.zshrc
 }
 
+# update zinit self and plugins
+function zshup {
+  # Self update
+  zinit self-update
+
+  # Plugin parallel update
+  zinit update --all --parallel 8
+
+  # Update custom plugins
+  old_path=$(pwd)
+  if [ -e ${ZSH_PLUGIN_DIR} ]; then
+    for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
+      if [ -e ${plugin}/.git ]; then
+        echo -n "Updating plugin ${plugin}..."
+        cd $plugin && git pull -q && echo "done" && cd ${old_path}
+      fi
+    done
+  fi
+}
+
 # start or access tmux dev session
 function bingo {
   if tmux info &>/dev/null; then
@@ -22,24 +42,6 @@ function bingo {
     tmux -u new-session -d -s ${SESSION_NAME}
   fi
   tmux -u attach -t ${SESSION_NAME}
-}
-
-# Update zinit and plugins
-function zsh-update-plugins {
-  # self update
-  zinit self-update
-  # plugin update
-  zinit update --parallel
-  # update user plugins
-  old_path=$(pwd)
-  if [ -e ${ZSH_PLUGIN_DIR} ]; then
-    for plugin in $(ls -d $ZSH_PLUGIN_DIR/*); do
-      if [ -e ${plugin}/.git ]; then
-        echo -n "Updating plugin ${plugin}..."
-        cd $plugin && git pull -q && echo "done" && cd ${old_path}
-      fi
-    done
-  fi
 }
 
 # update nvim plugins
