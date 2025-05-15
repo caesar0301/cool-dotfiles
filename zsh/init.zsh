@@ -36,6 +36,7 @@ zinit ice wait lucid; zinit snippet OMZL::theme-and-appearance.zsh
 
 # Efficiency
 zinit ice pick"z.sh" wait lucid; zinit load rupa/z
+zinit ice wait lucid; zinit snippet OMZP::vi-mode
 
 # Completion & search
 zinit light zsh-users/zsh-completions
