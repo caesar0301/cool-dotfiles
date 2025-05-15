@@ -27,21 +27,22 @@ function zshup {
   fi
 }
 
-# start or access tmux dev session
-function bingo {
-  if tmux info &>/dev/null; then
-    echo "Do nothing, tmux server already running"
-    return 0
+bingo() {
+  local SESSION_NAME="${1:-bingo}"
+
+  # Check if tmux server is already running by listing sessions
+  if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    echo "Attaching to existing tmux session: $SESSION_NAME"
+  else
+    echo "Creating new tmux session: $SESSION_NAME"
+    tmux new-session -d -s "$SESSION_NAME"
   fi
+
+  # Unset TMUX to allow clean attach
   unset TMUX
-  HOSTNAME=$(hostname | sed -E "s/\./_/g" | head -c 8)
-  SESSION_NAME="bingo"
-  tmux -u start-server
-  tmux -u has-session -t ${SESSION_NAME}
-  if [ $? != 0 ]; then
-    tmux -u new-session -d -s ${SESSION_NAME}
-  fi
-  tmux -u attach -t ${SESSION_NAME}
+
+  # Attach to the session
+  tmux attach -t "$SESSION_NAME"
 }
 
 # update nvim plugins
