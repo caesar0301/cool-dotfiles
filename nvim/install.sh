@@ -166,7 +166,6 @@ function post_install {
   warn "**********Post installation*************"
   warn "Run following commands in Neovim to install plugins:"
   warn ":PackerInstall"
-  warn ":TSUpdate lua python go java vim vimdoc luadoc markdown"
   warn "****************************************"
 }
 

@@ -596,7 +596,7 @@ pip_install_lib() {
 # Install one or more npm libraries globally
 npm_install_lib() {
   local libs=("$@") # Capture all arguments as an array
-  local options="--prefer-offline --no-audit --progress=false"
+  local options="--prefer-offline --no-audit --progress=true"
   local npm_cmd="npm"
   local PASSSECRET=${SUDO_PASS:-""}
 

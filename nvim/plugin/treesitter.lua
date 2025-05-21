@@ -1,10 +1,21 @@
 require("nvim-treesitter.configs").setup({
-	ensure_installed = {},
+	ensure_installed = {
+		"lua",
+		"python",
+		"go",
+		"java",
+		"vim",
+		"vimdoc",
+		"luadoc",
+		"markdown",
+	},
 	autotag = {
 		enable = true,
 	},
+	-- Install languages synchronously (only applies to `ensure_installed`)
 	sync_install = false,
-	auto_install = false,
+	-- Automatically install missing parsers when entering buffer
+	auto_install = true,
 	ignore_install = {},
 	highlight = {
 		enable = true,
