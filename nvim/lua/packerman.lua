@@ -62,10 +62,6 @@ return packer.startup(function(use)
 	-- Displays tags in a window, ordered by scope
 	use("preservim/tagbar")
 
-	-- Visually select increasingly larger regions of text.
-	-- Use +/- to expand/shrink.
-	use("terryma/vim-expand-region")
-
 	-- Multiple selection and edit
 	use({ "mg979/vim-visual-multi", branch = "master" })
 
