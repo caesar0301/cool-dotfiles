@@ -26,10 +26,7 @@ return packer.startup(function(use)
 	---------------
 
 	-- Themes
-	use("dracula/vim")
-	use("morhetz/gruvbox")
 	use("tomasiser/vim-code-dark")
-	use("Mofiqul/vscode.nvim")
 
 	-- Tabline with auto-sizing, clickable tabs, icons, highlighting etc.
 	use({

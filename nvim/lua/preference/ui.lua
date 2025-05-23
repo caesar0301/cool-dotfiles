@@ -71,9 +71,9 @@ if vim.env.COLORTERM == "gnome-terminal" then
 	vim.opt.termguicolors = true
 end
 
+-- Theme
 vim.opt.background = "dark"
--- One of dracula, gruvbox, vscode, codedark etc.
-local status, result = pcall(vim.cmd, "colorscheme vscode")
+local status, result = pcall(vim.cmd, "colorscheme codedark")
 if not status then
 	vim.cmd("colorscheme elflord")
 end
