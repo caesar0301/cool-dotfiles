@@ -59,9 +59,6 @@ return packer.startup(function(use)
 	-- Displays tags in a window, ordered by scope
 	use("preservim/tagbar")
 
-	-- Multiple selection and edit
-	use({ "mg979/vim-visual-multi", branch = "master" })
-
 	-- shows the context of the currently visible buffer contents
 	use({
 		"wellle/context.vim",
@@ -76,9 +73,6 @@ return packer.startup(function(use)
 			require("which-key").setup({})
 		end,
 	})
-
-	-- Wrapper of some vim/neovim's :terminal functions
-	use("kassio/neoterm")
 
 	-- easily manage multiple terminal windows
 	use({
