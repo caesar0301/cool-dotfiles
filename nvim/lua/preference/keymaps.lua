@@ -42,15 +42,6 @@ vim.keymap.set("n", "<leader>al", ":AnyJumpLastResults<CR>", opt_s("[AnyJump] ju
 -- Plugin: formatter.nvim
 vim.keymap.set("n", "<leader>af", ":w<CR><bar>:Format<CR>", opt_s("Format current buffer"))
 
--- Smart insert in blank line (auto indent)
-vim.keymap.set("n", "i", function()
-	if #vim.fn.getline(".") == 0 then
-		return [['_cc]]
-	else
-		return "i"
-	end
-end, { expr = true })
-
 -- Move line in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected downwards" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected upwards" })
