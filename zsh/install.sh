@@ -120,7 +120,7 @@ install_zinit
 if [ "x$WITHDEPS" == "x1" ]; then
   install_pyenv
   install_jenv
-  install_gvm
+  #install_gvm
 fi
 handle_shell_proxy
 handle_p10k
