@@ -392,6 +392,9 @@ install_file_pair() {
   if [ ! -e "$src" ]; then
     error "Error: Source '$src' does not exist"
   fi
+  if [ ! -d $(dirname $dest) ]; then
+    mkdir -p $(dirname $dest)
+  fi
   $copycmd "$src" "$dest" || error "Error copying '$src' to '$dest'"
 }
 
