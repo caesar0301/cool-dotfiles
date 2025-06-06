@@ -22,6 +22,10 @@ ZSH_VERSION="5.8"
 # Load common utils
 source "$THISDIR/../lib/shmisc.sh"
 
+# Install envs
+CAESAR_DOT_ZSH_INSTALL_P10K=${CAESAR_DOT_ZSH_INSTALL_P10K:-1}
+CAESAR_DOT_ZSH_INSTALL_GVM=${CAESAR_DOT_ZSH_INSTALL_GVM:-1}
+
 INSTALL_FILES=(
   init.zsh
   _helper.zsh
@@ -93,36 +97,27 @@ cleanse_zsh() {
   info "All Zsh files cleansed!"
 }
 
-# Function to display usage information
-usage() {
-  info "Usage: install.sh [-f] [-s] [-e] [-c]"
-  info "  -f copy and install"
-  info "  -s soft link install"
-  info "  -e install dependencies"
-  info "  -c cleanse install"
-}
-
 # Change to 0 to install a copy instead of soft link
 LINK_INSTEAD_OF_COPY=1
-WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
   f) LINK_INSTEAD_OF_COPY=0 ;;
   s) LINK_INSTEAD_OF_COPY=1 ;;
-  e) WITHDEPS=1 ;;
   c) cleanse_zsh && exit 0 ;;
-  h | ?) usage && exit 0 ;;
+  h | ?) usage_me "install.sh" && exit 0 ;;
   esac
 done
 
+# Dependencies
 install_zsh
 install_zinit
-if [ "x$WITHDEPS" == "x1" ]; then
-  install_pyenv
-  install_jenv
-  #install_gvm
-fi
+install_pyenv
+install_jenv
+[ "x${CAESAR_DOT_ZSH_INSTALL_GVM}" == "x1" ] && install_gvm
+
+# Configure
+[ "x${CAESAR_DOT_ZSH_INSTALL_P10K}" == "x1" ] && handle_p10k
 handle_shell_proxy
-handle_p10k
 handle_zsh
+
 info "Zsh installed successfully!"

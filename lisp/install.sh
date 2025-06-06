@@ -28,19 +28,6 @@ readonly ACL_HOME="$XDG_DATA_HOME/acl"
 # Default configuration
 readonly DEFAULT_LISP_LIBS=("quicklisp-slime-helper" "alexandria")
 
-function usage {
-  cat <<EOF
-Usage: $(basename "$0") [OPTIONS]
-
-Options:
-  -f    Copy and install files
-  -s    Create symbolic links instead of copying
-  -e    Install dependencies
-  -c    Clean installation
-  -h    Show this help message
-EOF
-}
-
 function install_quicklisp {
   info "Installing Quicklisp package manager..."
 
@@ -162,14 +149,12 @@ function cleanse_lisp {
 
 # Change to 0 to install a copy instead of soft link
 LINK_INSTEAD_OF_COPY=1
-WITHDEPS=1
-while getopts fsech opt; do
+while getopts fsch opt; do
   case $opt in
   f) LINK_INSTEAD_OF_COPY=0 ;;
   s) LINK_INSTEAD_OF_COPY=1 ;;
-  e) WITHDEPS=1 ;;
   c) cleanse_lisp && exit 0 ;;
-  h | ?) usage && exit 0 ;;
+  h | ?) usage_me "install.sh" && exit 0 ;;
   esac
 done
 

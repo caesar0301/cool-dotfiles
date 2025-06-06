@@ -177,39 +177,25 @@ function cleanse_all {
   info "All Neovim files cleansed!"
 }
 
-# Function to display usage information
-function usage {
-  echo "Usage: install.sh [-f] [-s] [-e] [-c]"
-  echo "  -f copy and install"
-  echo "  -s soft link install"
-  echo "  -e install dependencies"
-  echo "  -c cleanse install"
-}
-
 # Change to 0 to install a copy instead of soft link
 LINK_INSTEAD_OF_COPY=1
-WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
   f) LINK_INSTEAD_OF_COPY=0 ;;
   s) LINK_INSTEAD_OF_COPY=1 ;;
-  e) WITHDEPS=1 ;;
   c) cleanse_all && exit 0 ;;
-  h | ?) usage && exit 0 ;;
+  h | ?) usage_me "install.sh" && exit 0 ;;
   esac
 done
 
-install_neovim
-handle_neovim
+install_neovim && handle_neovim
 
-if [ "x$WITHDEPS" == "x1" ]; then
-  install_lsp_deps
-  install_jdt_language_server
-  install_hack_nerd_font # Required by nvim-web-devicons
-  install_lang_formatters
-  install_fzf
-  setup_ctags
-fi
+install_lsp_deps
+install_jdt_language_server
+install_hack_nerd_font # Required by nvim-web-devicons
+install_lang_formatters
+install_fzf
+setup_ctags
 
 post_install
 info "Success! Run :PackerInstall to install Neovim plugins"

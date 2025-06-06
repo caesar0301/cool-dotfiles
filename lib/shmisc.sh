@@ -54,6 +54,29 @@ print_message() {
     "$COLOR_RESET"
 }
 
+# Common usage function for install scripts
+# Arguments:
+#   $1 - script name (optional, defaults to install.sh)
+#   $2 - additional options (optional)
+# Example:
+#   usage_me "install.sh" "[-d] [-v]"
+usage_me() {
+  local script_name=${1:-"install.sh"}
+  local additional_opts=${2:-""}
+  local opts="[-f] [-s] [-c]"
+  if [ -n "$additional_opts" ]; then
+    opts="$opts $additional_opts"
+  fi
+
+  echo "Usage: $script_name $opts"
+  echo "  -f copy and install"
+  echo "  -s soft link install"
+  echo "  -c cleanse install"
+  if [ -n "$additional_opts" ]; then
+    echo "  $additional_opts"
+  fi
+}
+
 # Log an info message
 # Arguments:
 #   $@ - message

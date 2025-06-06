@@ -13,15 +13,6 @@ TMUX_VERSION="3.5a"
 # Load common utils
 source "$THISDIR/../lib/shmisc.sh"
 
-# Function to display usage information
-function usage {
-  echo "Usage: install.sh [-f] [-s] [-e] [-c]"
-  echo "  -f copy and install"
-  echo "  -s soft link install"
-  echo "  -e install dependencies"
-  echo "  -c cleanse install"
-}
-
 # Function to install tmux
 function install_tmux {
   info "Installing tmux..."
@@ -70,14 +61,12 @@ function cleanse_tmux {
 
 # Change to 0 to install a copy instead of soft link
 SOFTLINK=1
-WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
   f) SOFTLINK=0 ;;
   s) SOFTLINK=1 ;;
-  e) WITHDEPS=1 ;;
   c) cleanse_tmux && exit 0 ;;
-  h | ?) usage && exit 0 ;;
+  h | ?) usage_me "install.sh" && exit 0 ;;
   esac
 done
 

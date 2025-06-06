@@ -15,7 +15,6 @@ Run `install_all.sh` automatically installs dependencies and configures `zsh`, `
 ```bash
 ./install_all.sh     # Install dotfiles by soft links (default)
 ./install_all.sh -f  # Install dotfiles by copying
-./install_all.sh -e  # With essential dependencies
 ./install_all.sh -c  # Cleanse installer changes
 ```
 

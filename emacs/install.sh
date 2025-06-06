@@ -21,15 +21,6 @@ INSTALL_FILES=(
   init.el
 )
 
-# Function to display usage information
-usage() {
-  info "Usage: install.sh [-f] [-s] [-e] [-c]"
-  info "  -f copy and install"
-  info "  -s soft link install"
-  info "  -e install dependencies"
-  info "  -c cleanse install"
-}
-
 # Function to check SLIME dependencies
 check_slime_deps() {
   if [ ! -e "${QUICKLISP_HOME}/slime-helper.el" ]; then
@@ -62,21 +53,16 @@ cleanse_emacs() {
 
 # Change to 0 to install a copy instead of soft link
 LINK_INSTEAD_OF_COPY=1
-WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
   f) LINK_INSTEAD_OF_COPY=0 ;;
   s) LINK_INSTEAD_OF_COPY=1 ;;
-  e) WITHDEPS=1 ;;
   c) cleanse_emacs && exit 0 ;;
-  h | ?) usage && exit 0 ;;
+  h | ?) usage_me "install.sh" && exit 0 ;;
   esac
 done
 
-if [ "$WITHDEPS" == "1" ]; then
-  check_slime_deps
-  check_emacs_deps
-fi
+check_slime_deps
+check_emacs_deps && handle_emacs
 
-handle_emacs
 info "Emacs installed successfully!"

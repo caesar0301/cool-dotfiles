@@ -10,14 +10,6 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 source $THISDIR/../lib/shmisc.sh
 
-function usage {
-  echo "Usage: install_misc.sh [-f] [-s] [-e]"
-  echo "  -f copy and install"
-  echo "  -s soft linke install"
-  echo "  -e install dependencies"
-  echo "  -c cleanse install"
-}
-
 function install_local_bins {
   create_dir $HOME/.local/bin
   cp $THISDIR/../bin/* $HOME/.local/bin
@@ -56,14 +48,12 @@ function cleanse_all {
 
 # Change to 0 to install a copy instead of soft link
 LINK_INSTEAD_OF_COPY=1
-WITHDEPS=1
 while getopts fsech opt; do
   case $opt in
   f) LINK_INSTEAD_OF_COPY=0 ;;
   s) LINK_INSTEAD_OF_COPY=1 ;;
-  e) WITHDEPS=1 ;;
   c) cleanse_all && exit 0 ;;
-  h | ?) usage && exit 0 ;;
+  h | ?) usage_me "install.sh" && exit 0 ;;
   esac
 done
 
