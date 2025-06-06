@@ -38,12 +38,6 @@ zinit ice wait lucid; zinit snippet OMZL::theme-and-appearance.zsh
 zinit ice pick"z.sh" wait lucid; zinit load rupa/z
 zinit ice wait lucid; zinit snippet OMZP::vi-mode
 
-# Completion & search
-zinit light zsh-users/zsh-completions
-
-zinit ice lucid wait='0' atload='_zsh_autosuggest_start'
-zinit light zsh-users/zsh-autosuggestions
-
 zinit ice pick "zsh-syntax-highlighting.zsh" wait lucid
 zinit light zsh-users/zsh-syntax-highlighting
 
