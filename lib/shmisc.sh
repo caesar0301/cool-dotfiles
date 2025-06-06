@@ -621,10 +621,11 @@ pip_install_lib() {
 
 # Install one or more npm libraries globally
 npm_install_lib() {
+  mkdir -p $HOME/.local && npm config set prefix '~/.local/'
+
   local libs=("$@") # Capture all arguments as an array
   local options="--prefer-offline --no-audit --progress=true"
   local npm_cmd="npm"
-  local PASSSECRET=${SUDO_PASS:-""}
 
   # Check if npm is available
   if ! command -v "$npm_cmd" >/dev/null 2>&1; then
@@ -639,13 +640,7 @@ npm_install_lib() {
   fi
 
   info "Installing npm libraries: ${libs[*]}"
-
-  # Install libraries with or without sudo
-  if [ -z "$PASSSECRET" ]; then
-    sudo "$npm_cmd" install $options -g "${libs[@]}"
-  else
-    echo "$PASSSECRET" | sudo -S "$npm_cmd" install $options -g "${libs[@]}"
-  fi
+  "$npm_cmd" install $options -g "${libs[@]}"
 }
 
 # Install a R library
